@@ -1,0 +1,261 @@
+.section {
+    padding: 3rem 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.7));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.nav {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.navBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.navBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+
+.viewAll {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+    padding: 0 1rem;
+    transition: var(--transition-smooth);
+}
+
+.viewAll:hover {
+    color: #fff;
+    transform: translateX(-5px);
+}
+
+.carousel {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-bottom: 1rem;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.card {
+    min-width: 170px;
+    max-width: 220px;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.artWrapper {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 1rem;
+    aspect-ratio: 1/1;
+    background: var(--card);
+    border: 1px solid var(--glass-border);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease, border-color 0.6s ease;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.card:hover .artWrapper {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 112, 243, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition-smooth);
+}
+
+.card:hover .overlay {
+    opacity: 1;
+}
+
+.card:hover .cover {
+    transform: scale(1.1);
+}
+
+.playBtn {
+    width: 52px;
+    height: 52px;
+    background: var(--primary);
+    border: none;
+    color: white;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: scale(0.8) translateY(20px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover .playBtn {
+    transform: scale(1) translateY(0);
+}
+
+.playBtn:hover {
+    transform: scale(1.1) !important;
+    background: #fff;
+    color: var(--primary);
+}
+
+.moreBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.card:hover .moreBtn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.moreBtn:hover {
+    background: white;
+    color: black;
+}
+
+.contextMenu {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background: rgba(15, 15, 15, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0;
+    padding: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 160px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    z-index: 50;
+    animation: menuAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes menuAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.contextMenu button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 0.8rem;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.contextMenu button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.info {
+    padding: 0 0.25rem;
+}
+
+.trackTitle {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #fff;
+    letter-spacing: -0.01em;
+}
+
+.artistLink {
+    font-size: 0.8rem;
+    color: var(--muted-foreground);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.artistLink:hover {
+    color: var(--corewave-cyan);
+    text-decoration: underline;
+}

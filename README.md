@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# COREWAVE RECORDS
 
-## Getting Started
+A next-generation music streaming and distribution platform built with Next.js, empowering artists to upload, distribute, and evolve their sound.
 
-First, run the development server:
+## 🎵 Features
 
+- **Artist-Centric Platform**: Upload tracks, manage profiles, and build your fanbase
+- **AI-Generated Content Support**: Tag and showcase AI-generated music with distinctive badges
+- **Advanced Audio Player**: Seamless playback with queue management, shuffle, and repeat modes
+- **Verification System**: Earn blue badges through profile completion and approved releases
+- **Social Features**: Follow artists, like tracks, create playlists
+- **Admin Dashboard**: Content moderation and artist management
+- **Secure Authentication**: NextAuth-powered login and signup
+
+## 🚀 Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Database**: Prisma ORM with SQLite
+- **Authentication**: NextAuth.js
+- **Styling**: CSS Modules with modern design system
+- **State Management**: Zustand
+- **Icons**: Lucide React
+
+## 📦 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/hitheight0-commits/corewave-records.git
+cd corewave-records
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables
+```bash
+cp .env.example .env
+```
+Update `.env` with your configuration (see `.env.example` for details)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Initialize the database
+```bash
+npx prisma generate
+npx prisma db push
+```
 
-## Learn More
+5. Run the development server
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🗄️ Database Setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The project uses Prisma with SQLite. To reset the database:
 
-## Deploy on Vercel
+```bash
+npx prisma migrate reset
+npx prisma db push
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🎨 Features Overview
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### For Artists
+- Upload and manage tracks
+- Profile customization with images and bio
+- Track analytics and play counts
+- Verification protocol (Image + Bio + 10 Approved Tracks)
+
+### For Listeners
+- Browse and discover music
+- Create and manage playlists
+- Follow favorite artists
+- Immersive fullscreen player
+
+### For Admins
+- Review and approve/reject submissions
+- Manage artists and users
+- Platform oversight dashboard
+
+## 📝 Environment Variables
+
+Required environment variables (see `.env.example`):
+
+- `DATABASE_URL`: Database connection string
+- `NEXTAUTH_SECRET`: Secret for NextAuth session encryption
+- `NEXTAUTH_URL`: Base URL of your application
+
+## 🌐 Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Import project in Vercel
+3. Configure environment variables in Vercel dashboard
+4. Deploy!
+
+The project is optimized for Vercel deployment with automatic builds and previews.
+
+## 📄 License
+
+MIT License - feel free to use this project for your own music platform!
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📧 Contact
+
+For questions or support, please open an issue on GitHub.
+
+---
+
+Built with ❤️ for artists and music lovers everywhere.

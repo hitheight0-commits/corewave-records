@@ -1,0 +1,207 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.backdrop {
+    position: absolute;
+    inset: -50px;
+    background-size: cover;
+    background-position: center;
+    filter: blur(80px) brightness(0.3);
+    z-index: -1;
+    opacity: 0.6;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+}
+
+.closeBtn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+    gap: 3rem;
+}
+
+.coverWrapper {
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 400px;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.meta {
+    text-align: center;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, #fff, #aaa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.artist {
+    font-size: 1.2rem;
+    color: var(--muted-foreground);
+    font-weight: 500;
+}
+
+.controls {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.progressBar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0;
+    overflow: hidden;
+}
+
+.progressFill {
+    width: 30%;
+    /* Placeholder */
+    height: 100%;
+    background: var(--corewave-cyan);
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.buttons button {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttons button:hover {
+    transform: scale(1.1);
+    color: var(--corewave-cyan);
+}
+
+.playBtn {
+    width: 80px;
+    height: 80px;
+    background: white !important;
+    border-radius: 0;
+    color: black !important;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.playBtn:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.actionBtn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 50px;
+    height: 50px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.actionBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--corewave-cyan);
+}
+
+.activeBtn {
+    color: var(--corewave-cyan) !important;
+    position: relative;
+}
+
+.activeBtn::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 4px;
+    background: currentColor;
+    border-radius: 0;
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 8px;
+    background: var(--corewave-cyan);
+    color: black;
+    width: 12px;
+    height: 12px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}

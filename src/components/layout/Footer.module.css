@@ -1,0 +1,130 @@
+.footer {
+    background: var(--background);
+    border-top: 1px solid var(--border);
+    padding: 6rem 0 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--corewave-blue), transparent);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+}
+
+.brandSide {
+    max-width: 320px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.logo span {
+    color: var(--corewave-blue);
+    font-weight: 400;
+}
+
+.brandDesc {
+    color: var(--muted-foreground);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.socials {
+    display: flex;
+    gap: 1rem;
+}
+
+.socialIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 0;
+    background: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--foreground);
+    transition: var(--transition-bounce);
+    border: 1px solid var(--border);
+}
+
+.socialIcon:hover {
+    background: var(--grad-primary);
+    color: white;
+    transform: translateY(-5px);
+    border-color: transparent;
+}
+
+.column h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.link {
+    color: var(--muted-foreground);
+    transition: var(--transition-smooth);
+    font-size: 0.95rem;
+}
+
+.link:hover {
+    color: var(--primary);
+    transform: translateX(5px);
+}
+
+.bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--muted-foreground);
+    font-size: 0.9rem;
+}
+
+.bottomLinks {
+    display: flex;
+    gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .bottom {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+    }
+}

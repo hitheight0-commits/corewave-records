@@ -1,0 +1,115 @@
+.authPage {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #111 0%, #000 100%);
+    padding: 2rem;
+}
+
+.authCard {
+    width: 100%;
+    max-width: 450px;
+    background: var(--card);
+    padding: 3rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: scaleIn 0.5s ease-out;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--muted-foreground);
+    margin-bottom: 2.5rem;
+    font-size: 0.95rem;
+}
+
+.roleSelector {
+    display: flex;
+    background: var(--accent);
+    padding: 0.3rem;
+    border-radius: 50px;
+    margin-bottom: 2rem;
+}
+
+.roleSelector button {
+    flex: 1;
+    padding: 0.6rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--muted-foreground);
+    transition: var(--transition-smooth);
+}
+
+.roleSelector .activeRole {
+    background: var(--primary);
+    color: var(--primary-foreground);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+}
+
+.field input {
+    background: var(--input);
+    border: 1px solid var(--border);
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius);
+    color: var(--foreground);
+    font-size: 0.95rem;
+    transition: var(--transition-smooth);
+}
+
+.field input:focus {
+    outline: none;
+    border-color: var(--ring);
+    background: #1a1a1a;
+}
+
+.foot {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--muted-foreground);
+}
+
+.foot a {
+    color: var(--foreground);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

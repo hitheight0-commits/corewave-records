@@ -1,0 +1,190 @@
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(236, 72, 153, 0.1);
+    color: var(--corewave-pink);
+    padding: 0.4rem 1rem;
+    border-radius: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(236, 72, 153, 0.3);
+}
+
+.trendingList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.trendingItem {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    overflow: visible !important;
+    /* [EXPERTISE] Preventing Menu Clipping */
+    border-radius: 0 !important;
+}
+
+.trendingItem:hover {
+    border-color: var(--corewave-cyan);
+    background: rgba(34, 211, 238, 0.05);
+}
+
+.trendingItem.activeItem {
+    border-color: var(--corewave-cyan);
+    background: rgba(34, 211, 238, 0.1);
+    box-shadow: 0 0 30px rgba(34, 211, 238, 0.1);
+}
+
+.rank {
+    font-size: 2rem;
+    font-weight: 900;
+    opacity: 0.2;
+    font-family: var(--font-display);
+}
+
+.mainInfo {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.coverWrapper {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.coverWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.playIcon {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition-smooth);
+}
+
+.trendingItem:hover .playIcon {
+    opacity: 1;
+}
+
+.textInfo h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+
+.textInfo p {
+    font-size: 0.9rem;
+    color: var(--muted-foreground);
+}
+
+.stats {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.trend {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    color: var(--corewave-cyan);
+    font-variant-numeric: tabular-nums;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.actionBtn {
+    color: var(--muted-foreground);
+    padding: 0.5rem;
+    border-radius: 0;
+    transition: var(--transition-smooth);
+}
+
+.actionBtn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--foreground);
+}
+
+.actionBtn.active {
+    color: var(--corewave-pink);
+}
+
+.menuWrapper {
+    position: relative;
+}
+
+.dropdownMenu {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: 0.75rem;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0;
+    padding: 0.5rem;
+    width: 200px;
+    z-index: 1000;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 1);
+}
+
+.dropdownMenu button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+    border-radius: 0;
+    transition: var(--transition-smooth);
+}
+
+.dropdownMenu button:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--foreground);
+}
+
+.playing {
+    opacity: 1 !important;
+}
+
+@media (max-width: 768px) {
+    .trendingItem {
+        grid-template-columns: 40px 1fr;
+        padding: 1rem;
+    }
+
+    .stats {
+        display: none;
+    }
+
+    .rank {
+        font-size: 1.2rem;
+    }
+}

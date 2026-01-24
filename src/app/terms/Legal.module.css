@@ -1,0 +1,115 @@
+.legalContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding-bottom: 8rem;
+}
+
+.header {
+    margin-bottom: 5rem;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.header p {
+    color: var(--muted-foreground);
+    font-weight: 600;
+}
+
+.topActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+}
+
+.backLink,
+.actionBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted-foreground);
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: var(--transition-smooth);
+}
+
+.backLink:hover,
+.actionBtn:hover {
+    color: var(--foreground);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.content section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--foreground);
+    font-family: var(--font-display);
+}
+
+.content section p {
+    color: var(--muted-foreground);
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.fab {
+    position: fixed;
+    bottom: 3rem;
+    right: 3rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--foreground);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    transition: var(--transition-bounce);
+    backdrop-filter: blur(10px);
+}
+
+.fab:hover {
+    transform: translateY(-5px);
+    background: var(--corewave-blue);
+    color: white;
+    border-color: var(--corewave-blue);
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2.5rem;
+    }
+
+    .content section h2 {
+        font-size: 1.4rem;
+    }
+
+    .fab {
+        bottom: 2rem;
+        right: 2rem;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media print {
+
+    .topActions,
+    .fab {
+        display: none !important;
+    }
+}

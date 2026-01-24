@@ -1,0 +1,189 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2000;
+    background: #000;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.meshBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(var(--accent-hsl), 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(var(--primary-hsl), 0.15) 0%, transparent 40%);
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.3;
+    /* animation: pulse 10s infinite alternate ease-in-out; */
+}
+
+@keyframes pulse {
+    from {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    width: 64px;
+    height: 64px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    backdrop-filter: blur(10px);
+}
+
+.closeBtn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: 6rem;
+}
+
+.artWrapper {
+    flex: 1;
+    position: relative;
+    max-width: 500px;
+}
+
+.cover {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 0;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.visualizerContainer {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    opacity: 0.8;
+}
+
+.info {
+    flex: 1.2;
+}
+
+.title {
+    font-size: 5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+    background: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0.7));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.artist {
+    font-size: 2rem;
+    color: var(--muted-foreground);
+    font-weight: 500;
+    margin-bottom: 3rem;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.controlBtn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    opacity: 0.6;
+}
+
+.controlBtn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.playBtn {
+    width: 100px;
+    height: 100px;
+    background: var(--primary);
+    border: none;
+    color: white;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    box-shadow: 0 20px 40px rgba(var(--primary-hsl), 0.3);
+}
+
+.playBtn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 25px 50px rgba(var(--primary-hsl), 0.5);
+}
+
+@media (max-width: 900px) {
+    .content {
+        flex-direction: column;
+        gap: 3rem;
+        text-align: center;
+    }
+
+    .title {
+        font-size: 3rem;
+    }
+
+    .artist {
+        font-size: 1.5rem;
+    }
+
+    .controls {
+        justify-content: center;
+    }
+
+    .artWrapper {
+        max-width: 300px;
+    }
+}

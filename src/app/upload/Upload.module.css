@@ -1,0 +1,231 @@
+.uploadPage {
+    padding-top: calc(var(--header-height) + 4rem);
+    padding-bottom: 8rem;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1000px;
+}
+
+.header {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.header p {
+    color: var(--muted-foreground);
+    font-size: 1.1rem;
+}
+
+.stepper {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.step {
+    font-weight: 600;
+    color: var(--muted-foreground);
+    position: relative;
+    font-size: 0.9rem;
+}
+
+.active {
+    color: var(--foreground);
+}
+
+.active::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--foreground);
+}
+
+.card {
+    padding: 4rem;
+}
+
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 5rem 2rem;
+    transition: var(--transition-smooth);
+    text-align: center;
+    cursor: pointer;
+}
+
+.dropzone:hover {
+    border-color: var(--ring);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.hidden {
+    display: none;
+}
+
+.uploadIcon {
+    color: var(--muted-foreground);
+    margin-bottom: 1.5rem;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 3rem;
+}
+
+.imageUploadWrapper {
+    position: relative;
+}
+
+.imageUpload {
+    aspect-ratio: 1;
+    background: var(--accent);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    transition: var(--transition-smooth);
+    background-size: cover;
+    background-position: center;
+}
+
+.imageUpload:hover {
+    border-color: var(--ring);
+}
+
+.removeImage {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--destructive);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.imagePlaceholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: var(--muted-foreground);
+    font-size: 0.9rem;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+}
+
+.field input,
+.field select {
+    background: var(--input);
+    border: 1px solid var(--border);
+    padding: 0.8rem;
+    border-radius: var(--radius);
+    color: var(--foreground);
+}
+
+.fileStatus {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--accent);
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-top: 2rem;
+    border: 1px solid var(--border);
+}
+
+.changeBtn {
+    margin-left: auto;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--corewave-blue);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 3rem;
+}
+
+.success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.success h2 {
+    font-size: 2rem;
+    margin: 1.5rem 0 1rem;
+}
+
+.successActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .formGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 2rem;
+    }
+}

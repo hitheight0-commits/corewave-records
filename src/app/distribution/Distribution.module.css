@@ -1,0 +1,81 @@
+.processSection {
+    margin: 6rem 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+}
+
+.stepCard {
+    padding: 3rem 2rem;
+    position: relative;
+    text-align: center;
+    border: 1px solid var(--border);
+}
+
+.stepNumber {
+    position: absolute;
+    top: 1rem;
+    left: 1.5rem;
+    font-size: 3rem;
+    font-weight: 900;
+    opacity: 0.1;
+    font-family: var(--font-display);
+}
+
+.stepIcon {
+    margin-bottom: 2rem;
+    color: var(--corewave-blue);
+}
+
+.stepCard h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.stepCard p {
+    color: var(--muted-foreground);
+    line-height: 1.6;
+}
+
+.featuresSection {
+    padding: 6rem 0;
+    background: radial-gradient(circle at center, rgba(34, 211, 238, 0.05) 0%, transparent 70%);
+}
+
+.featureGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.featureItem {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.featureItem h4 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.featureItem p {
+    color: var(--muted-foreground);
+    line-height: 1.5;
+}
+
+@media (max-width: 968px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .featureGrid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}

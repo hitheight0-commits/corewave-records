@@ -1,0 +1,312 @@
+.explorePage {
+    padding-top: calc(var(--header-height) + 4rem);
+    padding-bottom: 8rem;
+}
+
+.header {
+    margin-bottom: 4rem;
+}
+
+.header h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    color: var(--muted-foreground);
+    font-size: 1.2rem;
+}
+
+.section {
+    margin-bottom: 5rem;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+.sectionHeader h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.seeAll {
+    color: var(--muted-foreground);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition-smooth);
+}
+
+.seeAll:hover {
+    color: var(--foreground);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.trackCard {
+    width: 100%;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.trackCard:hover {
+    transform: none;
+}
+
+.coverWrapper {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--glass-border);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease, border-color 0.6s ease;
+}
+
+.trackCard:hover .coverWrapper {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 112, 243, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.playOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition-smooth);
+    backdrop-filter: blur(8px);
+    z-index: 10;
+}
+
+.playBtn {
+    width: 52px;
+    height: 52px;
+    background: var(--corewave-blue);
+    color: white;
+    border: none;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: scale(0.8) translateY(20px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.trackCard:hover .playBtn {
+    transform: scale(1) translateY(0);
+}
+
+.playBtn:hover {
+    transform: scale(1.1) !important;
+    background: #fff;
+    color: var(--corewave-blue);
+}
+
+.moreBtn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    backdrop-filter: blur(10px);
+}
+
+.moreBtn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.contextMenu {
+    position: absolute;
+    top: 3.5rem;
+    right: 1rem;
+    background: rgba(10, 10, 10, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem;
+    width: 160px;
+    z-index: 100;
+    animation: menuFade 0.2s ease-out;
+}
+
+@keyframes menuFade {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.contextMenu button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    color: var(--muted-foreground);
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: var(--transition-smooth);
+    text-align: left;
+}
+
+.contextMenu button:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.trackCard:hover .playOverlay {
+    opacity: 1;
+}
+
+.trackCard:hover .cover {
+    transform: scale(1.05);
+}
+
+.trackMeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.info h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.info p {
+    font-size: 0.8rem;
+    color: var(--muted-foreground);
+}
+
+.modeBtn {
+    color: var(--muted-foreground);
+    opacity: 0;
+    transition: var(--transition-smooth);
+}
+
+.trackCard:hover .modeBtn {
+    opacity: 1;
+}
+
+.genreGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.genreCard {
+    position: relative;
+    aspect-ratio: 16/10;
+    border-radius: 0;
+    text-align: left;
+    font-weight: 800;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    border: none;
+    overflow: hidden;
+    color: white;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 1.5rem;
+}
+
+.genreCard:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.activeGenre {
+    outline: 2px solid var(--corewave-blue);
+    outline-offset: 4px;
+}
+
+.genreCard span {
+    position: relative;
+    z-index: 1;
+}
+
+.loadingContainer,
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 0;
+    color: var(--muted-foreground);
+    text-align: center;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+    color: var(--primary);
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .header h1 {
+        font-size: 2.5rem;
+    }
+}

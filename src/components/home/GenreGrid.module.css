@@ -1,0 +1,92 @@
+.section {
+    padding: 8rem 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3.5rem;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #fff;
+}
+
+.viewAll {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--muted-foreground);
+    transition: var(--transition-smooth);
+}
+
+.viewAll:hover {
+    color: #fff;
+    transform: translateX(-5px);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    position: relative;
+    aspect-ratio: 16/10;
+    border-radius: 0;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--card);
+}
+
+.bgWrapper {
+    position: absolute;
+    inset: 0;
+}
+
+.bgImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0.6;
+    transition: opacity 0.4s ease;
+}
+
+.card:hover .bgImage {
+    transform: scale(1.1);
+}
+
+.card:hover .overlay {
+    opacity: 0.9;
+}
+
+.genreName {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    z-index: 2;
+    letter-spacing: -0.02em;
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.2rem;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  password      String
+  role          String    @default("LISTENER") // "ARTIST" or "LISTENER"
+  image         String?
+  imageUpdated  DateTime?
+  bio           String?
+  isVerified    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Artist specific
+  tracks        Track[]
+  playlists     Playlist[]
+  followedBy    Follows[] @relation("following")
+  following     Follows[] @relation("follower")
+  favorites     Favorite[]
+  recordedPlays TrackPlay[]
+}
+
+model Track {
+  id          String   @id @default(cuid())
+  title       String
+  artistId    String
+  artist      User     @relation(fields: [artistId], references: [id])
+  audioUrl    String
+  coverUrl    String
+  genre       String?
+  mood        String?
+  duration    Int      @default(0)
+  plays       Int      @default(0)
+  isAI        Boolean  @default(false)
+  status      String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  playlists   PlaylistTrack[]
+  favorites     Favorite[]
+  playHistory   TrackPlay[]
+  anonymousPlays AnonymousTrackPlay[]
+}
+
+model Playlist {
+  id          String   @id @default(cuid())
+  name        String
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  coverUrl    String?
+  isPublic    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tracks      PlaylistTrack[]
+}
+
+model PlaylistTrack {
+  playlistId  String
+  trackId     String
+  order       Int
+  playlist    Playlist @relation(fields: [playlistId], references: [id])
+  track       Track    @relation(fields: [trackId], references: [id])
+
+  @@id([playlistId, trackId])
+}
+
+model Follows {
+  followerId  String
+  followingId String
+  follower    User   @relation("follower", fields: [followerId], references: [id])
+  following   User   @relation("following", fields: [followingId], references: [id])
+
+  @@id([followerId, followingId])
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  trackId   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  track     Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, trackId])
+}
+
+model TrackPlay {
+  id        String   @id @default(cuid())
+  userId    String
+  trackId   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  track     Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, trackId])
+}
+
+model AnonymousTrackPlay {
+  id        String   @id @default(cuid())
+  ipAddress String
+  trackId   String
+  track     Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([ipAddress, trackId])
+}

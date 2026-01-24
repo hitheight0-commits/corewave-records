@@ -1,0 +1,130 @@
+.socialGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 4rem 0 8rem;
+}
+
+.socialCard {
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: var(--transition-bounce);
+}
+
+.socialCard:hover {
+    border-color: var(--hover-color);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
+.socialCard h3 {
+    font-size: 1.5rem;
+    margin: 1.5rem 0 1rem;
+}
+
+.socialCard p {
+    color: var(--muted-foreground);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+.spotlight {
+    margin-bottom: 8rem;
+}
+
+.spotlightHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.spotlightHeader h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+}
+
+.spotlightGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.spotlightCard {
+    padding: 2.5rem;
+    text-align: center;
+}
+
+.avatarPlaceholder {
+    width: 80px;
+    height: 80px;
+    background: var(--gradient-primary, linear-gradient(135deg, var(--corewave-blue), var(--corewave-purple)));
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.spotlightCard h4 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.spotlightCard p {
+    color: var(--muted-foreground);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.reward {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 215, 0, 0.1);
+    color: #ffd700;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.discordHero {
+    padding: 6rem;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.1) 0%, transparent 100%);
+}
+
+.discordContent {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.discordContent h2 {
+    font-size: 3rem;
+    margin: 1.5rem 0 1rem;
+}
+
+.discordContent p {
+    color: var(--muted-foreground);
+    font-size: 1.25rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+
+    .socialGrid,
+    .spotlightGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .discordHero {
+        padding: 3rem;
+    }
+
+    .discordContent h2 {
+        font-size: 2rem;
+    }
+}

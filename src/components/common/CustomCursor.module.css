@@ -1,0 +1,47 @@
+.cursorContainer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99999;
+}
+
+.point {
+    position: fixed;
+    top: -2.5px;
+    left: -2.5px;
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 0;
+    z-index: 2;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+}
+
+.trail {
+    position: fixed;
+    top: -10px;
+    left: -10px;
+    width: 20px;
+    height: 20px;
+    background: rgba(34, 211, 238, 0.15);
+    border-radius: 0;
+    z-index: 1;
+    filter: blur(4px);
+    pointer-events: none;
+}
+
+.glow {
+    position: absolute;
+    inset: -5px;
+    border-radius: 0;
+    background: radial-gradient(circle, var(--corewave-cyan) 0%, transparent 70%);
+    opacity: 0.4;
+    filter: blur(2px);
+}
+
+@media (max-width: 1024px) {
+    .cursorContainer {
+        display: none;
+    }
+}
