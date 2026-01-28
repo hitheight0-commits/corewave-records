@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
 import { join } from "path";
 import prisma from "@/lib/prisma";
+import { uploadFile } from "@/lib/storage";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
@@ -31,13 +31,9 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "File too large. Maximum 5MB" }, { status: 400 });
         }
 
-        // Process image
-        const imageBytes = await imageFile.arrayBuffer();
-        const imageBuffer = Buffer.from(imageBytes);
+        // Process image using Unified Storage Interface
         const imageName = `${Date.now()}-${session.user.id}.${imageFile.type.split('/')[1]}`;
-        const imagePath = join(process.cwd(), "public", "uploads", "avatars", imageName);
-        await writeFile(imagePath, imageBuffer);
-        const imageUrl = `/uploads/avatars/${imageName}`;
+        const imageUrl = await uploadFile(imageFile, "uploads/avatars", imageName);
 
         // Update user in database
         const updatedUser = await prisma.user.update({

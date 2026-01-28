@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
-import { join } from "path";
 import prisma from "@/lib/prisma";
+import { uploadFile } from "@/lib/storage";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
@@ -26,35 +25,10 @@ export async function POST(req: Request) {
     console.log('Authorization passed, proceeding with upload...');
 
     try {
-        const formData = await req.formData();
-        const audioFile = formData.get("audio") as File;
-        const coverFile = formData.get("cover") as File;
-        const title = formData.get("title") as string;
-        const genre = formData.get("genre") as string;
-        const mood = formData.get("mood") as string;
-        const isAI = formData.get("isAI") === "true";
+        const { audioUrl, coverUrl, title, genre, mood, isAI } = await req.json();
 
-        if (!audioFile || !title) {
-            return NextResponse.json({ error: "Audio and Title are required" }, { status: 400 });
-        }
-
-        // Process Audio
-        const audioBytes = await audioFile.arrayBuffer();
-        const audioBuffer = Buffer.from(audioBytes);
-        const audioName = `${Date.now()}-${audioFile.name.replace(/\s+/g, '-')}`;
-        const audioPath = join(process.cwd(), "public", "uploads", "audio", audioName);
-        await writeFile(audioPath, audioBuffer);
-        const audioUrl = `/uploads/audio/${audioName}`;
-
-        // Process Cover
-        let coverUrl = "/default-cover.jpg"; // Fallback
-        if (coverFile && coverFile.size > 0) {
-            const coverBytes = await coverFile.arrayBuffer();
-            const coverBuffer = Buffer.from(coverBytes);
-            const coverName = `${Date.now()}-${coverFile.name.replace(/\s+/g, '-')}`;
-            const coverPath = join(process.cwd(), "public", "uploads", "covers", coverName);
-            await writeFile(coverPath, coverBuffer);
-            coverUrl = `/uploads/covers/${coverName}`;
+        if (!audioUrl || !title) {
+            return NextResponse.json({ error: "Remote Audio URL and Title are required" }, { status: 400 });
         }
 
         // Save to Database

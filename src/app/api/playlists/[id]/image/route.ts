@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
 import prisma from "@/lib/prisma";
+import { uploadFile } from "@/lib/storage";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
@@ -43,19 +42,9 @@ export async function POST(
             return NextResponse.json({ error: "File too large. Maximum 5MB" }, { status: 400 });
         }
 
-        // Ensure directory exists
-        const uploadDir = join(process.cwd(), "public", "uploads", "playlists");
-        try {
-            await mkdir(uploadDir, { recursive: true });
-        } catch (e) { }
-
-        // Process image
-        const imageBytes = await imageFile.arrayBuffer();
-        const imageBuffer = Buffer.from(imageBytes);
+        // Process image using Unified Storage Interface
         const imageName = `${Date.now()}-${playlistId}.${imageFile.type.split('/')[1]}`;
-        const imagePath = join(uploadDir, imageName);
-        await writeFile(imagePath, imageBuffer);
-        const imageUrl = `/uploads/playlists/${imageName}`;
+        const imageUrl = await uploadFile(imageFile, "uploads/playlists", imageName);
 
         // Update playlist in database
         const updatedPlaylist = await prisma.playlist.update({

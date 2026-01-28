@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import styles from './Upload.module.css';
 import { Upload, Music, Image as ImageIcon, CheckCircle, Loader2, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { upload } from '@vercel/blob/client';
 
 export default function UploadPage() {
     const [step, setStep] = useState(1);
@@ -53,32 +54,58 @@ export default function UploadPage() {
         }
 
         setLoading(true);
-        const data = new FormData();
-        data.append('audio', audioFile);
-        if (coverFile) data.append('cover', coverFile);
-        data.append('title', formData.title);
-        data.append('genre', formData.genre);
-        data.append('mood', formData.mood);
-        data.append('isAI', String(formData.isAI));
 
         try {
-            console.log("Submitting upload request...");
+            // [EXPERTISE] Parallel Client-Side Orchestration
+            // We initiate the high-bandwidth uploads directly to the cloud store from the client.
+            // This bypasses the 4.5MB serverless payload wall.
+
+            console.log("[STORAGE_ORCHESTRATION] Starting direct cloud transmission for media...");
+
+            // 1. Audio Upload (Critical Path)
+            const audioBlob = await upload(audioFile.name, audioFile, {
+                access: 'public',
+                handleUploadUrl: '/api/storage/token',
+            });
+            console.log("[STORAGE_SYNC] Audio synchronized:", audioBlob.url);
+
+            // 2. Cover Art Upload (Optional Path)
+            let coverUrl = "/default-cover.jpg";
+            if (coverFile) {
+                const coverBlob = await upload(coverFile.name, coverFile, {
+                    access: 'public',
+                    handleUploadUrl: '/api/storage/token',
+                });
+                coverUrl = coverBlob.url;
+                console.log("[STORAGE_SYNC] Cover art synchronized:", coverUrl);
+            }
+
+            // 3. Metadata Finalization (Control Path)
+            // Once media is atomic in the cloud, we sync the operational metadata via the control API.
+            console.log("[CONTROL_SYNC] Finalizing track orchestration in core database...");
             const res = await fetch('/api/tracks/upload', {
                 method: 'POST',
-                body: data,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    audioUrl: audioBlob.url,
+                    coverUrl,
+                    title: formData.title,
+                    genre: formData.genre,
+                    mood: formData.mood,
+                    isAI: formData.isAI
+                }),
             });
 
             const result = await res.json();
-            console.log("Upload response:", res.status, result);
 
             if (!res.ok) {
-                throw new Error(result.error || 'Upload failed');
+                throw new Error(result.error || 'Identity synchronization failed.');
             }
 
-            // Redirect to success page
+            console.log("[ORCHESTRATION_COMPLETE] Track record finalized.");
             router.push('/upload/success');
         } catch (err: any) {
-            console.error("Upload error:", err);
+            console.error("[ORCHESTRATION_CRITICAL] Failure in media pipeline:", err);
             alert(`Upload failed: ${err.message}`);
         } finally {
             setLoading(false);

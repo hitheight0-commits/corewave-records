@@ -3,8 +3,8 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GlobalPlayer from "@/components/player/GlobalPlayer";
-import FullScreenPlayer from "@/components/player/FullScreenPlayer";
 import PlaylistModal from "@/components/player/PlaylistModal";
+import AudioEngine from "@/components/player/AudioEngine";
 import { AuthProvider } from "@/components/providers/SessionProvider";
 import { ToastContainer } from "@/components/Toast";
 
@@ -28,8 +28,8 @@ export default function RootLayout({
           <Header />
           <main>{children}</main>
           <Footer />
+          <AudioEngine />
           <GlobalPlayer />
-          <FullScreenPlayer />
           <PlaylistModal />
           <CommandPalette />
           <CustomCursor />

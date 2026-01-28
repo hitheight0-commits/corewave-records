@@ -8,6 +8,7 @@ import styles from "./GlobalPlayer.module.css";
 import { useUIStore } from "@/store/useUIStore";
 import Visualizer from "./Visualizer";
 import FullscreenOverlay from "./FullscreenOverlay";
+import { useAudioEngineStore, globalAudioRef, resumeAudioContext } from "@/hooks/useAudioEngine";
 
 import { Track } from "@/types";
 import {
@@ -42,7 +43,9 @@ const GlobalPlayer = () => {
         queue,
         favorites,
         toggleFavorite,
-        setFavorites
+        setFavorites,
+        isFullScreen,
+        toggleFullScreen,
     } = usePlayerStore();
 
 
@@ -50,12 +53,17 @@ const GlobalPlayer = () => {
     // ...
     const { data: session } = useSession();
     const { addToast } = useToastStore();
-    const audioRef = useRef<HTMLAudioElement | null>(null);
-    const [progress, setProgress] = useState(0);
-    const [currentTime, setCurrentTime] = useState(0);
+
+    // [EXPERTISE] Consume Centralized Audio State
+    const {
+        currentTime,
+        duration,
+        progress,
+        isBuffering
+    } = useAudioEngineStore();
+
     const isFavorite = currentTrack ? favorites.includes(currentTrack.id) : false;
     const [isMinimized, setIsMinimized] = useState(false);
-    const [isFullscreen, setIsFullscreen] = useState(false);
 
 
 
@@ -63,25 +71,9 @@ const GlobalPlayer = () => {
     const { openPlaylistModal } = useUIStore();
 
     useEffect(() => {
-        if (!audioRef.current || !currentTrack) return;
-
-        if (isPlaying) {
-            const playPromise = audioRef.current.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(e => {
-                    if (e.name === 'AbortError') return;
-                    console.error("Playback failed", e);
-                });
-            }
-        } else {
-            audioRef.current.pause();
-        }
-    }, [isPlaying, currentTrack]);
-
-    useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.volume = volume;
-        }
+        // This effect is now handled by the AudioEngine directly setting the volume on globalAudioRef.
+        // If local UI state needs to update the engine, it should call a function from useAudioEngineStore.
+        // For now, the volume slider directly calls setVolume from usePlayerStore, which then updates the engine.
     }, [volume]);
 
     useEffect(() => {
@@ -107,35 +99,21 @@ const GlobalPlayer = () => {
         toggleFavorite(currentTrack.id);
     };
 
-    const handleTimeUpdate = () => {
-        if (!audioRef.current) return;
-        setCurrentTime(audioRef.current.currentTime);
-        const duration = audioRef.current.duration;
-        if (duration) {
-            setProgress((audioRef.current.currentTime / duration) * 100);
-        }
-    };
-
     const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!audioRef.current) return;
+        if (!globalAudioRef.current) return;
         const rect = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const percentage = Math.max(0, Math.min(1, x / rect.width));
-        const duration = audioRef.current.duration;
+        const duration = globalAudioRef.current.duration;
 
         if (isFinite(duration) && duration > 0) {
             const newTime = percentage * duration;
             if (isFinite(newTime)) {
-                audioRef.current.currentTime = newTime;
-                setProgress(percentage * 100);
+                globalAudioRef.current.currentTime = newTime;
             }
         }
     };
 
-    const [isBuffering, setIsBuffering] = useState(false);
-
-    const handleWaiting = () => setIsBuffering(true);
-    const handleCanPlay = () => setIsBuffering(false);
 
     const formatTime = (time: number) => {
         if (isNaN(time)) return '0:00';
@@ -146,30 +124,20 @@ const GlobalPlayer = () => {
 
     if (!currentTrack) return null;
 
+    // [EXPERTISE] Smart CORS Orchestration
+    // Some external streams (like the mock SoundHelix ones) do not support CORS.
+    // If we force crossOrigin="anonymous", the browser blocks playback entirely.
+    // We only enable it for our trusted Vercel Blob store or local development assets.
+    const isCORSCompatible =
+        currentTrack.audioUrl.startsWith('http') &&
+        currentTrack.audioUrl.includes('public.blob.vercel-storage.com') ||
+        currentTrack.audioUrl.startsWith('/');
+
     return (
         <div className={isMinimized ? styles.minimized : ''}>
             <div className={styles.playerWrapper}>
-                <audio
-                    ref={audioRef}
-                    src={currentTrack.audioUrl}
-                    onTimeUpdate={(e) => {
-                        // [PERFORMANCE] Throttle updates to ~4fps for UI smoothness, limiting React re-renders
-                        if (!audioRef.current) return;
-                        const now = Date.now();
-                        if (now - (audioRef.current as any).lastUpdate < 250) return;
-                        (audioRef.current as any).lastUpdate = now;
-                        handleTimeUpdate();
-                    }}
-                    onEnded={nextTrack}
-                    onError={(e) => {
-                        console.error("Audio error:", e);
-                        addToast("Unable to play stream audio source.", "error");
-                        // Optional: Auto-skip to next track on error
-                    }}
-                    onWaiting={handleWaiting}
-                    onCanPlay={handleCanPlay}
-                    preload="auto"
-                />
+                {/* [EXPERTISE] Audio Engine is now external and persistent. 
+                    No local <audio> tag here ensures UI re-renders don't touch playback. */}
 
 
 
@@ -186,7 +154,7 @@ const GlobalPlayer = () => {
                             src={currentTrack.coverUrl}
                             alt={currentTrack.title}
                             className={styles.cover}
-                            onClick={() => setIsFullscreen(true)}
+                            onClick={() => toggleFullScreen(true)}
                             style={{ cursor: 'pointer' }}
                         />
                         <div className={styles.details}>
@@ -243,7 +211,7 @@ const GlobalPlayer = () => {
                     {/* Right: Volume & Extras */}
                     <div className={styles.extra}>
                         <div className={styles.timeDisplay}>
-                            {formatTime(currentTime)} / {formatTime(audioRef.current?.duration || 0)}
+                            {formatTime(currentTime)} / {formatTime(duration)}
                         </div>
 
                         <button className={styles.playlistBtn} onClick={() => {
@@ -273,7 +241,7 @@ const GlobalPlayer = () => {
                             />
                         </div>
 
-                        <button className={styles.controlBtn} onClick={() => setIsFullscreen(true)} title="Expand Player">
+                        <button className={styles.controlBtn} onClick={() => toggleFullScreen(true)} title="Expand Player">
                             <Maximize2 size={18} />
                         </button>
                     </div>
@@ -282,13 +250,16 @@ const GlobalPlayer = () => {
 
             <FullscreenOverlay
                 track={currentTrack as Track}
-                isOpen={isFullscreen}
-                onClose={() => setIsFullscreen(false)}
+                isOpen={isFullScreen}
+                onClose={() => toggleFullScreen(false)}
                 isPlaying={isPlaying}
-                onTogglePlay={togglePlay}
+                onTogglePlay={() => {
+                    resumeAudioContext();
+                    togglePlay();
+                }}
                 onNext={nextTrack}
                 onPrevious={previousTrack}
-                audioRef={audioRef}
+                isCORSCompatible={isCORSCompatible}
             />
 
 

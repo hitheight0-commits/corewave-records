@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import Hero from "@/components/home/Hero";
+import NeuralNetworkHero from "@/components/ui/neural-network-hero";
 import Carousel from "@/components/home/Carousel";
+import { useSession } from "next-auth/react";
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { Track } from "@/types";
 import { motion } from "framer-motion";
@@ -15,6 +16,7 @@ const MOCK_TRACKS: Track[] = [
 ];
 
 export default function Home() {
+  const { data: session } = useSession();
   const { history: recentlyPlayed } = usePlayerStore();
   const [trendingTracks, setTrendingTracks] = useState<Track[]>([]);
 
@@ -37,8 +39,23 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
-      <Hero />
+    <div className="relative min-h-screen">
+      <NeuralNetworkHero
+        title={"The Future of\nSound is Here."}
+        description="Join the elite circle of artists pushing the boundaries of sonic innovation. Distribute, grow, and dominate with COREWAVE."
+        badgeText="Next Generation Distribution"
+        badgeLabel="New"
+        ctaButtons={
+          session ? [
+            { text: "Start Listening", href: "/explore", primary: true },
+            { text: "View Showcase", href: "#trending" }
+          ] : [
+            { text: "Join the Evolution", href: "/signup?role=artist", primary: true },
+            { text: "Start Listening", href: "/explore" }
+          ]
+        }
+        microDetails={["High-Fidelity Audio", "Global Reach", "Artist Analytics"]}
+      />
 
       <motion.section
         className="container"

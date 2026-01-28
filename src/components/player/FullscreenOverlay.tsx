@@ -15,7 +15,7 @@ interface FullscreenOverlayProps {
     onTogglePlay: () => void;
     onNext: () => void;
     onPrevious: () => void;
-    audioRef: React.RefObject<HTMLAudioElement | null>;
+    isCORSCompatible?: boolean;
 }
 
 const FullscreenOverlay: React.FC<FullscreenOverlayProps> = ({
@@ -26,7 +26,7 @@ const FullscreenOverlay: React.FC<FullscreenOverlayProps> = ({
     onTogglePlay,
     onNext,
     onPrevious,
-    audioRef,
+    isCORSCompatible = true,
 }) => {
     return (
         <AnimatePresence>
@@ -55,7 +55,7 @@ const FullscreenOverlay: React.FC<FullscreenOverlayProps> = ({
                             >
                                 <img src={track.coverUrl} alt={track.title} className={styles.cover} />
                                 <div className={styles.visualizerContainer}>
-                                    <Visualizer audioRef={audioRef} isPlaying={isPlaying} />
+                                    <Visualizer isPlaying={isPlaying} isCORSCompatible={isCORSCompatible} />
                                 </div>
                             </motion.div>
 

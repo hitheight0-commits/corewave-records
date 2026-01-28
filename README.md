@@ -15,7 +15,7 @@ A next-generation music streaming and distribution platform built with Next.js, 
 ## 🚀 Tech Stack
 
 - **Framework**: Next.js 16 (App Router)
-- **Database**: Prisma ORM with SQLite
+- **Database**: Prisma ORM with PostgreSQL (production-ready)
 - **Authentication**: NextAuth.js
 - **Styling**: CSS Modules with modern design system
 - **State Management**: Zustand
@@ -49,8 +49,8 @@ Update `.env` with your configuration (see `.env.example` for details)
 
 4. Initialize the database
 ```bash
-npx prisma generate
-npx prisma db push
+npm run postinstall
+npm run db:push
 ```
 
 5. Run the development server
@@ -62,11 +62,23 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🗄️ Database Setup
 
-The project uses Prisma with SQLite. To reset the database:
+**Development**: The project uses PostgreSQL via Prisma ORM.
 
+**Production**: Requires Vercel Postgres or any PostgreSQL database.
+
+Useful commands:
 ```bash
-npx prisma migrate reset
-npx prisma db push
+# Generate Prisma Client
+npm run postinstall
+
+# Push schema changes to DB
+npm run db:push
+
+# Run migrations (production)
+npm run db:migrate
+
+# Open Prisma Studio
+npm run studio
 ```
 
 ## 🎨 Features Overview
@@ -98,14 +110,18 @@ Required environment variables (see `.env.example`):
 
 ## 🌐 Deployment
 
-### Vercel (Recommended)
+### Production Deployment on Vercel
 
-1. Push your code to GitHub
-2. Import project in Vercel
-3. Configure environment variables in Vercel dashboard
-4. Deploy!
+> **⚠️ IMPORTANT**: See detailed deployment guide:
+> - **Quick Start**: [QUICKSTART.md](./QUICKSTART.md) (3 steps, 5 minutes)
+> - **Full Guide**: [DEPLOYMENT.md](./DEPLOYMENT.md) (comprehensive documentation)
 
-The project is optimized for Vercel deployment with automatic builds and previews.
+**TL;DR**:
+1. Set up Vercel Postgres database
+2. Configure environment variables (`NEXTAUTH_URL`, `NEXTAUTH_SECRET`, `DIRECT_URL`)
+3. Deploy via `git push` or Vercel dashboard
+
+The project is fully optimized for Vercel with automated migrations and production-ready PostgreSQL support.
 
 ## 📄 License
 
