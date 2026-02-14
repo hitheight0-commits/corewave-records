@@ -1,14 +1,5 @@
 "use client";
 
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-    title: 'Trending Music - Top Charts',
-    description: 'Discover the hottest tracks trending right now on COREWAVE. Live trends updated in real-time showing the most evolved sounds in the ecosystem.',
-    keywords: ['trending music', 'top charts', 'hot tracks', 'music charts', 'popular music', 'viral tracks'],
-};
-
-
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';

@@ -336,13 +336,13 @@ export default function NeuralNetworkHero({
                     <span className="text-xs font-light tracking-tight text-white/80">{badgeText}</span>
                 </div>
 
-                <h1 ref={headerRef} className="max-w-2xl text-left text-5xl font-extralight leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl">
+                <h1 ref={headerRef} className="max-w-2xl text-left text-5xl font-extralight leading-[1.1] tracking-normal text-white sm:text-6xl md:text-7xl">
                     {title.split('\n').map((line, i) => (
                         <span key={i} className="block line-animate">{line}</span>
                     ))}
                 </h1>
 
-                <p ref={paraRef} className="max-w-xl text-left text-base font-light leading-relaxed tracking-tight text-white/75 sm:text-lg">
+                <p ref={paraRef} className="max-w-xl text-left text-base font-light leading-[1.7] tracking-wide text-white/70 sm:text-lg">
                     {description}
                 </p>
 
@@ -352,8 +352,8 @@ export default function NeuralNetworkHero({
                             key={index}
                             href={button.href}
                             className={`rounded-2xl border border-white/10 px-5 py-3 text-sm font-light tracking-tight transition-colors focus:outline-none focus:ring-2 focus:ring-white/30 duration-300 ${button.primary
-                                    ? "bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
-                                    : "text-white/80 hover:bg-white/5"
+                                ? "bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
+                                : "text-white/80 hover:bg-white/5"
                                 }`}
                         >
                             {button.text}
