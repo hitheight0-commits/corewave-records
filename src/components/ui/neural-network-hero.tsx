@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useEffect } from 'react';
 import { Canvas, useFrame, extend } from '@react-three/fiber';
 import { shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
@@ -328,31 +328,31 @@ export default function NeuralNetworkHero({
         <section ref={sectionRef} className="relative h-screen w-full overflow-hidden">
             <ShaderBackground />
 
-            <div className="relative mx-auto flex max-w-7xl flex-col items-start gap-8 px-6 pb-24 pt-36 sm:gap-10 sm:pt-44 md:px-10 lg:px-16">
+            <div className="relative mx-auto flex max-w-7xl flex-col items-start gap-6 px-6 pb-24 pt-36 sm:gap-8 sm:pt-44 md:px-10 lg:px-16">
                 <div ref={badgeRef} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm">
-                    <span className="text-[10px] font-medium uppercase tracking-widest text-white/70">{badgeLabel}</span>
+                    <span className="text-[10px] font-light uppercase tracking-[0.08em] text-white/70">{badgeLabel}</span>
                     <span className="h-1 w-1 rounded-full bg-white/40" />
-                    <span className="text-xs font-light tracking-wide text-white/90">{badgeText}</span>
+                    <span className="text-xs font-light tracking-tight text-white/80">{badgeText}</span>
                 </div>
 
-                <h1 ref={headerRef} className="max-w-4xl text-left text-5xl font-light leading-[1.2] tracking-wide text-white sm:text-6xl md:text-7xl">
+                <h1 ref={headerRef} className="max-w-2xl text-left text-5xl font-extralight leading-[1.1] tracking-tight text-white sm:text-6xl md:text-7xl">
                     {title.split('\n').map((line, i) => (
-                        <span key={i} className="block line-animate whitespace-nowrap">{line}</span>
+                        <span key={i} className="block line-animate">{line}</span>
                     ))}
                 </h1>
 
-                <p ref={paraRef} className="max-w-2xl text-left text-lg font-light leading-relaxed tracking-wide text-white/80 sm:text-xl">
+                <p ref={paraRef} className="max-w-xl text-left text-base font-light leading-[1.7] tracking-wide text-white/70 sm:text-lg">
                     {description}
                 </p>
 
-                <div ref={ctaRef} className="flex flex-wrap items-center gap-6 pt-4">
+                <div ref={ctaRef} className="flex flex-wrap items-center gap-3 pt-2">
                     {ctaButtons.map((button, index) => (
                         <a
                             key={index}
                             href={button.href}
-                            className={`rounded-full border border-white/10 px-8 py-4 text-sm font-medium tracking-wide transition-all duration-300 ${button.primary
-                                ? "bg-white text-black hover:bg-gray-200 hover:scale-105"
-                                : "text-white hover:bg-white/10 hover:border-white/30"
+                            className={`rounded-2xl border border-white/10 px-5 py-3 text-sm font-light tracking-tight transition-colors focus:outline-none focus:ring-2 focus:ring-white/30 duration-300 ${button.primary
+                                ? "bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
+                                : "text-white/80 hover:bg-white/5"
                                 }`}
                         >
                             {button.text}
@@ -360,19 +360,19 @@ export default function NeuralNetworkHero({
                     ))}
                 </div>
 
-                <ul className="mt-12 flex flex-wrap gap-8 text-xs font-light tracking-widest text-white/50 uppercase">
+                <ul className="mt-8 flex flex-wrap gap-6 text-xs font-extralight tracking-tight text-white/60">
                     {microDetails.map((detail, index) => {
                         const refMap = [microItem1Ref, microItem2Ref, microItem3Ref];
                         return (
-                            <li key={index} ref={refMap[index] as any} className="flex items-center gap-3">
-                                <span className="h-1 w-1 rounded-full bg-blue-500/50" /> {detail}
+                            <li key={index} ref={refMap[index] as any} className="flex items-center gap-2">
+                                <span className="h-1 w-1 rounded-full bg-white/40" /> {detail}
                             </li>
                         );
                     })}
                 </ul>
             </div>
 
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[hsl(224,71%,2%)] to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent" />
         </section>
     );
 }

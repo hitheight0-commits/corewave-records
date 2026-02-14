@@ -319,7 +319,7 @@
 
 @media (max-width: 1024px) {
     .searchContainer {
-        display: none;
+        width: 44px;
     }
 
     .searchBar {
