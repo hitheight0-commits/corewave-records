@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-@import './animations.css';
 
 :root {
   /* Core Colors - HSL for better manipulation */
@@ -47,36 +46,6 @@
   --player-height: 110px;
   --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Light Mode Variables */
-:root.light,
-[data-theme="light"] {
-  --background-hsl: 0 0% 98%;
-  --background: hsl(var(--background-hsl));
-  --foreground-hsl: 224 71% 4%;
-  --foreground: hsl(var(--foreground-hsl));
-
-  --card-hsl: 0 0% 100%;
-  --card: hsl(var(--card-hsl));
-  --card-foreground: hsl(var(--foreground-hsl));
-
-  --primary-hsl: 221 83% 53%;
-  --primary: hsl(var(--primary-hsl));
-  --primary-foreground: 210 40% 98%;
-
-  --muted-hsl: 210 40% 96%;
-  --muted: hsl(var(--muted-hsl));
-  --muted-foreground: 215 16% 46%;
-
-  --border: hsl(214 32% 91%);
-  --input: hsl(214 32% 91%);
-  --ring: hsl(var(--primary-hsl));
-
-  /* Light mode glass effect */
-  --glass-bg: rgba(255, 255, 255, 0.75);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glass-reflex: rgba(0, 0, 0, 0.02);
 }
 
 * {
