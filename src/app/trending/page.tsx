@@ -1,3 +1,11 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Trending Music - Top Charts',
+    description: 'Discover the hottest tracks trending right now on COREWAVE. Live trends updated in real-time showing the most evolved sounds in the ecosystem.',
+    keywords: ['trending music', 'top charts', 'hot tracks', 'music charts', 'popular music', 'viral tracks'],
+};
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -8,8 +16,11 @@ import trendingStyles from './Trending.module.css';
 import { Play, Heart, TrendingUp, Flame, Music, MoreHorizontal, Loader2, ArrowUpRight, Share2, User, Pause } from 'lucide-react';
 import { usePlayerStore, Track } from '@/store/usePlayerStore';
 import { useToastStore } from '@/store/useToastStore';
+import { GridSkeleton } from '@/components/ui/Skeleton';
+import { useTranslation } from 'react-i18next';
 
 export default function TrendingPage() {
+    const { t } = useTranslation();
     const { data: session } = useSession();
     const { addToast } = useToastStore();
     const { setTrack, currentTrack, isPlaying, togglePlay } = usePlayerStore();
@@ -64,7 +75,7 @@ export default function TrendingPage() {
     const toggleFavorite = async (e: React.MouseEvent, trackId: string) => {
         e.stopPropagation();
         if (!session) {
-            addToast("Authentication required to like tracks. Please log in or sign up.", "info");
+            addToast(t('player.authRequiredHeart'), "info");
             return;
         }
 
@@ -83,22 +94,22 @@ export default function TrendingPage() {
                 const newIds = new Set(favoriteIds);
                 if (isFavorited) {
                     newIds.delete(trackId);
-                    addToast("Removed from favorites");
+                    addToast(t('explore.menu.removed') || "Removed from favorites");
                 } else {
                     newIds.add(trackId);
-                    addToast("Added to favorites");
+                    addToast(t('explore.menu.liked') || "Added to favorites");
                 }
                 setFavoriteIds(newIds);
             }
         } catch (err) {
-            addToast("Failed to update favorite", "error");
+            addToast(t('artists.genericError'), "error");
         }
     };
 
     const handleShare = (e: React.MouseEvent, track: Track) => {
         e.stopPropagation();
         navigator.clipboard.writeText(`${window.location.origin}/explore?track=${track.id}`);
-        addToast("Link copied to clipboard!");
+        addToast(t('common.copied') || "Link copied to clipboard!");
         setActiveMenu(null);
     };
 
@@ -115,18 +126,15 @@ export default function TrendingPage() {
             <div className={`container ${styles.container}`}>
                 <header className={styles.header}>
                     <div className={trendingStyles.badge}>
-                        <Flame size={14} /> <span>Live Trends</span>
+                        <Flame size={14} /> <span>{t('trending.badge')}</span>
                     </div>
-                    <h1 className="text-gradient">Trending Now</h1>
-                    <p>The most evolved sounds in the ecosystem right now.</p>
+                    <h1 className="text-gradient">{t('trending.title')}</h1>
+                    <p>{t('trending.subtitle')}</p>
                 </header>
 
                 <section className={styles.section}>
                     {loading ? (
-                        <div className={styles.loadingContainer}>
-                            <Loader2 className="spinner" size={32} />
-                            <p>Analyzing the waves...</p>
-                        </div>
+                        <GridSkeleton count={10} type="trending" />
                     ) : (
                         <div className={trendingStyles.trendingList}>
                             {tracks.map((track: any, index) => {
@@ -178,8 +186,8 @@ export default function TrendingPage() {
                                                     </button>
                                                     {activeMenu === track.id && (
                                                         <div className={trendingStyles.dropdownMenu} onClick={(e) => e.stopPropagation()}>
-                                                            <button onClick={(e) => handleShare(e, track)}><Share2 size={14} /> Share</button>
-                                                            <button onClick={() => router.push(`/artists/${track.artistId}`)}><User size={14} /> View Artist</button>
+                                                            <button onClick={(e) => handleShare(e, track)}><Share2 size={14} /> {t('trending.menu.share')}</button>
+                                                            <button onClick={() => router.push(`/artists/${track.artistId}`)}><User size={14} /> {t('trending.menu.viewArtist')}</button>
                                                         </div>
                                                     )}
                                                 </div>

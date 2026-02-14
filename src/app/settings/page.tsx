@@ -11,16 +11,18 @@ import {
 } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import { useToastStore } from '@/store/useToastStore';
-import { useLanguageStore } from '@/store/useLanguageStore';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/lib/i18n';
+import Cookie from 'js-cookie';
 
 
 type Tab = 'account' | 'security' | 'notifications' | 'language' | 'subscription';
 
 export default function SettingsPage() {
+    const { t } = useTranslation();
     const { data: session, status, update } = useSession();
     const router = useRouter();
     const { addToast } = useToastStore();
-    const { language, setLanguage, t } = useLanguageStore();
 
 
     const [activeTab, setActiveTab] = useState<Tab>('account');
@@ -73,12 +75,12 @@ export default function SettingsPage() {
 
             if (res.ok) {
                 await update({ name: formData.name, bio: formData.bio }); // [FIX] Update session with new bio
-                addToast("Identity synchronized with global servers.");
+                addToast(t('settings.toasts.syncSuccess'));
             } else {
-                addToast("Synchronization failure.", "error");
+                addToast(t('settings.toasts.syncError'), "error");
             }
         } catch (err) {
-            addToast("Orchestration error occurred.", "error");
+            addToast(t('settings.toasts.orchestrationError'), "error");
         } finally {
             setUpdatingInfo(false);
         }
@@ -86,7 +88,7 @@ export default function SettingsPage() {
 
     const toggleFeature = (key: keyof typeof toggles) => {
         setToggles(prev => ({ ...prev, [key]: !prev[key] }));
-        addToast(`${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} updated live.`);
+        addToast(t('settings.toasts.featureUpdated', { name: key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()) }));
     };
 
     const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,7 +114,7 @@ export default function SettingsPage() {
             const result = await res.json();
             if (!res.ok) throw new Error(result.error);
             await update({ image: result.imageUrl });
-            addToast("Visual identity updated successfully.");
+            addToast(t('settings.toasts.visualIdentity'));
         } catch (err: any) {
             addToast(err.message, "error");
             setPreviewUrl(session?.user?.image || null);
@@ -122,28 +124,28 @@ export default function SettingsPage() {
     };
 
     const handleDeleteAccount = async () => {
-        if (!window.confirm("CRITICAL WARNING: This action is permanent and will delete all your music, playlists, and profile data. Proceed with extreme caution. Type 'DELETE' in the confirm-box to proceed?")) {
+        if (!window.confirm(t('settings.prompts.deleteWarning'))) {
             return;
         }
 
-        const confirmText = window.prompt("Type 'DELETE' to confirm account destruction:");
+        const confirmText = window.prompt(t('settings.prompts.deleteConfirm'));
         if (confirmText !== 'DELETE') {
-            addToast("Deletion aborted. Your data is safe.", "info");
+            addToast(t('settings.prompts.deleteAborted'), "info");
             return;
         }
 
         try {
             const res = await fetch('/api/user/delete', { method: 'DELETE' });
             if (res.ok) {
-                addToast("Identity purged from network. Redirecting...");
+                addToast(t('settings.toasts.purgeSuccess'));
                 setTimeout(() => {
                     signOut({ callbackUrl: '/' });
                 }, 2000);
             } else {
-                addToast("Failure to purge identity.", "error");
+                addToast(t('settings.toasts.purgeError'), "error");
             }
         } catch (err) {
-            addToast("An error occurred during deletion.", "error");
+            addToast(t('settings.toasts.purgeErrorGeneric'), "error");
         }
     };
 
@@ -154,13 +156,13 @@ export default function SettingsPage() {
         <div className={styles.tabContent}>
             <section className={`${styles.section} premium-card`}>
                 <div className={styles.sectionHeader}>
-                    <h2>Identity Information</h2>
-                    <p>Manage how you appear across the CoreWave ecosystem.</p>
+                    <h2>{t('settings.account.identity')}</h2>
+                    <p>{t('settings.account.identityDesc')}</p>
                 </div>
 
                 <div className={styles.form}>
                     <div className={styles.field}>
-                        <label>Display Name</label>
+                        <label>{t('settings.account.displayName')}</label>
                         <div className={styles.inputWrapper}>
                             <User size={18} className={styles.inputIcon} />
                             <input
@@ -173,7 +175,7 @@ export default function SettingsPage() {
                     </div>
 
                     <div className={styles.field}>
-                        <label>Email Address</label>
+                        <label>{t('settings.account.email')}</label>
                         <div className={styles.inputWrapper}>
                             <Mail size={18} className={styles.inputIcon} />
                             <input
@@ -186,12 +188,12 @@ export default function SettingsPage() {
                     </div>
 
                     <div className={styles.field}>
-                        <label>Professional Bio</label>
+                        <label>{t('settings.account.bio')}</label>
                         <textarea
                             rows={4}
                             value={formData.bio}
                             onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                            placeholder="Artist bio..."
+                            placeholder={t('settings.account.bioPlaceholder')}
                         />
                     </div>
 
@@ -202,7 +204,7 @@ export default function SettingsPage() {
                             disabled={updatingInfo}
                             onClick={handleUpdateInfo}
                         >
-                            {updatingInfo ? <><Loader2 className="spinner" size={18} /> Syncing...</> : 'Save Changes'}
+                            {updatingInfo ? <><Loader2 className="spinner" size={18} /> {t('settings.account.syncing')}</> : t('settings.account.save')}
                         </button>
                     </div>
                 </div>
@@ -211,32 +213,32 @@ export default function SettingsPage() {
             <section className={`${styles.section} premium-card`}>
                 <div className={styles.sectionHeader}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <h2>Privacy & Discovery</h2>
+                        <h2>{t('settings.account.privacy')}</h2>
                         <span className={styles.betaTag}>LIVE</span>
                     </div>
-                    <p>Control your visibility state and discovery algorithms.</p>
+                    <p>{t('settings.account.privacyDesc')}</p>
                 </div>
                 <div className={styles.toggleRow} onClick={() => toggleFeature('activityStatus')}>
                     <div>
-                        <h4>Activity Status</h4>
-                        <p>Broadcast your real-time listening sessions.</p>
+                        <h4>{t('settings.account.activityStatus')}</h4>
+                        <p>{t('settings.account.activityStatusDesc')}</p>
                     </div>
                     <div className={toggles.activityStatus ? styles.switchActive : styles.switch}></div>
                 </div>
             </section>
 
-            <section className={`${styles.section} ${styles.dangerZone} premium-card`}>
+            <section className={`${styles.section} premium-card ${styles.dangerZone}`}>
                 <div className={styles.sectionHeader}>
-                    <h2>Danger Zone</h2>
-                    <p>Permanent actions that cannot be undone.</p>
+                    <h2>{t('settings.account.dangerZone')}</h2>
+                    <p>{t('settings.account.dangerZoneDesc')}</p>
                 </div>
                 <div className={styles.dangerAction}>
                     <div>
-                        <h4>Delete Account</h4>
-                        <p>Permanently remove your profile and all associated data from CoreWave.</p>
+                        <h4>{t('settings.account.deleteAccount')}</h4>
+                        <p>{t('settings.account.deleteAccountDesc')}</p>
                     </div>
                     <button className={styles.deleteBtn} onClick={handleDeleteAccount}>
-                        <Trash2 size={18} /> Delete My Identity
+                        <Trash2 size={18} /> {t('settings.account.deleteBtn')}
                     </button>
                 </div>
             </section>
@@ -247,13 +249,13 @@ export default function SettingsPage() {
         <div className={styles.tabContent}>
             <section className={`${styles.section} premium-card`}>
                 <div className={styles.sectionHeader}>
-                    <h2>Authentication</h2>
-                    <p>Secure your node in the network with high-entropy credentials.</p>
+                    <h2>{t('settings.security.auth')}</h2>
+                    <p>{t('settings.security.authDesc')}</p>
                 </div>
 
                 <div className={styles.form}>
                     <div className={styles.field}>
-                        <label>Current Password</label>
+                        <label>{t('settings.security.currentPassword')}</label>
                         <div className={styles.inputWrapper}>
                             <Lock size={18} className={styles.inputIcon} />
                             <input type={showPassword ? "text" : "password"} placeholder="••••••••" />
@@ -263,26 +265,26 @@ export default function SettingsPage() {
                         </div>
                     </div>
                     <div className={styles.field}>
-                        <label>New Password</label>
+                        <label>{t('settings.security.newPassword')}</label>
                         <div className={styles.inputWrapper}>
                             <Lock size={18} className={styles.inputIcon} />
-                            <input type={showPassword ? "text" : "password"} placeholder="Minimum 12 characters" />
+                            <input type={showPassword ? "text" : "password"} placeholder={t('settings.security.newPasswordPlaceholder')} />
                         </div>
                     </div>
-                    <button className="btn-outline" onClick={() => addToast("Security protocol initiated.")}>Update Password</button>
+                    <button className="btn-outline" onClick={() => addToast(t('settings.toasts.securityInitiated'))}>{t('settings.security.updatePassword')}</button>
                 </div>
             </section>
 
             <section className={`${styles.section} premium-card`}>
                 <div className={styles.sectionHeader}>
-                    <h2>Account Security</h2>
+                    <h2>{t('settings.security.accSecurity')}</h2>
                 </div>
                 <div className={styles.toggleRow} onClick={() => toggleFeature('twoFactor')}>
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                         <Smartphone color="var(--corewave-cyan)" />
                         <div>
-                            <h4>Two-Factor Authentication</h4>
-                            <p>Add a secondary hardware or software layer.</p>
+                            <h4>{t('settings.security.twoFactor')}</h4>
+                            <p>{t('settings.security.twoFactorDesc')}</p>
                         </div>
                     </div>
                     <div className={toggles.twoFactor ? styles.switchActive : styles.switch}></div>
@@ -295,20 +297,20 @@ export default function SettingsPage() {
         <div className={styles.tabContent}>
             <section className={`${styles.section} premium-card`}>
                 <div className={styles.sectionHeader}>
-                    <h2>Delivery Preferences</h2>
-                    <p>Configure how you receive platform updates and alerts.</p>
+                    <h2>{t('settings.notifications.delivery')}</h2>
+                    <p>{t('settings.notifications.deliveryDesc')}</p>
                 </div>
                 <div className={styles.toggleRow} onClick={() => toggleFeature('emailNotifications')}>
                     <div>
-                        <h4>Email Updates</h4>
-                        <p>Receive notifications about mentions and playlist adds.</p>
+                        <h4>{t('settings.notifications.emailUpdates')}</h4>
+                        <p>{t('settings.notifications.emailUpdatesDesc')}</p>
                     </div>
                     <div className={toggles.emailNotifications ? styles.switchActive : styles.switch}></div>
                 </div>
                 <div className={styles.toggleRow} onClick={() => toggleFeature('pushNotifications')}>
                     <div>
-                        <h4>Push Notifications</h4>
-                        <p>Real-time browser and mobile alerts.</p>
+                        <h4>{t('settings.notifications.pushNotifications')}</h4>
+                        <p>{t('settings.notifications.pushNotificationsDesc')}</p>
                     </div>
                     <div className={toggles.pushNotifications ? styles.switchActive : styles.switch}></div>
                 </div>
@@ -322,10 +324,10 @@ export default function SettingsPage() {
                 <header className={styles.header}>
                     <div className={styles.heroTag}>
                         <Sparkles size={12} fill="var(--corewave-cyan)" color="var(--corewave-cyan)" />
-                        <span>Platform Nodes • 2026</span>
+                        <span>{t('settings.sidebar.syncStatus')} • 2026</span>
                     </div>
-                    <h1 className="text-gradient">Control Center</h1>
-                    <p>Orchestrate your identity, security, and global preferences.</p>
+                    <h1 className="text-gradient">{t('settings.title')}</h1>
+                    <p>{t('settings.subtitle')}</p>
                 </header>
 
                 <div className={styles.layout}>
@@ -349,23 +351,23 @@ export default function SettingsPage() {
                         </div>
 
                         <div className={`${styles.statsNode} premium-card`} style={{ padding: '1.25rem', marginTop: '1.5rem', opacity: 0.8 }}>
-                            <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--muted-foreground)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Global Sync Status</div>
+                            <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--muted-foreground)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>{t('settings.sidebar.syncStatus')}</div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--corewave-cyan)', fontSize: '0.85rem', fontWeight: 700 }}>
-                                <div className={styles.pulse}></div> Orchestrated
+                                <div className={styles.pulse}></div> {t('settings.sidebar.orchestrated')}
                             </div>
                         </div>
 
                         <nav className={styles.sideNav}>
-                            <button className={activeTab === 'account' ? styles.sideLinkActive : styles.sideLink} onClick={() => setActiveTab('account')}><User size={18} /> Account</button>
-                            <button className={activeTab === 'security' ? styles.sideLinkActive : styles.sideLink} onClick={() => setActiveTab('security')}><Shield size={18} /> Security</button>
-                            <button className={activeTab === 'notifications' ? styles.sideLinkActive : styles.sideLink} onClick={() => setActiveTab('notifications')}><Bell size={18} /> Notifications</button>
-                            <button className={activeTab === 'subscription' ? styles.sideLinkActive : styles.sideLink} onClick={() => setActiveTab('subscription')}><CreditCard size={18} /> Subscription</button>
-                            <button className={activeTab === 'language' ? styles.sideLinkActive : styles.sideLink} onClick={() => setActiveTab('language')}><Globe size={18} /> Language</button>
+                            <button className={activeTab === 'account' ? styles.sideLinkActive : styles.sideLink} onClick={() => setActiveTab('account')}><User size={18} /> {t('settings.tabs.account')}</button>
+                            <button className={activeTab === 'security' ? styles.sideLinkActive : styles.sideLink} onClick={() => setActiveTab('security')}><Shield size={18} /> {t('settings.tabs.security')}</button>
+                            <button className={activeTab === 'notifications' ? styles.sideLinkActive : styles.sideLink} onClick={() => setActiveTab('notifications')}><Bell size={18} /> {t('settings.tabs.notifications')}</button>
+                            <button className={activeTab === 'subscription' ? styles.sideLinkActive : styles.sideLink} onClick={() => setActiveTab('subscription')}><CreditCard size={18} /> {t('settings.tabs.subscription')}</button>
+                            <button className={activeTab === 'language' ? styles.sideLinkActive : styles.sideLink} onClick={() => setActiveTab('language')}><Globe size={18} /> {t('settings.tabs.language')}</button>
                         </nav>
 
                         <div className={styles.sidebarFooter}>
                             <button className={styles.logoutBtn} onClick={() => router.push('/api/auth/signout')}>
-                                <LogOut size={18} /> Sign Out Session
+                                <LogOut size={18} /> {t('settings.sidebar.signOut')}
                             </button>
                         </div>
                     </aside>
@@ -377,31 +379,34 @@ export default function SettingsPage() {
                         {activeTab === 'subscription' && (
                             <div className={`${styles.section} premium-card`}>
                                 <div className={styles.sectionHeader}>
-                                    <h2>Pro Membership</h2>
-                                    <p>You are currently on the <strong>Basic</strong> node.</p>
+                                    <h2>{t('settings.subscription.membership')}</h2>
+                                    <p dangerouslySetInnerHTML={{ __html: t('settings.subscription.basicNode') }} />
                                 </div>
-                                <button className="btn-primary" onClick={() => router.push('/pro')}>Upgrade to Pro</button>
+                                <button className="btn-primary" onClick={() => router.push('/pro')}>{t('settings.subscription.upgrade')}</button>
                             </div>
                         )}
                         {activeTab === 'language' && (
                             <div className={`${styles.section} premium-card`}>
                                 <div className={styles.sectionHeader}>
-                                    <h2>{t('language')}</h2>
+                                    <h2>{t('settings.language.select')}</h2>
                                 </div>
                                 <select
                                     className={styles.premiumSelect}
-                                    value={language}
+                                    value={i18n.language}
                                     onChange={(e) => {
-                                        setLanguage(e.target.value as any);
-                                        addToast(`${t('save')} - ${e.target.value.toUpperCase()}`);
+                                        const newLang = e.target.value;
+                                        i18n.changeLanguage(newLang);
+                                        Cookie.set('NEXT_LOCALE', newLang, { expires: 365 });
+                                        addToast(t('common.save') + ` - ${newLang.toUpperCase()}`);
+                                        // Refresh to apply lang to html tag from server side if needed, 
+                                        // but I18nProvider handles client side.
                                     }}
                                 >
-                                    <option value="en">English (Global)</option>
-                                    <option value="fr">Français</option>
-                                    <option value="de">Deutsch</option>
-                                    <option value="es">Español</option>
+                                    <option value="en">{t('settings.language.en')}</option>
+                                    <option value="fr">{t('settings.language.fr')}</option>
+                                    <option value="de">{t('settings.language.de')}</option>
+                                    <option value="es">{t('settings.language.es')}</option>
                                 </select>
-
                             </div>
                         )}
                     </main>

@@ -1,0 +1,356 @@
+.stat-card {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 12px 24px rgba(99, 102, 241, 0.15);
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+}
+
+.stat-growth {
+    font-size: 0.875rem;
+    color: #10b981;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.stat-growth.negative {
+    color: #ef4444;
+}
+
+.chart-container {
+    background: linear-gradient(135deg, rgba(30, 30, 45, 0.6) 0%, rgba(20, 20, 35, 0.8) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 24px;
+    height: 300px;
+}
+
+.activity-feed {
+    background: linear-gradient(135deg, rgba(30, 30, 45, 0.6) 0%, rgba(20, 20, 35, 0.8) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 24px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s ease;
+}
+
+.activity-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-cover {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.activity-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-track {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.activity-meta {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.demographics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+
+@media (max-width: 1024px) {
+
+    /* Two-column layout becomes single column on tablets */
+    .stat-card {
+        min-width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .stat-card {
+        padding: 20px;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+    }
+
+    .top-tracks-grid {
+        gap: 12px;
+    }
+
+    .track-item {
+        padding: 12px;
+    }
+
+    .track-cover {
+        width: 50px;
+        height: 50px;
+    }
+
+    .activity-feed {
+        max-height: 500px;
+    }
+
+    .activity-item {
+        padding: 12px;
+    }
+
+    .activity-cover {
+        width: 40px;
+        height: 40px;
+    }
+
+    .chart-container {
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-card {
+        padding: 16px;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    .stat-value {
+        font-size: 1.75rem;
+    }
+
+    .stat-growth {
+        font-size: 0.75rem;
+    }
+
+    .track-title {
+        font-size: 0.875rem;
+    }
+
+    .track-plays {
+        font-size: 0.75rem;
+    }
+
+    .country-name {
+        font-size: 0.875rem;
+    }
+
+    .activity-track {
+        font-size: 0.875rem;
+    }
+
+    .activity-meta {
+        font-size: 0.75rem;
+    }
+}
+
+/* ==================== LOADING & ERROR STATES ==================== */
+
+.country-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.country-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.country-name {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.country-bar {
+    flex: 1;
+    max-width: 200px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin: 0 16px;
+    overflow: hidden;
+}
+
+.country-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.country-percentage {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    min-width: 50px;
+    text-align: right;
+}
+
+.top-tracks-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.track-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.track-item:hover {
+    transform: translateX(8px);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.track-rank {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.3);
+    min-width: 40px;
+}
+
+.track-cover {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.track-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.track-title {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 4px;
+}
+
+.track-plays {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(99, 102, 241, 0.2);
+    border-top-color: #6366f1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+.error-state {
+    padding: 48px 24px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 768px) {
+    .stat-value {
+        font-size: 2rem;
+    }
+
+    .chart-container {
+        height: 200px;
+    }
+
+    .country-bar {
+        max-width: 100px;
+    }
+}

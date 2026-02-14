@@ -24,7 +24,19 @@ export async function GET() {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        return NextResponse.json({ user });
+        // [EXPERTISE] Calculate real-time verification status for the profile checklist
+        let verificationStatus = null;
+        if (user.role === 'ARTIST') {
+            const verificationResult = await checkAndVerifyArtist(user.id);
+            verificationStatus = verificationResult.status;
+        }
+
+        return NextResponse.json({
+            user: {
+                ...user,
+                verificationStatus
+            }
+        });
     } catch (error) {
         console.error('Fetch profile error:', error);
         return NextResponse.json({ error: 'Failed to fetch profile' }, { status: 500 });

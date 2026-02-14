@@ -7,10 +7,12 @@ import styles from './Profile.module.css';
 import { Play, Music, Users, Calendar, Heart, Loader2, ListMusic, ChevronRight, MoreHorizontal, Edit2, Trash2, X, Pause, Shield, Check, Camera } from 'lucide-react';
 import { usePlayerStore, Track } from '@/store/usePlayerStore';
 import { useToastStore } from '@/store/useToastStore';
+import { useTranslation } from 'react-i18next';
 
 type Tab = 'uploads' | 'playlists' | 'favorites' | 'following';
 
 export default function ProfilePage() {
+    const { t } = useTranslation();
     const { data: session, update } = useSession();
     const { addToast } = useToastStore();
     const [activeTab, setActiveTab] = useState<Tab>('uploads');
@@ -19,6 +21,7 @@ export default function ProfilePage() {
     const [favorites, setFavorites] = useState<any[]>([]);
     const [following, setFollowing] = useState<any[]>([]);
     const [followerCount, setFollowerCount] = useState(0);
+    const [verificationStatus, setVerificationStatus] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editForm, setEditForm] = useState({ name: '', bio: '' });
@@ -62,6 +65,7 @@ export default function ProfilePage() {
                     setFavorites(favData.favorites || []);
                     setFollowing(followData.artists || []);
                     setFollowerCount(profileData.user?._count?.followedBy || 0);
+                    setVerificationStatus(profileData.user?.verificationStatus || null);
                 } catch (err) {
                     console.error("Fetch profile data error:", err);
                 } finally {
@@ -90,7 +94,7 @@ export default function ProfilePage() {
         };
 
         syncFavorites();
-    }, [globalFavorites.length, session]);
+    }, [globalFavorites.length, session, loading]);
 
     const handleUpdateProfile = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -104,8 +108,7 @@ export default function ProfilePage() {
             if (res.ok) {
                 await update({ name: editForm.name, bio: editForm.bio }); // [FIX] Update session bio & name
                 setIsEditModalOpen(false);
-                addToast("Profile synchronized successfully.");
-                // window.location.reload(); // [FIX] Removed forced reload to keep music playing
+                addToast(t('profile.syncSuccess'));
             }
         } catch (err) {
             console.error("Update profile error:", err);
@@ -117,7 +120,7 @@ export default function ProfilePage() {
     const removeFavorite = async (trackId: string) => {
         try {
             await toggleFavorite(trackId);
-            addToast("Track removed from favorites.");
+            addToast(t('profile.favRemoved'));
         } catch (err) {
             console.error("Remove favorite orchestration error:", err);
         }
@@ -149,30 +152,30 @@ export default function ProfilePage() {
                 const data = await res.json();
                 setTracks(tracks.map(t => t.id === editingTrack.id ? { ...t, ...data.track } : t));
                 setIsEditTrackModalOpen(false);
-                addToast("Track metadata updated.");
+                addToast(t('profile.metaSyncSuccess'));
             }
         } catch (err) {
-            addToast("Failed to sync track metadata.", "error");
+            addToast(t('profile.metaSyncError'), "error");
         } finally {
             setIsUpdating(false);
         }
     };
 
     const handleDeleteTrack = async (trackId: string) => {
-        if (!confirm("Are you sure you want to delete this track? This action cannot be undone.")) return;
+        if (!confirm(t('profile.deleteConfirm'))) return;
         try {
             const res = await fetch(`/api/tracks/${trackId}`, { method: 'DELETE' });
             if (res.ok) {
                 setTracks(tracks.filter(t => t.id !== trackId));
-                addToast("Track orchestrated for removal.");
+                addToast(t('profile.deleteSuccess'));
                 setActiveTrackMenu(null);
             }
         } catch (err) {
-            addToast("Deletion synchronization failure.", "error");
+            addToast(t('artists.genericError'), "error");
         }
     };
 
-    if (!session) return <div className="container" style={{ paddingTop: '10rem' }}>Please login to view your profile.</div>;
+    if (!session) return <div className="container" style={{ paddingTop: '10rem' }}>{t('profile.loginRequired')}</div>;
 
     const isArtist = session.user.role === 'ARTIST';
 
@@ -192,57 +195,79 @@ export default function ProfilePage() {
                             <span className={styles.roleTag}>{session.user.role}</span>
                             <h1>{session.user.name}</h1>
                             <p className={styles.profileBio} style={{ color: 'var(--muted-foreground)', maxWidth: '600px', margin: '0.5rem 0 1.5rem', lineHeight: '1.6' }}>
-                                {(session.user as any).bio || "No bio yet."}
+                                {(session.user as any).bio || t('profile.noBio')}
                             </p>
                             <div className={styles.stats}>
                                 {isArtist && (
                                     <>
-                                        <span><Music size={14} /> {tracks.length} Tracks</span>
-                                        <span><Users size={14} /> {followerCount} Followers</span>
+                                        <span><Music size={14} /> {t('artists.tracksCount', { count: tracks.length })}</span>
+                                        <span><Users size={14} /> {t('artists.followers', { count: followerCount })}</span>
                                     </>
                                 )}
-                                <span><ListMusic size={14} /> {playlists.length} Playlists</span>
-                                <span><Heart size={14} /> {favorites.length} Favorites</span>
-                                <span><Users size={14} /> {following.length} Following</span>
+                                <span><ListMusic size={14} /> {t('profile.playlists', { count: playlists.length })}</span>
+                                <span><Heart size={14} /> {t('profile.favorites', { count: favorites.length })}</span>
+                                <span><Users size={14} /> {t('profile.following', { count: following.length })}</span>
                             </div>
                         </div>
                         <div style={{ marginLeft: 'auto' }}>
-                            <button className="btn-outline" onClick={() => setIsEditModalOpen(true)}>Edit Profile</button>
+                            <button className="btn-outline" onClick={() => setIsEditModalOpen(true)}>{t('profile.editProfile')}</button>
                         </div>
                     </div>
 
-                    {/* [EXPERTISE] Verification Progress Widget */}
-                    {isArtist && !(session.user as any).isVerified && (
+                    {/* [EXPERTISE] Verification Progress Widget - Backend Driven */}
+                    {isArtist && !(session.user as any).isVerified && verificationStatus && (
                         <div className="premium-card" style={{
                             marginTop: '2rem',
                             padding: '1.5rem',
                             background: 'linear-gradient(90deg, rgba(34, 211, 238, 0.05) 0%, rgba(0, 0, 0, 0) 100%)',
                             borderLeft: '4px solid var(--corewave-cyan)'
                         }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                     <Shield size={20} color="var(--corewave-cyan)" />
-                                    <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Verification Protocol</h3>
+                                    <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{t('profile.verificationProtocol')}</h3>
                                 </div>
-                                <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>Complete criteria to earn Blue Badge</span>
+                                <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>{t('profile.verificationBadge')}</span>
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', opacity: session.user.image ? 1 : 0.5 }}>
-                                    {session.user.image ? <Check size={16} color="#10b981" /> : <div style={{ width: 16, height: 16, border: '2px solid var(--muted-foreground)', borderRadius: '50%' }} />}
-                                    <span style={{ fontSize: '0.9rem' }}>Visual Identity Set</span>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', opacity: verificationStatus.hasImage ? 1 : 0.5 }}>
+                                    {verificationStatus.hasImage ? <Check size={16} color="#10b981" /> : <div style={{ width: 16, height: 16, border: '2px solid var(--muted-foreground)', borderRadius: '50%' }} />}
+                                    <span style={{ fontSize: '0.9rem' }}>{t('profile.criteriaVisual')}</span>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', opacity: (session.user as any).bio?.length > 10 ? 1 : 0.5 }}>
-                                    {(session.user as any).bio?.length > 10 ? <Check size={16} color="#10b981" /> : <div style={{ width: 16, height: 16, border: '2px solid var(--muted-foreground)', borderRadius: '50%' }} />}
-                                    <span style={{ fontSize: '0.9rem' }}>Professional Bio</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', opacity: verificationStatus.hasBio ? 1 : 0.5 }}>
+                                    {verificationStatus.hasBio ? <Check size={16} color="#10b981" /> : <div style={{ width: 16, height: 16, border: '2px solid var(--muted-foreground)', borderRadius: '50%' }} />}
+                                    <span style={{ fontSize: '0.9rem' }}>{t('profile.criteriaBio')}</span>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', opacity: tracks.filter(t => t.status === 'APPROVED').length >= 10 ? 1 : 0.5 }}>
-                                    {tracks.filter(t => t.status === 'APPROVED').length >= 10 ? (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', opacity: verificationStatus.approvedTracks.pass ? 1 : 0.5 }}>
+                                    {verificationStatus.approvedTracks.pass ? (
                                         <Check size={16} color="#10b981" />
                                     ) : (
-                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--muted-foreground)' }}>{tracks.filter(t => t.status === 'APPROVED').length}/10</span>
+                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--muted-foreground)', width: 16, textAlign: 'center' }}>
+                                            {verificationStatus.approvedTracks.current}/{verificationStatus.approvedTracks.required}
+                                        </span>
                                     )}
-                                    <span style={{ fontSize: '0.9rem' }}>Approved Releases</span>
+                                    <span style={{ fontSize: '0.9rem' }}>{t('profile.criteriaTracks')}</span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', opacity: verificationStatus.followers.pass ? 1 : 0.5 }}>
+                                    {verificationStatus.followers.pass ? (
+                                        <Check size={16} color="#10b981" />
+                                    ) : (
+                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--muted-foreground)', width: 16, textAlign: 'center' }}>
+                                            {verificationStatus.followers.current}/{verificationStatus.followers.required}
+                                        </span>
+                                    )}
+                                    <span style={{ fontSize: '0.9rem' }}>{t('profile.criteriaFollowers')}</span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', opacity: verificationStatus.plays.pass ? 1 : 0.5 }}>
+                                    {verificationStatus.plays.pass ? (
+                                        <Check size={16} color="#10b981" />
+                                    ) : (
+                                        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--muted-foreground)', width: 16, textAlign: 'center' }}>
+                                            {verificationStatus.plays.current >= 1000 ? '1k+' : verificationStatus.plays.current}/1k
+                                        </span>
+                                    )}
+                                    <span style={{ fontSize: '0.9rem' }}>{t('profile.criteriaPlays')}</span>
                                 </div>
                             </div>
                         </div>
@@ -253,7 +278,7 @@ export default function ProfilePage() {
                 {isEditModalOpen && (
                     <div className={styles.modalOverlay} onClick={() => setIsEditModalOpen(false)}>
                         <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                            <h2>Edit Profile</h2>
+                            <h2>{t('profile.editModalTitle')}</h2>
                             <form onSubmit={handleUpdateProfile}>
                                 <div className={styles.avatarUpload} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1.5rem' }}>
                                     <div style={{ position: 'relative', width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden', background: 'var(--secondary)', border: '2px solid var(--border)' }}>
@@ -288,39 +313,39 @@ export default function ProfilePage() {
                                                     if (res.ok) {
                                                         const result = await res.json();
                                                         await update({ image: result.imageUrl });
-                                                        addToast("Visual identity updated.");
+                                                        addToast(t('playlists.imageSuccess'));
                                                     }
                                                 } catch (err) {
-                                                    addToast("Image upload failed.", "error");
+                                                    addToast(t('artists.genericError'), "error");
                                                 }
                                             }
                                         }}
                                     />
-                                    <span style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginTop: '0.5rem' }}>Change Profile Photo</span>
+                                    <span style={{ fontSize: '0.8rem', color: 'var(--muted-foreground)', marginTop: '0.5rem' }}>{t('profile.changePhoto')}</span>
                                 </div>
 
                                 <div className={styles.formGroup}>
-                                    <label>Display Name</label>
+                                    <label>{t('profile.displayName')}</label>
                                     <input
                                         type="text"
                                         value={editForm.name}
                                         onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                                        placeholder="Your name"
+                                        placeholder={t('common.namePlaceholder')}
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>Short Bio</label>
+                                    <label>{t('profile.shortBio')}</label>
                                     <textarea
                                         rows={4}
                                         value={editForm.bio}
                                         onChange={(e) => setEditForm({ ...editForm, bio: e.target.value })}
-                                        placeholder="Tell the world about yourself..."
+                                        placeholder={t('profile.shortBio')}
                                     />
                                 </div>
                                 <div className={styles.modalActions}>
-                                    <button type="button" className="btn-outline" onClick={() => setIsEditModalOpen(false)}>Cancel</button>
+                                    <button type="button" className="btn-outline" onClick={() => setIsEditModalOpen(false)}>{t('profile.cancel')}</button>
                                     <button type="submit" className="btn-primary" disabled={isUpdating}>
-                                        {isUpdating ? 'Saving...' : 'Save Changes'}
+                                        {isUpdating ? t('profile.saving') : t('profile.saveChanges')}
                                     </button>
                                 </div>
                             </form>
@@ -332,19 +357,19 @@ export default function ProfilePage() {
                 {isEditTrackModalOpen && (
                     <div className={styles.modalOverlay} onClick={() => setIsEditTrackModalOpen(false)}>
                         <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                            <h2>Modify Track</h2>
+                            <h2>{t('profile.modifyTrack')}</h2>
                             <form onSubmit={handleUpdateTrack}>
                                 <div className={styles.formGroup}>
-                                    <label>Track Title</label>
+                                    <label>{t('profile.trackTitle')}</label>
                                     <input
                                         type="text"
                                         value={editTrackForm.title}
                                         onChange={(e) => setEditTrackForm({ ...editTrackForm, title: e.target.value })}
-                                        placeholder="New title"
+                                        placeholder={t('profile.trackTitle')}
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>Genre</label>
+                                    <label>{t('profile.genre')}</label>
                                     <input
                                         type="text"
                                         value={editTrackForm.genre}
@@ -353,7 +378,7 @@ export default function ProfilePage() {
                                     />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label>Mood</label>
+                                    <label>{t('profile.mood')}</label>
                                     <input
                                         type="text"
                                         value={editTrackForm.mood}
@@ -362,9 +387,9 @@ export default function ProfilePage() {
                                     />
                                 </div>
                                 <div className={styles.modalActions}>
-                                    <button type="button" className="btn-outline" onClick={() => setIsEditTrackModalOpen(false)}>Cancel</button>
+                                    <button type="button" className="btn-outline" onClick={() => setIsEditTrackModalOpen(false)}>{t('profile.cancel')}</button>
                                     <button type="submit" className="btn-primary" disabled={isUpdating}>
-                                        {isUpdating ? 'Synchronizing...' : 'Update Metadata'}
+                                        {isUpdating ? t('profile.syncing') : t('profile.updateMetadata')}
                                     </button>
                                 </div>
                             </form>
@@ -380,26 +405,26 @@ export default function ProfilePage() {
                                     className={activeTab === 'uploads' ? styles.sideLinkActive : styles.sideLink}
                                     onClick={() => setActiveTab('uploads')}
                                 >
-                                    My Music
+                                    {t('profile.tabs.uploads')}
                                 </button>
                             )}
                             <button
                                 className={activeTab === 'playlists' ? styles.sideLinkActive : styles.sideLink}
                                 onClick={() => setActiveTab('playlists')}
                             >
-                                Playlists
+                                {t('profile.tabs.playlists')}
                             </button>
                             <button
                                 className={activeTab === 'favorites' ? styles.sideLinkActive : styles.sideLink}
                                 onClick={() => setActiveTab('favorites')}
                             >
-                                Favorites
+                                {t('profile.tabs.favorites')}
                             </button>
                             <button
                                 className={activeTab === 'following' ? styles.sideLinkActive : styles.sideLink}
                                 onClick={() => setActiveTab('following')}
                             >
-                                Following
+                                {t('profile.tabs.following')}
                             </button>
                         </nav>
                     </aside>
@@ -408,8 +433,8 @@ export default function ProfilePage() {
                         {activeTab === 'uploads' && isArtist && (
                             <section className={styles.section}>
                                 <div className={styles.sectionHeader}>
-                                    <h2>Your Uploads</h2>
-                                    <button className="btn-primary" style={{ padding: '0.4rem 1rem', fontSize: '0.85rem' }} onClick={() => router.push('/upload')}>Upload New</button>
+                                    <h2>{t('profile.sectionHeaders.uploads')}</h2>
+                                    <button className="btn-primary" style={{ padding: '0.4rem 1rem', fontSize: '0.85rem' }} onClick={() => router.push('/upload')}>{t('profile.btnUploadNew')}</button>
                                 </div>
 
                                 {loading ? (
@@ -419,9 +444,9 @@ export default function ProfilePage() {
                                 ) : tracks.length === 0 ? (
                                     <div className={styles.emptyState}>
                                         <Music size={48} className={styles.emptyIcon} />
-                                        <h3>No tracks yet</h3>
-                                        <p>Start your career by uploading your first track.</p>
-                                        <button className="btn-primary" onClick={() => router.push('/upload')}>Upload Now</button>
+                                        <h3>{t('profile.empty.noTracks')}</h3>
+                                        <p>{t('profile.empty.noTracksSub')}</p>
+                                        <button className="btn-primary" onClick={() => router.push('/upload')}>{t('profile.empty.uploadNow')}</button>
                                     </div>
                                 ) : (
                                     <div className={styles.trackList}>
@@ -473,10 +498,10 @@ export default function ProfilePage() {
                                                         {activeTrackMenu === track.id && (
                                                             <div className={styles.dropdownMenu} onClick={(e) => e.stopPropagation()}>
                                                                 <button onClick={() => openEditTrack(track)}>
-                                                                    <Edit2 size={14} /> Modify Metadata
+                                                                    <Edit2 size={14} /> {t('profile.trackMenu.modify')}
                                                                 </button>
                                                                 <button className={styles.menuItemDelete} onClick={() => handleDeleteTrack(track.id)}>
-                                                                    <Trash2 size={14} /> Remove Track
+                                                                    <Trash2 size={14} /> {t('profile.trackMenu.remove')}
                                                                 </button>
                                                             </div>
                                                         )}
@@ -492,8 +517,8 @@ export default function ProfilePage() {
                         {activeTab === 'playlists' && (
                             <section className={styles.section}>
                                 <div className={styles.sectionHeader}>
-                                    <h2>Your Collections</h2>
-                                    <span className={styles.subtitle}>{playlists.length} dynamic nodes</span>
+                                    <h2>{t('profile.sectionHeaders.collections')}</h2>
+                                    <span className={styles.subtitle}>{t('profile.nodesSynchronized', { count: playlists.length })}</span>
                                 </div>
 
                                 {loading ? (
@@ -503,8 +528,8 @@ export default function ProfilePage() {
                                 ) : playlists.length === 0 ? (
                                     <div className={styles.emptyState}>
                                         <ListMusic size={48} className={styles.emptyIcon} />
-                                        <h3>No playlists detected</h3>
-                                        <p>Create your first orchestration node in the music player.</p>
+                                        <h3>{t('profile.empty.noPlaylists')}</h3>
+                                        <p>{t('profile.empty.noPlaylistsSub')}</p>
                                     </div>
                                 ) : (
                                     <div className={styles.playlistGrid}>
@@ -523,8 +548,8 @@ export default function ProfilePage() {
                                                 </div>
                                                 <div className={styles.playlistInfo}>
                                                     <h4>{playlist.name}</h4>
-                                                    <p>{playlist._count.tracks} Tracks synchronized</p>
-                                                    <div className={styles.playlistTag}>NODE • COREWAVE</div>
+                                                    <p>{t('profile.tracksSynchronizedCount', { count: playlist._count.tracks })}</p>
+                                                    <div className={styles.playlistTag}>{t('profile.nodeTag')}</div>
                                                 </div>
                                             </div>
                                         ))}
@@ -536,8 +561,8 @@ export default function ProfilePage() {
                         {activeTab === 'favorites' && (
                             <section className={styles.section}>
                                 <div className={styles.sectionHeader}>
-                                    <h2>Your Favorites</h2>
-                                    <span className={styles.subtitle}>{favorites.length} liked tracks</span>
+                                    <h2>{t('profile.sectionHeaders.favorites')}</h2>
+                                    <span className={styles.subtitle}>{t('profile.likedTracksCount', { count: favorites.length })}</span>
                                 </div>
 
                                 {loading ? (
@@ -547,9 +572,9 @@ export default function ProfilePage() {
                                 ) : favorites.length === 0 ? (
                                     <div className={styles.emptyState}>
                                         <Heart size={48} className={styles.emptyIcon} />
-                                        <h3>No favorites yet</h3>
-                                        <p>Like tracks from the player to see them here.</p>
-                                        <button className="btn-primary" onClick={() => router.push('/explore')}>Explore Music</button>
+                                        <h3>{t('profile.empty.noFavorites')}</h3>
+                                        <p>{t('profile.empty.noFavoritesSub')}</p>
+                                        <button className="btn-primary" onClick={() => router.push('/explore')}>{t('profile.empty.exploreMusic')}</button>
                                     </div>
                                 ) : (
                                     <div className={styles.trackList}>
@@ -592,7 +617,7 @@ export default function ProfilePage() {
                                                             e.stopPropagation();
                                                             removeFavorite(fav.track.id);
                                                         }}
-                                                        title="Remove from favorites"
+                                                        title={t('profile.trackMenu.remove')}
                                                     >
                                                         <Heart fill="currentColor" size={18} />
                                                     </button>
@@ -607,8 +632,8 @@ export default function ProfilePage() {
                         {activeTab === 'following' && (
                             <section className={styles.section}>
                                 <div className={styles.sectionHeader}>
-                                    <h2>Artists You Follow</h2>
-                                    <span className={styles.subtitle}>{following.length} artists</span>
+                                    <h2>{t('profile.sectionHeaders.followedArtists')}</h2>
+                                    <span className={styles.subtitle}>{t('profile.followingCount', { count: following.length })}</span>
                                 </div>
 
                                 {loading ? (
@@ -618,9 +643,9 @@ export default function ProfilePage() {
                                 ) : following.length === 0 ? (
                                     <div className={styles.emptyState}>
                                         <Users size={48} className={styles.emptyIcon} />
-                                        <h3>Not following anyone yet</h3>
-                                        <p>Discover incredible artists and follow them to stay updated.</p>
-                                        <button className="btn-primary" onClick={() => router.push('/artists')}>Find Artists</button>
+                                        <h3>{t('profile.empty.noFollowing')}</h3>
+                                        <p>{t('profile.empty.noFollowingSub')}</p>
+                                        <button className="btn-primary" onClick={() => router.push('/artists')}>{t('profile.empty.findArtists')}</button>
                                     </div>
                                 ) : (
                                     <div className={styles.artistGrid}>
@@ -635,13 +660,13 @@ export default function ProfilePage() {
                                                 </div>
                                                 <div className={styles.artistInfo}>
                                                     <h4>{artist.name}</h4>
-                                                    <p>{artist._count.followedBy} Followers</p>
+                                                    <p>{t('artists.followers', { count: artist._count.followedBy })}</p>
                                                     <button
                                                         className="btn-outline"
                                                         style={{ padding: '0.3rem 0.8rem', fontSize: '0.75rem', marginTop: '0.5rem' }}
                                                         onClick={() => router.push(`/artists/${artist.id}`)}
                                                     >
-                                                        View Profile
+                                                        {t('profile.viewProfile')}
                                                     </button>
                                                 </div>
                                             </div>

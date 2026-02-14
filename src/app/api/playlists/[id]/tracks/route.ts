@@ -16,7 +16,7 @@ export async function POST(
         const { trackId } = await request.json();
         if (!trackId) return NextResponse.json({ error: 'Track ID required' }, { status: 400 });
 
-        console.log(`[ORCHESTRATION_SYNC] User ${session.user.id} targeting playlist ${playlistId} with track ${trackId}`);
+        // Adding track to playlist
 
         // Verify playlist ownership
         const playlist = await prisma.playlist.findUnique({
@@ -65,7 +65,7 @@ export async function POST(
             }
         });
 
-        console.log(`[ORCHESTRATION_SUCCESS] Track ${trackId} synchronized with node ${playlistId}`);
+        // Track added successfully
         return NextResponse.json({ success: true });
     } catch (error: any) {
         console.error("[ORCHESTRATION_CRITICAL] Internal failure:", error);

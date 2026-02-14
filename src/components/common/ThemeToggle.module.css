@@ -1,0 +1,45 @@
+.themeToggle {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.themeToggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.iconWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+    color: var(--foreground);
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.themeToggle:hover .icon {
+    transform: rotate(180deg);
+}
+
+/* Light mode - visible on body with class */
+:global(.light) .themeToggle {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+:global(.light) .themeToggle:hover {
+    background: rgba(0, 0, 0, 0.1);
+}

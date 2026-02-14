@@ -27,7 +27,7 @@ export async function POST(request: Request): Promise<NextResponse> {
                     throw new Error('UNAUTHORIZED_ORCHESTRATION: Identity not verified.');
                 }
 
-                console.log(`[STORAGE_HANDSHAKE] Generating token for identity ${session.user.id} targeting path: ${pathname}`);
+                // Generating storage token
 
                 // 2. Security Protocol (Allow uploads based on user role if needed)
                 return {
@@ -47,7 +47,7 @@ export async function POST(request: Request): Promise<NextResponse> {
             },
             onUploadCompleted: async ({ blob, tokenPayload }) => {
                 // This is called after the client successfully uploads to the blob store
-                console.log(`[STORAGE_COMPLETE] Blob synchronized: ${blob.url}`);
+                // Blob upload complete
 
                 try {
                     const { userId } = JSON.parse(tokenPayload!);

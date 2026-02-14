@@ -5,9 +5,11 @@ import { Search, Music, Users, X, Command } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { usePlayerStore } from "@/store/usePlayerStore";
+import { useTranslation } from 'react-i18next';
 import styles from "./CommandPalette.module.css";
 
 const CommandPalette = () => {
+    const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState("");
     const [results, setResults] = useState<{ artists: any[], tracks: any[] }>({ artists: [], tracks: [] });
@@ -91,7 +93,7 @@ const CommandPalette = () => {
                             <input
                                 ref={inputRef}
                                 type="text"
-                                placeholder="Search tracks, artists, genres..."
+                                placeholder={t('search.placeholder')}
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                                 className={styles.input}
@@ -106,30 +108,30 @@ const CommandPalette = () => {
                                     className={`${styles.filterBtn} ${activeFilter === f ? styles.activeFilter : ''}`}
                                     onClick={() => setActiveFilter(f)}
                                 >
-                                    {f.charAt(0).toUpperCase() + f.slice(1)}
+                                    {t(`search.filters.${f}`)}
                                 </button>
                             ))}
                         </div>
 
                         <div className={styles.content}>
                             {loading ? (
-                                <div className={styles.loading}>Searching the ecosystem...</div>
+                                <div className={styles.loading}>{t('search.loading')}</div>
                             ) : query.length < 2 ? (
                                 <div className={styles.empty}>
-                                    <p>Try searching for your favorite artist or a fresh genre.</p>
+                                    <p>{t('search.empty.title')}</p>
                                     <div className={styles.suggestions}>
-                                        <span>"Electronic"</span>
-                                        <span>"Oblivéra"</span>
-                                        <span>"Chill"</span>
+                                        <span>"{t('search.empty.suggestions.electronic')}"</span>
+                                        <span>"{t('search.empty.suggestions.oblivera')}"</span>
+                                        <span>"{t('search.empty.suggestions.chill')}"</span>
                                     </div>
                                 </div>
                             ) : results.artists.length === 0 && results.tracks.length === 0 ? (
-                                <div className={styles.noResults}>No matches found for "{query}"</div>
+                                <div className={styles.noResults}>{t('search.noResults', { query })}</div>
                             ) : (
                                 <div className={styles.resultsGrid}>
                                     {(activeFilter === 'all' || activeFilter === 'artists') && results.artists.length > 0 && (
                                         <section className={styles.section}>
-                                            <h3>Artists</h3>
+                                            <h3>{t('search.filters.artists')}</h3>
                                             {results.artists.map(artist => (
                                                 <div
                                                     key={artist.id}
@@ -141,7 +143,7 @@ const CommandPalette = () => {
                                                     </div>
                                                     <div className={styles.itemInfo}>
                                                         <span className={styles.itemName}>{artist.name}</span>
-                                                        <span className={styles.itemMeta}>{artist._count.followedBy} Followers</span>
+                                                        <span className={styles.itemMeta}>{t('artists.followers', { count: artist._count.followedBy })}</span>
                                                     </div>
                                                 </div>
                                             ))}
@@ -150,7 +152,7 @@ const CommandPalette = () => {
 
                                     {(activeFilter === 'all' || activeFilter === 'tracks') && results.tracks.length > 0 && (
                                         <section className={styles.section}>
-                                            <h3>Tracks</h3>
+                                            <h3>{t('search.filters.tracks')}</h3>
                                             {results.tracks.map(track => (
                                                 <div
                                                     key={track.id}
@@ -171,9 +173,9 @@ const CommandPalette = () => {
                         </div>
 
                         <div className={styles.footer}>
-                            <span>Navigate with arrows</span>
-                            <span>Select with Enter</span>
-                            <span>Close with Esc</span>
+                            <span>{t('search.shortcuts.navigate')}</span>
+                            <span>{t('search.shortcuts.select')}</span>
+                            <span>{t('search.shortcuts.close')}</span>
                         </div>
                     </motion.div>
                 </>

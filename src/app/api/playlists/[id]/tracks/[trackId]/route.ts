@@ -33,7 +33,7 @@ export async function DELETE(
             }
         });
 
-        console.log(`[PLAYLIST_TRACK_SYNC] Track ${trackId} removed from node ${playlistId}`);
+        // Track removed from playlist
         return NextResponse.json({ success: true });
     } catch (error: any) {
         console.error("[PLAYLIST_TRACK_CRITICAL] Internal failure:", error);

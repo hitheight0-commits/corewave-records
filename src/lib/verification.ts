@@ -1,55 +1,74 @@
 import prisma from "@/lib/prisma";
 
 /**
- * Checks if an artist meets the 3-point criteria for the Blue Badge.
+ * Checks if an artist meets the 5-point criteria for the Blue Badge.
  * If met, automatically updates the user record.
  * 
  * Criteria:
  * 1. Has Profile Image
- * 2. Has Bio
+ * 2. Has Bio (> 10 chars)
  * 3. Has >= 10 Approved Tracks
+ * 4. Has >= 25 Followers
+ * 5. Has >= 1,000 Total Plays
  */
 export async function checkAndVerifyArtist(userId: string) {
-    console.log(`[VERIFICATION_PROTOCOL] Initiating check for Node ${userId}...`);
-
     try {
-        // 1. Fetch User Data & Track Count in parallel for speed
-        const [user, trackCount] = await Promise.all([
+        // 1. Fetch all relevant metrics in parallel
+        const [user, trackCount, followerCount, tracks] = await Promise.all([
             prisma.user.findUnique({
                 where: { id: userId },
                 select: { image: true, bio: true, isVerified: true }
             }),
             prisma.track.count({
-                where: {
-                    artistId: userId,
-                    status: 'APPROVED'
-                }
+                where: { artistId: userId, status: 'APPROVED' }
+            }),
+            prisma.follows.count({
+                where: { followingId: userId }
+            }),
+            prisma.track.findMany({
+                where: { artistId: userId },
+                select: { plays: true }
             })
         ]);
 
         if (!user) return { verified: false, error: "User not found" };
-        if (user.isVerified) return { verified: true, alreadyVerified: true };
+
+        const totalPlays = tracks.reduce((sum, t) => sum + t.plays, 0);
 
         // 2. Evaluate Criteria
-        const hasImage = !!user.image && user.image.length > 0;
-        const hasBio = !!user.bio && user.bio.length > 10; // Minimal length check for quality
-        const hasTracks = trackCount >= 10;
+        const status = {
+            hasImage: !!user.image && user.image.length > 0,
+            hasBio: !!user.bio && user.bio.length > 10,
+            approvedTracks: { current: trackCount, required: 10, pass: trackCount >= 10 },
+            followers: { current: followerCount, required: 25, pass: followerCount >= 25 },
+            plays: { current: totalPlays, required: 1000, pass: totalPlays >= 1000 }
+        };
 
-        console.log(`[VERIFICATION_PROTOCOL] Status: Image=${hasImage}, Bio=${hasBio}, Tracks=${trackCount}/10`);
+        const meetsAllCriteria = status.hasImage &&
+            status.hasBio &&
+            status.approvedTracks.pass &&
+            status.followers.pass &&
+            status.plays.pass;
 
-        // 3. Grant Badge if all pass
-        if (hasImage && hasBio && hasTracks) {
+        // 3. Update Badge Status if necessary
+        if (meetsAllCriteria && !user.isVerified) {
             await prisma.user.update({
                 where: { id: userId },
                 data: { isVerified: true }
             });
-            console.log(`[VERIFICATION_PROTOCOL] SUCCESS. Node ${userId} upgraded to Verified status.`);
-            return { verified: true, newlyVerified: true };
+            return { verified: true, newlyVerified: true, status };
+        } else if (!meetsAllCriteria && user.isVerified) {
+            // [SECURITY] Revoke badge if criteria no longer met (e.g. track deletion)
+            await prisma.user.update({
+                where: { id: userId },
+                data: { isVerified: false }
+            });
+            return { verified: false, revoked: true, status };
         }
 
         return {
-            verified: false,
-            status: { hasImage, hasBio, currentTracks: trackCount, requiredTracks: 10 }
+            verified: user.isVerified,
+            status
         };
 
     } catch (error) {

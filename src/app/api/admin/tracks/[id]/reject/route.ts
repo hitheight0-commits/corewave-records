@@ -23,10 +23,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
             where: { id },
         });
 
-        console.log(`[ADMIN_ORCHESTRATION] Track ${id} rejected and purged.`);
+        // Track rejected
         return NextResponse.json({ success: true });
     } catch (error: any) {
-        console.error("[ADMIN_ORCHESTRATION_ERROR] Rejection failure:", error);
+        // Track approved:", error);
         return NextResponse.json({ error: `Orchestration failure: ${error.message}` }, { status: 500 });
     }
 }

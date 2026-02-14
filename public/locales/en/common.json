@@ -1,0 +1,417 @@
+{
+    "common": {
+        "back": "Back",
+        "save": "Save",
+        "cancel": "Cancel",
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "allRightsReserved": "All rights reserved."
+    },
+    "nav": {
+        "home": "Home",
+        "explore": "Explore",
+        "artists": "Artists",
+        "trending": "Trending Now",
+        "newReleases": "New Releases",
+        "upload": "Upload Track",
+        "distribution": "Distribution",
+        "analytics": "Artist Analytics",
+        "corewavePro": "CoreWave Pro",
+        "helpCenter": "Help Center",
+        "community": "Community",
+        "terms": "Terms of Service",
+        "privacy": "Privacy Policy",
+        "search": "Search everything..."
+    },
+    "search": {
+        "placeholder": "Discover artists, tracks, or genres...",
+        "loading": "Searching the network...",
+        "filters": {
+            "all": "All Nodes",
+            "tracks": "Tracks",
+            "artists": "Artists"
+        },
+        "empty": {
+            "title": "Start your discovery",
+            "suggestions": {
+                "electronic": "Electronic Evolution",
+                "oblivera": "Oblivera",
+                "chill": "Lo-Fi Chill"
+            }
+        },
+        "noResults": "No results found for \"{{query}}\"",
+        "shortcuts": {
+            "navigate": "/ arrows to navigate",
+            "select": "Enter to select",
+            "close": "Esc to close"
+        },
+        "badges": {
+            "artist": "Artist",
+            "help": "Help",
+            "verifiedArtist": "Verified Artist",
+            "platformGuide": "Platform Guide"
+        }
+    },
+    "player": {
+        "addToPlaylist": "Add to Playlist",
+        "expand": "Expand Player",
+        "authRequired": "Authentication required to manage playlists. Please log in or sign up.",
+        "authRequiredHeart": "Authentication required to like tracks. Please log in or sign up."
+    },
+    "home": {
+        "hero": {
+            "title": "The Future of\nSound is Here.",
+            "description": "Join the elite circle of artists pushing the boundaries of sonic innovation. Distribute, grow, and dominate with COREWAVE.",
+            "badge": "Next Generation Distribution",
+            "new": "New",
+            "startListening": "Start Listening",
+            "viewShowcase": "View Showcase",
+            "joinEvolution": "Join the Evolution",
+            "detail1": "High-Fidelity Audio",
+            "detail2": "Global Reach",
+            "detail3": "Artist Analytics"
+        },
+        "sections": {
+            "basedOnActivity": "Based on Activity",
+            "trendingEvolution": "Trending Evolution",
+            "coreFeatures": "Core Features",
+            "craftedForNextGen": "Crafted for the <span className=\"text-gradient\">Next Generation</span>",
+            "craftedForNextGenDesc": "Everything you need to distribute, manage, and scale your music career globally."
+        },
+        "features": {
+            "artistFirst": "Artist First",
+            "artistFirstDesc": "Take full control of your music. Upload, manage, and track your performance with advanced analytics designed for real growth.",
+            "pureSound": "Pure Sound",
+            "pureSoundDesc": "Experience high-fidelity streaming without the clutter. Our platform is built on audio purity and seamless playback.",
+            "globalReach": "Global Reach",
+            "globalReachDesc": "Connect with listeners worldwide. A platform designed for global discovery, distribution, and social connectivity."
+        }
+    },
+    "explore": {
+        "title": "Explore Sound",
+        "subtitle": "Discover the next wave of global artists and sonic textures.",
+        "trending": "Trending Now",
+        "browseGenres": "Browse Genres",
+        "clearFilter": "Clear Filter",
+        "backToAll": "Back to All",
+        "noTracks": "No tracks found in this category. Stay tuned for new releases!",
+        "genreTracks": "{{genre}} Tracks",
+        "menu": {
+            "like": "Like",
+            "liked": "Liked",
+            "addToPlaylist": "Add to Playlist",
+            "fullScreen": "Full Screen"
+        }
+    },
+    "trending": {
+        "title": "Trending Now",
+        "subtitle": "The most evolved sounds in the ecosystem right now.",
+        "badge": "Live Trends",
+        "menu": {
+            "share": "Share",
+            "viewArtist": "View Artist"
+        }
+    },
+    "newReleases": {
+        "title": "New Releases",
+        "subtitle": "Fresh sounds just released into the ecosystem.",
+        "badge": "Recent",
+        "noReleases": "No new releases found today."
+    },
+    "artists": {
+        "title": "Artists",
+        "subtitle": "Meet the creators of the COREWAVE ecosystem.",
+        "follow": "Follow",
+        "following": "Following",
+        "followers": "{{count}} Followers",
+        "profile": "View Profile",
+        "noArtists": "No artists found in the ecosystem yet.",
+        "followSuccess": "You are now following {{name}}",
+        "unfollowSuccess": "Unfollowed {{name}}",
+        "followError": "Failed to update follow status",
+        "loginToFollow": "Please login to follow artists",
+        "genericError": "Something went wrong. Please try again.",
+        "verified": "Verified Artist",
+        "tracksCount": "{{count}} Tracks",
+        "joined": "Joined {{year}}",
+        "popularTracks": "Popular Tracks",
+        "playAll": "Play All",
+        "playsCount": "{{count}} plays",
+        "about": "About Artist",
+        "noBio": "This artist hasn't added a bio yet. They're too busy making incredible music that pushes the boundaries of sound.",
+        "similarTo": "Similar to {{name}}",
+        "discoveryEngine": "Discovery engine is analyzing sound patterns..."
+    },
+    "playlists": {
+        "syncing": "Synchronizing node data...",
+        "notFound": "404: Node Missing",
+        "notFoundSubtitle": "The requested orchestration node could not be localized.",
+        "returnToProfile": "Return to Profile",
+        "backToProfile": "Back to Profile",
+        "tag": "PLAYLIST NODE",
+        "sync": "Sync",
+        "tracksSynchronized": "{{count}} tracks synchronized",
+        "playNode": "Play Node",
+        "modifyNode": "Modify Node",
+        "title": "Title",
+        "genre": "Genre",
+        "removeTrack": "Remove Track",
+        "empty": "No tracks orchestrated in this node yet.",
+        "explore": "Explore Music",
+        "metaUpdate": "Node metadata updated.",
+        "trackRemoved": "Track removed from node.",
+        "imageSuccess": "Visual identity updated successfully.",
+        "changeIdentity": "Change Identity"
+    },
+    "profile": {
+        "title": "Profile",
+        "editProfile": "Edit Profile",
+        "noBio": "No bio yet.",
+        "tracks": "Tracks",
+        "followers": "Followers",
+        "following": "Following",
+        "playlists": "Playlists",
+        "favorites": "Favorites",
+        "verificationProtocol": "Verification Protocol",
+        "verificationBadge": "Complete criteria to earn Blue Badge",
+        "criteriaVisual": "Visual Identity Set",
+        "criteriaBio": "Professional Bio",
+        "criteriaTracks": "Approved Releases",
+        "criteriaFollowers": "Community Reach",
+        "criteriaPlays": "Stream Density",
+        "editModalTitle": "Edit Profile",
+        "changePhoto": "Change Profile Photo",
+        "displayName": "Display Name",
+        "shortBio": "Short Bio",
+        "saveChanges": "Save Changes",
+        "saving": "Saving...",
+        "modifyTrack": "Modify Track",
+        "trackTitle": "Track Title",
+        "genre": "Genre",
+        "mood": "Mood",
+        "updateMetadata": "Update Metadata",
+        "syncing": "Synchronizing...",
+        "tabs": {
+            "uploads": "My Music",
+            "playlists": "Playlists",
+            "favorites": "Favorites",
+            "following": "Following"
+        },
+        "sectionHeaders": {
+            "uploads": "Your Uploads",
+            "collections": "Your Collections",
+            "favorites": "Your Favorites",
+            "followedArtists": "Artists You Follow"
+        },
+        "btnUploadNew": "Upload New",
+        "empty": {
+            "noTracks": "No tracks yet",
+            "noTracksSub": "Start your career by uploading your first track.",
+            "uploadNow": "Upload Now",
+            "noPlaylists": "No playlists detected",
+            "noPlaylistsSub": "Create your first orchestration node in the music player.",
+            "noFavorites": "No favorites yet",
+            "noFavoritesSub": "Like tracks from the player to see them here.",
+            "exploreMusic": "Explore Music",
+            "noFollowing": "Not following anyone yet",
+            "noFollowingSub": "Discover incredible artists and follow them to stay updated.",
+            "findArtists": "Find Artists"
+        },
+        "trackMenu": {
+            "modify": "Modify Metadata",
+            "remove": "Remove Track"
+        },
+        "deleteConfirm": "Are you sure you want to delete this track? This action cannot be undone.",
+        "syncSuccess": "Profile synchronized successfully.",
+        "favRemoved": "Track removed from favorites.",
+        "metaSyncSuccess": "Track metadata updated.",
+        "metaSyncError": "Failed to sync track metadata.",
+        "deleteSuccess": "Track orchestrated for removal.",
+        "nodesSynchronized": "{{count}} dynamic nodes",
+        "tracksSynchronizedCount": "{{count}} Tracks synchronized",
+        "nodeTag": "NODE • COREWAVE",
+        "likedTracksCount": "{{count}} liked tracks",
+        "followingCount": "{{count}} artists",
+        "viewProfile": "View Profile",
+        "loginRequired": "Please login to view your profile."
+    },
+    "auth": {
+        "login": {
+            "title": "Welcome Back",
+            "subtitle": "Login to your COREWAVE account.",
+            "email": "Email",
+            "password": "Password",
+            "btn": "Login",
+            "loggingIn": "Logging in...",
+            "error": "Invalid email or password",
+            "noAccount": "Don't have an account?",
+            "signUp": "Sign Up"
+        },
+        "signup": {
+            "title": "Join COREWAVE",
+            "subtitle": "Start your musical journey today.",
+            "listener": "Listener",
+            "artist": "Artist",
+            "name": "Name",
+            "namePlaceholder": "Your Name",
+            "email": "Email",
+            "password": "Password",
+            "btn": "Sign Up",
+            "creating": "Creating Account...",
+            "already": "Already have an account?",
+            "login": "Login"
+        }
+    },
+    "upload": {
+        "title": "Share your sound",
+        "subtitle": "Distribute your music to the world through COREWAVE.",
+        "steps": {
+            "audio": "Audio",
+            "metadata": "Metadata",
+            "confirm": "Confirm"
+        },
+        "dropzone": {
+            "selectFile": "Click to select your audio file",
+            "supports": "Supports MP3, WAV or FLAC",
+            "btn": "Select File"
+        },
+        "form": {
+            "cover": "Upload Cover Art",
+            "remove": "Remove",
+            "title": "Track Title",
+            "titlePlaceholder": "e.g. Midnight Waves",
+            "genre": "Genre",
+            "selectGenre": "Select Genre",
+            "mood": "Mood",
+            "moodPlaceholder": "e.g. Chill, Energetic",
+            "isAI": "Mark as AI Generated",
+            "aiNote": "Check this if the song was created with the help of AI tools.",
+            "selected": "Selected: {{name}}",
+            "change": "Change",
+            "publish": "Publish Track",
+            "uploading": "Uploading...",
+            "errors": {
+                "selectAudio": "Please select an audio file.",
+                "uploadFailed": "Upload failed: {{message}}",
+                "syncFailed": "Identity synchronization failed."
+            }
+        },
+        "success": {
+            "title": "Submission Received!",
+            "message": "\"{{title}}\" is now <strong>Under Review</strong>.",
+            "note": "You will be notified once our admin team reviews your track.",
+            "dashboard": "Go to Dashboard",
+            "another": "Upload Another"
+        },
+        "genres": {
+            "electronic": "Electronic",
+            "hipHop": "Hip Hop",
+            "ambient": "Ambient",
+            "loFi": "Lo-Fi",
+            "techno": "Techno",
+            "indie": "Indie"
+        }
+    },
+    "settings": {
+        "title": "Control Center",
+        "subtitle": "Orchestrate your identity, security, and global preferences.",
+        "tabs": {
+            "account": "Account",
+            "security": "Security",
+            "notifications": "Notifications",
+            "subscription": "Subscription",
+            "language": "Language"
+        },
+        "sidebar": {
+            "role": "Artist",
+            "syncStatus": "Global Sync Status",
+            "orchestrated": "Orchestrated",
+            "signOut": "Sign Out Session"
+        },
+        "account": {
+            "identity": "Identity Information",
+            "identityDesc": "Manage how you appear across the CoreWave ecosystem.",
+            "displayName": "Display Name",
+            "email": "Email Address",
+            "bio": "Professional Bio",
+            "bioPlaceholder": "Artist bio...",
+            "save": "Save Changes",
+            "syncing": "Syncing...",
+            "privacy": "Privacy & Discovery",
+            "privacyDesc": "Control your visibility state and discovery algorithms.",
+            "activityStatus": "Activity Status",
+            "activityStatusDesc": "Broadcast your real-time listening sessions.",
+            "dangerZone": "Danger Zone",
+            "dangerZoneDesc": "Permanent actions that cannot be undone.",
+            "deleteAccount": "Delete Account",
+            "deleteAccountDesc": "Permanently remove your profile and all associated data from CoreWave.",
+            "deleteBtn": "Delete My Identity"
+        },
+        "security": {
+            "auth": "Authentication",
+            "authDesc": "Secure your node in the network with high-entropy credentials.",
+            "currentPassword": "Current Password",
+            "newPassword": "New Password",
+            "newPasswordPlaceholder": "Minimum 12 characters",
+            "updatePassword": "Update Password",
+            "accSecurity": "Account Security",
+            "twoFactor": "Two-Factor Authentication",
+            "twoFactorDesc": "Add a secondary hardware or software layer."
+        },
+        "notifications": {
+            "delivery": "Delivery Preferences",
+            "deliveryDesc": "Configure how you receive platform updates and alerts.",
+            "emailUpdates": "Email Updates",
+            "emailUpdatesDesc": "Receive notifications about mentions and playlist adds.",
+            "pushNotifications": "Push Notifications",
+            "pushNotificationsDesc": "Real-time browser and mobile alerts."
+        },
+        "subscription": {
+            "membership": "Pro Membership",
+            "basicNode": "You are currently on the <strong>Basic</strong> node.",
+            "upgrade": "Upgrade to Pro"
+        },
+        "language": {
+            "select": "Select Planet Language",
+            "en": "English (Global)",
+            "fr": "Français",
+            "de": "Deutsch",
+            "es": "Español"
+        },
+        "toasts": {
+            "syncSuccess": "Identity synchronized with global servers.",
+            "syncError": "Synchronization failure.",
+            "orchestrationError": "Orchestration error occurred.",
+            "visualIdentity": "Visual identity updated successfully.",
+            "purgeSuccess": "Identity purged from network. Redirecting...",
+            "purgeError": "Failure to purge identity.",
+            "purgeErrorGeneric": "An error occurred during deletion.",
+            "securityInitiated": "Security protocol initiated.",
+            "featureUpdated": "{{name}} updated live."
+        },
+        "prompts": {
+            "deleteWarning": "CRITICAL WARNING: This action is permanent and will delete all your music, playlists, and profile data. Proceed with extreme caution. Type 'DELETE' in the confirm-box to proceed?",
+            "deleteConfirm": "Type 'DELETE' to confirm account destruction:",
+            "deleteAborted": "Deletion aborted. Your data is safe."
+        }
+    },
+    "user": {
+        "profile": "Profile",
+        "settings": "Settings",
+        "logout": "Logout",
+        "login": "Login",
+        "signup": "Sign Up"
+    },
+    "footer": {
+        "brandDesc": "Empowering the next generation of sound. Upload, distribute, and evolve your music career on the world's most artist-centric platform.",
+        "platform": "Platform",
+        "forArtists": "For Artists",
+        "resources": "Resources",
+        "contactSupport": "Contact Support"
+    },
+    "seo": {
+        "homeTitle": "COREWAVE RECORDS | Next-Generation Music Distribution",
+        "homeDesc": "Empowering independent artists worldwide. Upload, distribute, and stream music on the next-generation platform built for artists."
+    }
+}

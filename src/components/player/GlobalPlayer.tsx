@@ -6,11 +6,22 @@ import { useToastStore } from "@/store/useToastStore";
 import { usePlayerStore } from "@/store/usePlayerStore";
 import styles from "./GlobalPlayer.module.css";
 import { useUIStore } from "@/store/useUIStore";
-import Visualizer from "./Visualizer";
-import FullscreenOverlay from "./FullscreenOverlay";
+import dynamic from 'next/dynamic';
 import { useAudioEngineStore, globalAudioRef, resumeAudioContext } from "@/hooks/useAudioEngine";
+import { useTranslation } from 'react-i18next';
 
 import { Track } from "@/types";
+
+// Dynamic imports for heavy components
+const Visualizer = dynamic(() => import('./Visualizer'), {
+    ssr: false,
+    loading: () => <div className={styles.visualizerPlaceholder} />
+});
+
+const FullscreenOverlay = dynamic(() => import('./FullscreenOverlay'), {
+    ssr: false
+});
+
 import {
     Shuffle,
     Repeat,
@@ -28,6 +39,7 @@ import {
 } from "lucide-react";
 
 const GlobalPlayer = () => {
+    const { t } = useTranslation();
     const {
         currentTrack,
         isPlaying,
@@ -93,7 +105,7 @@ const GlobalPlayer = () => {
     const handleToggleFavorite = () => {
         if (!currentTrack) return;
         if (!session) {
-            addToast("Authentication required to like tracks. Please log in or sign up.", "info");
+            addToast(t('player.authRequiredHeart'), "info");
             return;
         }
         toggleFavorite(currentTrack.id);
@@ -216,13 +228,13 @@ const GlobalPlayer = () => {
 
                         <button className={styles.playlistBtn} onClick={() => {
                             if (!session) {
-                                addToast("Authentication required to manage playlists. Please log in or sign up.", "info");
+                                addToast(t('player.authRequired'), "info");
                                 return;
                             }
                             if (currentTrack) openPlaylistModal(currentTrack);
                         }}>
                             <ListMusic size={16} />
-                            <span>Add to Playlist</span>
+                            <span>{t('player.addToPlaylist')}</span>
                         </button>
 
                         <div className={styles.volumeControl}>
@@ -241,7 +253,7 @@ const GlobalPlayer = () => {
                             />
                         </div>
 
-                        <button className={styles.controlBtn} onClick={() => toggleFullScreen(true)} title="Expand Player">
+                        <button className={styles.controlBtn} onClick={() => toggleFullScreen(true)} title={t('player.expand')}>
                             <Maximize2 size={18} />
                         </button>
                     </div>

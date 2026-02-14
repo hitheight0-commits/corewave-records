@@ -67,7 +67,7 @@ export const initAudioContext = (element: HTMLAudioElement, setStore: (state: an
         // [EXPERTISE] Signal to the store that the hardware is now synchronized
         setStore({ isInitialized: true, analyser });
 
-        console.log("[AUDIO_ENGINE] Hardware orchestration synchronized.");
+        // Audio engine synchronized
     } catch (e) {
         console.warn("[AUDIO_ENGINE_ERROR] Context initialization failed:", e);
     }

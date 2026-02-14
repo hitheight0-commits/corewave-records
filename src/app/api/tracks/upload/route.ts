@@ -7,22 +7,18 @@ import { authOptions } from "@/lib/auth";
 export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
 
-    console.log('=== UPLOAD API DEBUG ===');
-    console.log('Session:', JSON.stringify(session, null, 2));
-    console.log('User role:', session?.user?.role);
-    console.log('Is ARTIST?', session?.user?.role === 'ARTIST');
+    // Check authentication
 
     if (!session) {
-        console.log('ERROR: No session found');
-        return NextResponse.json({ error: "Unauthorized - Not logged in" }, { status: 401 });
+        return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
     if (session.user.role !== 'ARTIST') {
-        console.log('ERROR: User is not an ARTIST, role is:', session.user.role);
+        // User is not an artist
         return NextResponse.json({ error: `Unauthorized - Role is ${session.user.role}, must be ARTIST` }, { status: 401 });
     }
 
-    console.log('Authorization passed, proceeding with upload...');
+    // Authorization passed
 
     try {
         const { audioUrl, coverUrl, title, genre, mood, isAI } = await req.json();

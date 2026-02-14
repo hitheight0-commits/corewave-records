@@ -8,8 +8,12 @@ import { Search, User, Menu, X, LogOut, Settings, HelpCircle, FileText } from 'l
 import { useSession, signOut } from 'next-auth/react';
 import { usePlayerStore } from '@/store/usePlayerStore';
 import Magnetic from '../common/Magnetic';
+import ThemeToggle from '../common/ThemeToggle';
+import LanguageSwitcher from '../common/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 export default function Header() {
+    const { t } = useTranslation();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
@@ -75,11 +79,14 @@ export default function Header() {
                 </div>
 
                 <nav className={`${styles.nav} ${isMobileMenuOpen ? styles.mobileOpen : ''}`}>
-                    <Magnetic><Link href="/" className={styles.navLink}>Home</Link></Magnetic>
-                    <Magnetic><Link href="/explore" className={styles.navLink}>Explore</Link></Magnetic>
-                    <Magnetic><Link href="/artists" className={styles.navLink}>Artists</Link></Magnetic>
+                    <Magnetic><Link href="/" className={styles.navLink}>{t('nav.home')}</Link></Magnetic>
+                    <Magnetic><Link href="/explore" className={styles.navLink}>{t('nav.explore')}</Link></Magnetic>
+                    <Magnetic><Link href="/artists" className={styles.navLink}>{t('nav.artists')}</Link></Magnetic>
                     {session?.user?.role === 'ARTIST' && (
-                        <Magnetic><Link href="/upload" className={`${styles.navLink} ${styles.uploadBtn}`}>Upload</Link></Magnetic>
+                        <>
+                            <Magnetic><Link href="/analytics" className={styles.navLink}>{t('nav.analytics') || 'Analytics'}</Link></Magnetic>
+                            <Magnetic><Link href="/upload" className={`${styles.navLink} ${styles.uploadBtn}`}>{t('nav.upload')}</Link></Magnetic>
+                        </>
                     )}
                 </nav>
 
@@ -89,7 +96,7 @@ export default function Header() {
                             <Search size={18} />
                             <input
                                 type="text"
-                                placeholder="Search everything..."
+                                placeholder={t('nav.search')}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -108,14 +115,14 @@ export default function Header() {
                                             ) : (
                                                 <img src={item.coverUrl || item.image || '/default-avatar.png'} alt={item.title || item.name} />
                                             )}
-                                            {item.type === 'artist' && <div className={styles.artistBadge}>Artist</div>}
-                                            {item.type === 'article' && <div className={styles.helpBadge}>Help</div>}
+                                            {item.type === 'artist' && <div className={styles.artistBadge}>{t('search.badges.artist')}</div>}
+                                            {item.type === 'article' && <div className={styles.helpBadge}>{t('search.badges.help')}</div>}
                                         </div>
                                         <div className={styles.resultMeta}>
                                             <span className={styles.resultTitle}>{item.title || item.name}</span>
                                             <span className={styles.resultArtist}>
-                                                {item.type === 'artist' ? 'Verified Artist' :
-                                                    item.type === 'article' ? 'Platform Guide' :
+                                                {item.type === 'artist' ? t('search.badges.verifiedArtist') :
+                                                    item.type === 'article' ? t('search.badges.platformGuide') :
                                                         item.artist}
                                             </span>
                                         </div>
@@ -124,6 +131,9 @@ export default function Header() {
                             </div>
                         )}
                     </div>
+
+                    <ThemeToggle />
+                    <LanguageSwitcher />
 
                     <div className={styles.authActions}>
                         {session ? (
@@ -135,21 +145,26 @@ export default function Header() {
                                         <span>{session.user.name?.[0] || 'U'}</span>
                                     )}
                                 </Link>
-                                <Link href="/settings" className={styles.settingsLink} title="Settings">
+                                {session.user.role === 'ARTIST' && (
+                                    <Link href="/analytics" className={styles.settingsLink} title={t('user.analytics') || 'Analytics'}>
+                                        <HelpCircle size={18} />
+                                    </Link>
+                                )}
+                                <Link href="/settings" className={styles.settingsLink} title={t('user.settings')}>
                                     <Settings size={18} />
                                 </Link>
                                 <button
                                     onClick={() => signOut()}
                                     className={styles.logoutBtn}
-                                    title="Logout"
+                                    title={t('user.logout')}
                                 >
                                     <LogOut size={18} />
                                 </button>
                             </div>
                         ) : (
                             <>
-                                <Link href="/login" className={styles.loginBtn}>Login</Link>
-                                <Link href="/signup" className="btn-primary">Sign Up</Link>
+                                <Link href="/login" className={styles.loginBtn}>{t('user.login')}</Link>
+                                <Link href="/signup" className="btn-primary">{t('user.signup')}</Link>
                             </>
                         )}
                     </div>

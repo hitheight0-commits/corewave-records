@@ -3,8 +3,10 @@
 import Link from 'next/link';
 import styles from './Footer.module.css';
 import { Twitter, Instagram, Github, Youtube, Music2, Mail } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+    const { t } = useTranslation();
     const currentYear = new Date().getFullYear();
 
     return (
@@ -16,7 +18,7 @@ const Footer = () => {
                             COREWAVE<span>RECORDS</span>
                         </Link>
                         <p className={`${styles.brandDesc} catchy-subtext`}>
-                            Empowering the next generation of sound. Upload, distribute, and evolve your music career on the world's most artist-centric platform.
+                            {t('footer.brandDesc')}
                         </p>
                         <div className={styles.socials}>
                             <a href="#" className={styles.socialIcon} aria-label="Twitter"><Twitter size={20} /></a>
@@ -27,41 +29,41 @@ const Footer = () => {
                     </div>
 
                     <div className={styles.column}>
-                        <h4>Platform</h4>
+                        <h4>{t('footer.platform')}</h4>
                         <div className={styles.links}>
-                            <Link href="/explore" className={styles.link}>Explore Music</Link>
-                            <Link href="/artists" className={styles.link}>Artists</Link>
-                            <Link href="/trending" className={styles.link}>Trending Now</Link>
-                            <Link href="/new-releases" className={styles.link}>New Releases</Link>
+                            <Link href="/explore" className={styles.link}>{t('nav.explore')}</Link>
+                            <Link href="/artists" className={styles.link}>{t('nav.artists')}</Link>
+                            <Link href="/trending" className={styles.link}>{t('nav.trending')}</Link>
+                            <Link href="/new-releases" className={styles.link}>{t('nav.newReleases')}</Link>
                         </div>
                     </div>
 
                     <div className={styles.column}>
-                        <h4>For Artists</h4>
+                        <h4>{t('footer.forArtists')}</h4>
                         <div className={styles.links}>
-                            <Link href="/upload" className={styles.link}>Upload Track</Link>
-                            <Link href="/distribution" className={styles.link}>Distribution</Link>
-                            <Link href="/analytics" className={styles.link}>Artist Analytics</Link>
-                            <Link href="/pro" className={styles.link}>CoreWave Pro</Link>
+                            <Link href="/upload" className={styles.link}>{t('nav.upload')}</Link>
+                            <Link href="/distribution" className={styles.link}>{t('nav.distribution')}</Link>
+                            <Link href="/analytics" className={styles.link}>{t('nav.analytics')}</Link>
+                            <Link href="/pro" className={styles.link}>{t('nav.corewavePro')}</Link>
                         </div>
                     </div>
 
                     <div className={styles.column}>
-                        <h4>Resources</h4>
+                        <h4>{t('footer.resources')}</h4>
                         <div className={styles.links}>
-                            <Link href="/help" className={styles.link}>Help Center</Link>
-                            <Link href="/community" className={styles.link}>Community</Link>
-                            <Link href="/terms" className={styles.link}>Terms of Service</Link>
-                            <Link href="/privacy" className={styles.link}>Privacy Policy</Link>
+                            <Link href="/help" className={styles.link}>{t('nav.helpCenter')}</Link>
+                            <Link href="/community" className={styles.link}>{t('nav.community')}</Link>
+                            <Link href="/terms" className={styles.link}>{t('nav.terms')}</Link>
+                            <Link href="/privacy" className={styles.link}>{t('nav.privacy')}</Link>
                         </div>
                     </div>
                 </div>
 
                 <div className={styles.bottom}>
-                    <p>&copy; {currentYear} COREWAVE RECORDS. All rights reserved.</p>
+                    <p>&copy; {currentYear} COREWAVE RECORDS. {t('common.allRightsReserved')}</p>
                     <div className={styles.bottomLinks}>
                         <a href="mailto:hello@corewave.io" className={styles.link} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Mail size={16} /> Contact Support
+                            <Mail size={16} /> {t('footer.contactSupport')}
                         </a>
                     </div>
                 </div>

@@ -32,7 +32,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         // Check if this approval was the tipping point (e.g. the 10th track)
         await checkAndVerifyArtist(existingTrack.artistId);
 
-        console.log(`[ADMIN_ORCHESTRATION] Track ${id} approved and publicized.`);
+        // Track approved
         return NextResponse.json({ success: true, track });
     } catch (error: any) {
         console.error("[ADMIN_ORCHESTRATION_ERROR] Approval failure:", error);

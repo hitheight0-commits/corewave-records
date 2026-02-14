@@ -8,8 +8,10 @@ import trendingStyles from '../trending/Trending.module.css'; // Reuse menu styl
 import { Play, Heart, Calendar, Music, MoreHorizontal, Loader2, Sparkles, Share2, User } from 'lucide-react';
 import { usePlayerStore, Track } from '@/store/usePlayerStore';
 import { useToastStore } from '@/store/useToastStore';
+import { useTranslation } from 'react-i18next';
 
 export default function NewReleasesPage() {
+    const { t } = useTranslation();
     const { data: session } = useSession();
     const { addToast } = useToastStore();
     const { setTrack, currentTrack, isPlaying } = usePlayerStore();
@@ -44,7 +46,7 @@ export default function NewReleasesPage() {
     const toggleFavorite = async (e: React.MouseEvent, trackId: string) => {
         e.stopPropagation();
         if (!session) {
-            addToast("Authentication required to like tracks. Please log in or sign up.", "info");
+            addToast(t('player.authRequiredHeart'), "info");
             return;
         }
 
@@ -63,22 +65,22 @@ export default function NewReleasesPage() {
                 const newIds = new Set(favoriteIds);
                 if (isFavorited) {
                     newIds.delete(trackId);
-                    addToast("Removed from favorites");
+                    addToast(t('explore.menu.removed') || "Removed from favorites");
                 } else {
                     newIds.add(trackId);
-                    addToast("Added to favorites");
+                    addToast(t('explore.menu.liked') || "Added to favorites");
                 }
                 setFavoriteIds(newIds);
             }
         } catch (err) {
-            addToast("Failed to update favorite", "error");
+            addToast(t('artists.genericError'), "error");
         }
     };
 
     const handleShare = (e: React.MouseEvent, track: Track) => {
         e.stopPropagation();
         navigator.clipboard.writeText(`${window.location.origin}/explore?track=${track.id}`);
-        addToast("Link copied to clipboard!");
+        addToast(t('common.copied') || "Link copied to clipboard!");
         setActiveMenu(null);
     };
 
@@ -86,15 +88,15 @@ export default function NewReleasesPage() {
         <div className={styles.explorePage} onClick={() => setActiveMenu(null)}>
             <div className={`container ${styles.container}`}>
                 <header className={styles.header}>
-                    <h1 className="text-gradient">New Releases</h1>
-                    <p>Be the first to hear the future of sound.</p>
+                    <h1 className="text-gradient">{t('newReleases.title')}</h1>
+                    <p>{t('newReleases.subtitle')}</p>
                 </header>
 
                 <section className={styles.section}>
                     {loading ? (
                         <div className={styles.loadingContainer}>
                             <Loader2 className="spinner" size={32} />
-                            <p>Fetching the newest entries...</p>
+                            <p>{t('common.loading')}</p>
                         </div>
                     ) : tracks.length > 0 ? (
                         <div className={styles.grid}>
@@ -117,7 +119,7 @@ export default function NewReleasesPage() {
                                             alignItems: 'center',
                                             gap: '0.3rem'
                                         }}>
-                                            <Sparkles size={10} /> NEW
+                                            <Sparkles size={10} /> {t('newReleases.badge')}
                                         </div>
                                         <button className={`${styles.playOverlay} ${currentTrack?.id === track.id && isPlaying ? styles.playing : ''}`}>
                                             <Play fill="white" size={32} />
@@ -129,7 +131,7 @@ export default function NewReleasesPage() {
                                             <p>{track.artist}</p>
                                         </div>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
-                                            <p style={{ fontSize: '0.75rem', opacity: 0.5 }}>Released Recently</p>
+                                            <p style={{ fontSize: '0.75rem', opacity: 0.5 }}>{t('home.hero.new')}</p>
                                             <div style={{ display: 'flex', gap: '0.5rem' }}>
                                                 <button
                                                     className={`${trendingStyles.actionBtn} ${favoriteIds.has(track.id) ? trendingStyles.active : ''}`}
@@ -151,8 +153,8 @@ export default function NewReleasesPage() {
                                                     </button>
                                                     {activeMenu === track.id && (
                                                         <div className={trendingStyles.dropdownMenu} style={{ background: '#111', bottom: '100%', top: 'auto', marginBottom: '0.5rem' }} onClick={(e) => e.stopPropagation()}>
-                                                            <button onClick={(e) => handleShare(e, track)}><Share2 size={14} /> Share</button>
-                                                            <button onClick={() => router.push(`/artists/${track.artistId}`)}><User size={14} /> View Artist</button>
+                                                            <button onClick={(e) => handleShare(e, track)}><Share2 size={14} /> {t('trending.menu.share')}</button>
+                                                            <button onClick={() => router.push(`/artists/${track.artistId}`)}><User size={14} /> {t('trending.menu.viewArtist')}</button>
                                                         </div>
                                                     )}
                                                 </div>
@@ -164,7 +166,7 @@ export default function NewReleasesPage() {
                         </div>
                     ) : (
                         <div className={styles.emptyState}>
-                            <p>No new releases found. Check back soon!</p>
+                            <p>{t('newReleases.noReleases')}</p>
                         </div>
                     )}
                 </section>

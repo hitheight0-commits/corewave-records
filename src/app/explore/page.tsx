@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSession } from 'next-auth/react';
 import styles from './Explore.module.css';
 import { Play, Pause, Heart, ListMusic, Maximize2, MoreVertical, Loader2 } from 'lucide-react';
@@ -9,6 +10,7 @@ import { useUIStore } from '@/store/useUIStore';
 import { useToastStore } from '@/store/useToastStore';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { GridSkeleton } from '@/components/ui/Skeleton';
 
 export default function ExplorePage() {
     return (
@@ -19,6 +21,7 @@ export default function ExplorePage() {
 }
 
 function ExploreContent() {
+    const { t } = useTranslation();
     const { setTrack, setQueue, currentTrack, isPlaying, togglePlay, toggleFullScreen, toggleFavorite, favorites } = usePlayerStore();
     const { data: session } = useSession();
     const { openPlaylistModal } = useUIStore();
@@ -77,13 +80,13 @@ function ExploreContent() {
             toggleFullScreen(true);
         } else if (action === 'playlist') {
             if (!session) {
-                addToast("Authentication required to manage playlists. Please log in or sign up.", "info");
+                addToast(t('player.authRequired'), "info");
                 return;
             }
             openPlaylistModal(track);
         } else if (action === 'like') {
             if (!session) {
-                addToast("Authentication required to like tracks. Please log in or sign up if you don't have an account.", "info");
+                addToast(t('player.authRequiredHeart'), "info");
                 return;
             }
             toggleFavorite(track.id);
@@ -94,23 +97,20 @@ function ExploreContent() {
         <main className={styles.explorePage}>
             <div className={`container ${styles.container}`}>
                 <header className={styles.header}>
-                    <h1 className="text-gradient">Explore Sound</h1>
-                    <p>Discover the next wave of global artists and sonic textures.</p>
+                    <h1 className="text-gradient">{t('explore.title')}</h1>
+                    <p>{t('explore.subtitle')}</p>
                 </header>
 
                 <section className={styles.section}>
                     <div className={styles.sectionHeader}>
-                        <h2>{activeGenre ? `${activeGenre} Tracks` : 'Trending Now'}</h2>
+                        <h2>{activeGenre ? t('explore.genreTracks', { genre: activeGenre }) : t('explore.trending')}</h2>
                         {activeGenre && (
-                            <button className={styles.seeAll} onClick={() => setActiveGenre(null)}>Clear Filter</button>
+                            <button className={styles.seeAll} onClick={() => setActiveGenre(null)}>{t('explore.clearFilter')}</button>
                         )}
                     </div>
 
                     {loading ? (
-                        <div className={styles.loadingContainer}>
-                            <Loader2 className="spinner" size={32} />
-                            <p>Loading the latest tracks...</p>
-                        </div>
+                        <GridSkeleton count={12} type="track" />
                     ) : filteredTracks.length > 0 ? (
                         <div className={styles.grid}>
                             {filteredTracks.map((track) => (
@@ -150,13 +150,13 @@ function ExploreContent() {
                                                 <div className={styles.contextMenu} onClick={(e) => e.stopPropagation()}>
                                                     <button onClick={() => handleMenuAction('like', track)}>
                                                         <Heart size={14} fill={favorites.includes(track.id) ? "#ef4444" : "none"} color={favorites.includes(track.id) ? "#ef4444" : "currentColor"} />
-                                                        {favorites.includes(track.id) ? 'Liked' : 'Like'}
+                                                        {favorites.includes(track.id) ? t('explore.menu.liked') : t('explore.menu.like')}
                                                     </button>
                                                     <button onClick={() => handleMenuAction('playlist', track)}>
-                                                        <ListMusic size={14} /> Add to Playlist
+                                                        <ListMusic size={14} /> {t('explore.menu.addToPlaylist')}
                                                     </button>
                                                     <button onClick={() => handleMenuAction('fullscreen', track)}>
-                                                        <Maximize2 size={14} /> Full Screen
+                                                        <Maximize2 size={14} /> {t('explore.menu.fullScreen')}
                                                     </button>
                                                 </div>
                                             )}
@@ -173,15 +173,15 @@ function ExploreContent() {
                         </div>
                     ) : (
                         <div className={styles.emptyState}>
-                            <p>No tracks found for this category. Stay tuned for new releases!</p>
-                            <button className="btn-outline" onClick={() => setActiveGenre(null)} style={{ marginTop: '1rem' }}>Back to all</button>
+                            <p>{t('explore.noTracks')}</p>
+                            <button className="btn-outline" onClick={() => setActiveGenre(null)} style={{ marginTop: '1rem' }}>{t('explore.backToAll')}</button>
                         </div>
                     )}
                 </section>
 
                 <section className={styles.section}>
                     <div className={styles.sectionHeader}>
-                        <h2>Browse Genres</h2>
+                        <h2>{t('explore.browseGenres')}</h2>
                     </div>
                     <div className={styles.genreGrid}>
                         {genres.map((genre) => (

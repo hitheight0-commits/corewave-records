@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { checkAndVerifyArtist } from "@/lib/verification";
 
 export const dynamic = 'force-dynamic';
 
@@ -81,11 +82,28 @@ export async function POST(
                 plays: {
                     increment: 1
                 }
-            }
+            },
+            select: { id: true, artistId: true, plays: true }
         });
 
+        // [ANALYTICS] Capture detailed play event for artist dashboard
+        // Fire-and-forget to not block response
+        const geo = request.headers.get('x-vercel-ip-country') || 'UNKNOWN';
+        prisma.playEvent.create({
+            data: {
+                trackId: id,
+                userId: session?.user?.id || null,
+                geo,
+                position: 0, // Start of track
+            }
+        }).catch((err) => console.error('[PLAY_EVENT_ERROR]', err));
+
+        // [EXPERTISE] Trigger Verification Protocol based on play count tipping points
+        // We trigger this asynchronously for performance.
+        checkAndVerifyArtist(track.artistId).catch((err: any) => console.error("Play-triggered verification failed", err));
+
         return NextResponse.json({ success: true, plays: track.plays });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Increment play error:", error);
         return NextResponse.json({ error: "Failed to increment play count" }, { status: 500 });
     }

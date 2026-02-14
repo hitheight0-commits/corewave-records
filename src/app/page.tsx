@@ -8,6 +8,7 @@ import { usePlayerStore } from "@/store/usePlayerStore";
 import { Track } from "@/types";
 import { motion } from "framer-motion";
 import GenreGrid from "@/components/home/GenreGrid";
+import { useTranslation } from 'react-i18next';
 
 const MOCK_TRACKS: Track[] = [
   { id: 'mock-1', artistId: 'mock-artist', title: 'Midnight City', artist: 'M83', coverUrl: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=400&h=400&fit=crop', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', genre: 'Electronic', duration: 240, plays: 120500 },
@@ -16,6 +17,7 @@ const MOCK_TRACKS: Track[] = [
 ];
 
 export default function Home() {
+  const { t } = useTranslation();
   const { data: session } = useSession();
   const { history: recentlyPlayed } = usePlayerStore();
   const [trendingTracks, setTrendingTracks] = useState<Track[]>([]);
@@ -41,20 +43,20 @@ export default function Home() {
   return (
     <div className="relative min-h-screen">
       <NeuralNetworkHero
-        title={"The Future of\nSound is Here."}
-        description="Join the elite circle of artists pushing the boundaries of sonic innovation. Distribute, grow, and dominate with COREWAVE."
-        badgeText="Next Generation Distribution"
-        badgeLabel="New"
+        title={t('home.hero.title')}
+        description={t('home.hero.description')}
+        badgeText={t('home.hero.badge')}
+        badgeLabel={t('home.hero.new')}
         ctaButtons={
           session ? [
-            { text: "Start Listening", href: "/explore", primary: true },
-            { text: "View Showcase", href: "#trending" }
+            { text: t('home.hero.startListening'), href: "/explore", primary: true },
+            { text: t('home.hero.viewShowcase'), href: "#trending" }
           ] : [
-            { text: "Join the Evolution", href: "/signup?role=artist", primary: true },
-            { text: "Start Listening", href: "/explore" }
+            { text: t('home.hero.joinEvolution'), href: "/signup?role=artist", primary: true },
+            { text: t('home.hero.startListening'), href: "/explore" }
           ]
         }
-        microDetails={["High-Fidelity Audio", "Global Reach", "Artist Analytics"]}
+        microDetails={[t('home.hero.detail1'), t('home.hero.detail2'), t('home.hero.detail3')]}
       />
 
       <motion.section
@@ -67,12 +69,12 @@ export default function Home() {
       >
         {recentlyPlayed.length > 0 && (
           <div style={{ marginBottom: '5rem' }}>
-            <Carousel title="Based on Activity" tracks={recentlyPlayed} />
+            <Carousel title={t('home.sections.basedOnActivity')} tracks={recentlyPlayed} />
           </div>
         )}
 
         {trendingTracks.length > 0 && (
-          <Carousel title="Trending Evolution" tracks={trendingTracks} />
+          <Carousel title={t('home.sections.trendingEvolution')} tracks={trendingTracks} />
         )}
 
         <GenreGrid />
@@ -96,12 +98,13 @@ export default function Home() {
             fontSize: '0.8rem',
             color: 'var(--corewave-blue)',
             marginBottom: '1.5rem'
-          }}>Core Features</div>
-          <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', marginBottom: '1.5rem', letterSpacing: '-0.03em' }}>
-            Crafted for the <span className="text-gradient">Next Generation</span>
-          </h2>
+          }}>{t('home.sections.coreFeatures')}</div>
+          <h2
+            style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', marginBottom: '1.5rem', letterSpacing: '-0.03em' }}
+            dangerouslySetInnerHTML={{ __html: t('home.sections.craftedForNextGen') }}
+          />
           <p className="bebas-body" style={{ color: 'var(--muted-foreground)', maxWidth: '600px', margin: '0 auto' }}>
-            Everything you need to distribute, manage, and scale your music career globally.
+            {t('home.sections.craftedForNextGenDesc')}
           </p>
         </div>
 
@@ -114,9 +117,9 @@ export default function Home() {
             <div style={{ width: '60px', height: '60px', background: 'var(--grad-primary)', borderRadius: '0', marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>
             </div>
-            <h3 className="bebas-text" style={{ fontSize: '2rem', marginBottom: '1.25rem' }}>Artist First</h3>
+            <h3 className="bebas-text" style={{ fontSize: '2rem', marginBottom: '1.25rem' }}>{t('home.features.artistFirst')}</h3>
             <p className="bebas-body" style={{ color: 'var(--muted-foreground)', fontSize: '1rem' }}>
-              Take full control of your music. Upload, manage, and track your performance with advanced analytics designed for real growth.
+              {t('home.features.artistFirstDesc')}
             </p>
           </div>
 
@@ -124,9 +127,9 @@ export default function Home() {
             <div style={{ width: '60px', height: '60px', background: 'var(--grad-primary)', borderRadius: '0', marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
             </div>
-            <h3 className="bebas-text" style={{ fontSize: '2rem', marginBottom: '1.25rem' }}>Pure Sound</h3>
+            <h3 className="bebas-text" style={{ fontSize: '2rem', marginBottom: '1.25rem' }}>{t('home.features.pureSound')}</h3>
             <p className="bebas-body" style={{ color: 'var(--muted-foreground)', fontSize: '1rem' }}>
-              Experience high-fidelity streaming without the clutter. Our platform is built on audio purity and seamless playback.
+              {t('home.features.pureSoundDesc')}
             </p>
           </div>
 
@@ -134,9 +137,9 @@ export default function Home() {
             <div style={{ width: '60px', height: '60px', background: 'var(--grad-primary)', borderRadius: '0', marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>
             </div>
-            <h3 className="bebas-text" style={{ fontSize: '2rem', marginBottom: '1.25rem' }}>Global Reach</h3>
+            <h3 className="bebas-text" style={{ fontSize: '2rem', marginBottom: '1.25rem' }}>{t('home.features.globalReach')}</h3>
             <p className="bebas-body" style={{ color: 'var(--muted-foreground)', fontSize: '1rem' }}>
-              Connect with listeners worldwide. A platform designed for global discovery, distribution, and social connectivity.
+              {t('home.features.globalReachDesc')}
             </p>
           </div>
         </div>

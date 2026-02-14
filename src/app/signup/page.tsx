@@ -4,8 +4,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from './Auth.module.css';
+import { useTranslation } from 'react-i18next';
 
 export default function Signup() {
+    const { t } = useTranslation();
     const [role, setRole] = useState<'ARTIST' | 'LISTENER'>('LISTENER');
     const [formData, setFormData] = useState({
         name: '',
@@ -48,37 +50,37 @@ export default function Signup() {
     return (
         <div className={styles.authPage}>
             <div className={styles.authCard}>
-                <h1 className={styles.title}>Join COREWAVE</h1>
-                <p className={styles.subtitle}>Start your musical journey today.</p>
+                <h1 className={styles.title}>{t('auth.signup.title')}</h1>
+                <p className={styles.subtitle}>{t('auth.signup.subtitle')}</p>
 
                 <div className={styles.roleSelector}>
                     <button
                         className={role === 'LISTENER' ? styles.activeRole : ''}
                         onClick={() => setRole('LISTENER')}
                     >
-                        Listener
+                        {t('auth.signup.listener')}
                     </button>
                     <button
                         className={role === 'ARTIST' ? styles.activeRole : ''}
                         onClick={() => setRole('ARTIST')}
                     >
-                        Artist
+                        {t('auth.signup.artist')}
                     </button>
                 </div>
 
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div className={styles.field}>
-                        <label>Name</label>
+                        <label>{t('auth.signup.name')}</label>
                         <input
                             type="text"
-                            placeholder="Your Name"
+                            placeholder={t('auth.signup.namePlaceholder')}
                             required
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         />
                     </div>
                     <div className={styles.field}>
-                        <label>Email</label>
+                        <label>{t('auth.signup.email')}</label>
                         <input
                             type="email"
                             placeholder="email@example.com"
@@ -88,7 +90,7 @@ export default function Signup() {
                         />
                     </div>
                     <div className={styles.field}>
-                        <label>Password</label>
+                        <label>{t('auth.signup.password')}</label>
                         <input
                             type="password"
                             placeholder="••••••••"
@@ -99,12 +101,12 @@ export default function Signup() {
                     </div>
 
                     <button type="submit" className="btn-primary" disabled={loading}>
-                        {loading ? 'Creating Account...' : 'Sign Up'}
+                        {loading ? t('auth.signup.creating') : t('auth.signup.btn')}
                     </button>
                 </form>
 
                 <p className={styles.foot}>
-                    Already have an account? <Link href="/login">Login</Link>
+                    {t('auth.signup.already')} <Link href="/login">{t('auth.signup.login')}</Link>
                 </p>
             </div>
         </div>

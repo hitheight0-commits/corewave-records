@@ -7,8 +7,10 @@ import styles from './ArtistProfile.module.css';
 import { Play, Music, Users, Calendar, CheckCircle, Share2, Heart, Loader2, Pause } from 'lucide-react';
 import { usePlayerStore, Track } from '@/store/usePlayerStore';
 import { useToastStore } from '@/store/useToastStore';
+import { useTranslation } from 'react-i18next';
 
 export default function ArtistProfilePage() {
+    const { t } = useTranslation();
     const { id } = useParams();
     const { data: session } = useSession();
     const { addToast } = useToastStore();
@@ -17,9 +19,7 @@ export default function ArtistProfilePage() {
     const [isFollowing, setIsFollowing] = useState(false);
     const [isLoadingFollow, setIsLoadingFollow] = useState(false);
     const { currentTrack, isPlaying, setTrack, togglePlay, setQueue } = usePlayerStore();
-
     const [prevPlays, setPrevPlays] = useState<Record<string, number>>({});
-
 
     useEffect(() => {
         if (!id) return;
@@ -30,11 +30,9 @@ export default function ArtistProfilePage() {
                 const data = await res.json();
 
                 if (data.artist) {
-                    // Update prevPlays map
                     const playMap: Record<string, number> = {};
                     data.artist.tracks.forEach((t: any) => { playMap[t.id] = t.plays; });
                     setPrevPlays(playMap);
-
                     setArtist(data.artist);
                     setLoading(false);
                 }
@@ -44,9 +42,8 @@ export default function ArtistProfilePage() {
         };
 
         fetchData();
-        const interval = setInterval(fetchData, 10000); // Optimized polling: 10s
+        const interval = setInterval(fetchData, 10000);
 
-        // Check follow status
         if (session) {
             fetch(`/api/artists/${id}/follow`)
                 .then(res => res.json())
@@ -54,9 +51,7 @@ export default function ArtistProfilePage() {
                 .catch(() => setIsFollowing(false));
         }
 
-        return () => {
-            clearInterval(interval);
-        };
+        return () => clearInterval(interval);
     }, [id, session, prevPlays]);
 
     const toggleFollow = async () => {
@@ -67,8 +62,9 @@ export default function ArtistProfilePage() {
             const res = await fetch(`/api/artists/${id}/follow`, { method });
             if (res.ok) {
                 setIsFollowing(!isFollowing);
-                addToast(isFollowing ? `Unfollowed ${artist.name}` : `Followed ${artist.name}`);
-                // Update local artist count
+                addToast(isFollowing
+                    ? t('artists.unfollowSuccess', { name: artist.name })
+                    : t('artists.followSuccess', { name: artist.name }));
                 setArtist((prev: any) => ({
                     ...prev,
                     _count: {
@@ -78,8 +74,7 @@ export default function ArtistProfilePage() {
                 }));
             }
         } catch (err) {
-            console.error("Follow toggle error:", err);
-            addToast("Failed to update follow status", "error");
+            addToast(t('artists.followError'), "error");
         } finally {
             setIsLoadingFollow(false);
         }
@@ -88,7 +83,7 @@ export default function ArtistProfilePage() {
     const handleShare = () => {
         const url = window.location.href;
         navigator.clipboard.writeText(url);
-        addToast("Profile link copied to clipboard!");
+        addToast(t('common.copied') || "Profile link copied to clipboard!");
     };
 
     if (loading) {
@@ -102,7 +97,7 @@ export default function ArtistProfilePage() {
     }
 
     if (!artist) {
-        return <div className={styles.artistPage}><div className="container">Artist not found.</div></div>;
+        return <div className={styles.artistPage}><div className="container">{t('artists.noArtists')}</div></div>;
     }
 
     return (
@@ -121,14 +116,14 @@ export default function ArtistProfilePage() {
                         <div className={styles.meta}>
                             {artist.isVerified && (
                                 <div className={styles.verified}>
-                                    <CheckCircle size={14} fill="var(--corewave-cyan)" stroke="var(--background)" /> Verified Artist
+                                    <CheckCircle size={14} fill="var(--corewave-cyan)" stroke="var(--background)" /> {t('artists.verified')}
                                 </div>
                             )}
                             <h1 className={styles.name}>{artist.name}</h1>
                             <div className={styles.stats}>
-                                <span className={styles.statItem}><Music size={16} /> {artist._count.tracks} Tracks</span>
-                                <span className={styles.statItem}><Users size={16} /> {artist._count.followedBy} Followers</span>
-                                <span className={styles.statItem}><Calendar size={16} /> Joined {new Date(artist.createdAt).getFullYear()}</span>
+                                <span className={styles.statItem}><Music size={16} /> {t('artists.tracksCount', { count: artist._count.tracks })}</span>
+                                <span className={styles.statItem}><Users size={16} /> {t('artists.followers', { count: artist._count.followedBy })}</span>
+                                <span className={styles.statItem}><Calendar size={16} /> {t('artists.joined', { year: new Date(artist.createdAt).getFullYear() })}</span>
                             </div>
                         </div>
                         <div className={styles.actions}>
@@ -139,7 +134,7 @@ export default function ArtistProfilePage() {
                                     onClick={toggleFollow}
                                     disabled={isLoadingFollow}
                                 >
-                                    {isLoadingFollow ? "..." : isFollowing ? "Following" : "Follow"}
+                                    {isLoadingFollow ? "..." : isFollowing ? t('artists.following') : t('artists.follow')}
                                 </button>
                             )}
                             <button
@@ -157,20 +152,18 @@ export default function ArtistProfilePage() {
                     <main>
                         <section>
                             <div className={styles.sectionHeader}>
-                                <h2>Popular Tracks</h2>
+                                <h2>{t('artists.popularTracks')}</h2>
                                 <button
                                     className="btn-outline"
                                     style={{ padding: '0.4rem 1rem', fontSize: '0.85rem' }}
                                     onClick={() => {
                                         if (artist.tracks.length > 0) {
-                                            // [EXPERTISE] We initialize the first track and synchronize the REMAINING tracks to the queue.
-                                            // This ensures that the state machine correctly identifies the 'Up Next' assets.
                                             setTrack(artist.tracks[0]);
                                             setQueue(artist.tracks.slice(1));
                                         }
                                     }}
                                 >
-                                    Play All
+                                    {t('artists.playAll')}
                                 </button>
                             </div>
 
@@ -185,7 +178,7 @@ export default function ArtistProfilePage() {
                                         </div>
                                         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '2rem' }}>
                                             <div className={styles.playCount}>
-                                                {track.plays?.toLocaleString() || 0} plays
+                                                {t('artists.playsCount', { count: track.plays || 0 })}
                                             </div>
                                             <button
                                                 className={styles.playBtn}
@@ -194,10 +187,8 @@ export default function ArtistProfilePage() {
                                                         togglePlay();
                                                     } else {
                                                         setTrack(track);
-                                                        // [EXPERTISE] Sync the subsequence of tracks to the global queue.
                                                         const remaining = artist.tracks.slice(index + 1);
                                                         setQueue(remaining);
-
                                                     }
                                                 }}
                                             >
@@ -216,16 +207,16 @@ export default function ArtistProfilePage() {
 
                     <aside>
                         <div className={styles.sidebarSection}>
-                            <h3>About Artist</h3>
+                            <h3>{t('artists.about')}</h3>
                             <p className={styles.bio}>
-                                {artist.bio || "This artist hasn't added a bio yet. They're too busy making incredible music that pushes the boundaries of sound."}
+                                {artist.bio || t('artists.noBio')}
                             </p>
                         </div>
 
                         <div className={styles.sidebarSection}>
-                            <h3>Similar to {artist.name}</h3>
+                            <h3>{t('artists.similarTo', { name: artist.name })}</h3>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                <p style={{ color: 'var(--muted-foreground)', fontSize: '0.9rem' }}>Discovery engine is analyzing sound patterns...</p>
+                                <p style={{ color: 'var(--muted-foreground)', fontSize: '0.9rem' }}>{t('artists.discoveryEngine')}</p>
                             </div>
                         </div>
                     </aside>

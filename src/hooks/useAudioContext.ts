@@ -40,7 +40,7 @@ export function useAudioContext(audioRef: React.RefObject<HTMLAudioElement | nul
                 }
 
                 initialized.current = true;
-                console.log("[AUDIO_PIPELINE] Global orchestration synchronized.");
+                // Audio context initialized
             } catch (error) {
                 console.warn("[AUDIO_PIPELINE_ERROR] Connection failure:", error);
             }

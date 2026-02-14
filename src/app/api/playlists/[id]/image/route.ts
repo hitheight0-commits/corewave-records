@@ -54,7 +54,7 @@ export async function POST(
             },
         });
 
-        console.log(`[PLAYLIST_IMAGE_SYNC] Node ${playlistId} updated with new visual identity: ${imageUrl}`);
+        // Playlist image updated
         return NextResponse.json({ imageUrl: updatedPlaylist.coverUrl });
     } catch (error: any) {
         console.error("[PLAYLIST_IMAGE_CRITICAL] Internal failure:", error);

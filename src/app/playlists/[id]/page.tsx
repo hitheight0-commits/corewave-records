@@ -7,12 +7,14 @@ import { ChevronLeft, Play, Clock, Music, Loader2, MoreHorizontal, ListMusic, Ca
 import styles from "./Playlist.module.css";
 import { usePlayerStore, Track } from "@/store/usePlayerStore";
 import { useToastStore } from "@/store/useToastStore";
+import { useTranslation } from "react-i18next";
 
 interface PlaylistPageProps {
     params: Promise<{ id: string }>;
 }
 
 export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
+    const { t } = useTranslation();
     const { id } = use(params);
     const { data: session } = useSession();
     const { setTrack, currentTrack, isPlaying, togglePlay } = usePlayerStore();
@@ -69,12 +71,12 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
 
             if (data.imageUrl) {
                 setPlaylist({ ...playlist, coverUrl: data.imageUrl });
-                addToast("Visual identity updated successfully.");
+                addToast(t('playlists.imageSuccess'));
             } else {
-                addToast(data.error || "Image synchronization failed.", "error");
+                addToast(data.error || t('common.genericError'), "error");
             }
         } catch (err) {
-            addToast("Global orchestration error.", "error");
+            addToast(t('artists.genericError'), "error");
         } finally {
             setUploading(false);
         }
@@ -92,10 +94,10 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
             if (data.playlist) {
                 setPlaylist({ ...playlist, name: data.playlist.name });
                 setIsRenaming(false);
-                addToast("Node metadata updated.");
+                addToast(t('playlists.metaUpdate'));
             }
         } catch (err) {
-            addToast("Rename synchronization failure.", "error");
+            addToast(t('artists.genericError'), "error");
         }
     };
 
@@ -109,11 +111,11 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
                     ...playlist,
                     tracks: playlist.tracks.filter((t: any) => t.id !== trackId)
                 });
-                addToast("Track removed from node.");
+                addToast(t('playlists.trackRemoved'));
                 setActiveTrackMenu(null);
             }
         } catch (err) {
-            addToast("Orchestration removal failure.", "error");
+            addToast(t('artists.genericError'), "error");
         }
     };
 
@@ -121,7 +123,7 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
         return (
             <div className={styles.centerBox}>
                 <Loader2 className="spinner" size={48} color="var(--corewave-cyan)" />
-                <p>Synchronizing node data...</p>
+                <p>{t('playlists.syncing')}</p>
             </div>
         );
     }
@@ -129,10 +131,10 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
     if (error || !playlist) {
         return (
             <div className={styles.centerBox}>
-                <h2 className="text-gradient">404: Node Missing</h2>
-                <p>{error || "The requested orchestration node could not be localized."}</p>
+                <h2 className="text-gradient">{t('playlists.notFound')}</h2>
+                <p>{error || t('playlists.notFoundSubtitle')}</p>
                 <Link href="/profile" className="btn-primary" style={{ marginTop: '2rem' }}>
-                    Return to Profile
+                    {t('playlists.returnToProfile')}
                 </Link>
             </div>
         );
@@ -146,7 +148,7 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
             <div className={`container ${styles.container}`}>
                 <Link href="/profile" className={styles.backBtn}>
                     <ChevronLeft size={20} />
-                    Back to Profile
+                    {t('playlists.backToProfile')}
                 </Link>
 
                 <header className={styles.header}>
@@ -162,7 +164,7 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
                             {isOwner && (
                                 <div className={styles.editOverlay} onClick={() => fileInputRef.current?.click()}>
                                     {uploading ? <Loader2 className="spinner" size={24} /> : <Camera size={24} />}
-                                    <span>Change Identity</span>
+                                    <span>{t('playlists.changeIdentity')}</span>
                                 </div>
                             )}
                         </div>
@@ -177,7 +179,7 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
                     </div>
 
                     <div className={styles.headerMeta}>
-                        <span className={styles.tag}>PLAYLIST NODE</span>
+                        <span className={styles.tag}>{t('playlists.tag')}</span>
                         {isRenaming ? (
                             <div className={styles.renameWrapper}>
                                 <input
@@ -190,7 +192,7 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
                                         if (e.key === "Escape") setIsRenaming(false);
                                     }}
                                 />
-                                <button onClick={handleRename} className={styles.renameBtn}><Loader2 size={16} className={styles.syncIcon} /> Sync</button>
+                                <button onClick={handleRename} className={styles.renameBtn}><Loader2 size={16} className={styles.syncIcon} /> {t('playlists.sync')}</button>
                                 <button onClick={() => setIsRenaming(false)} className={styles.cancelBtn}><X size={16} /></button>
                             </div>
                         ) : (
@@ -204,7 +206,7 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
                             />
                             <span className={styles.userName}>{playlist.user?.name}</span>
                             <span className={styles.dot}>•</span>
-                            <span>{tracks.length} tracks synchronized</span>
+                            <span>{t('playlists.tracksSynchronized', { count: tracks.length })}</span>
                         </div>
                     </div>
                 </header>
@@ -215,12 +217,12 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
                         onClick={() => tracks.length > 0 && setTrack(tracks[0])}
                     >
                         <Play fill="currentColor" size={24} />
-                        Play Node
+                        {t('playlists.playNode')}
                     </button>
                     {isOwner && (
                         <button className={styles.editBtn} onClick={(e) => { e.stopPropagation(); setIsRenaming(!isRenaming); }}>
                             <Edit2 size={18} />
-                            Modify Node
+                            {t('playlists.modifyNode')}
                         </button>
                     )}
                 </div>
@@ -228,8 +230,8 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
                 <section className={styles.trackSection}>
                     <div className={styles.tableHeader}>
                         <div className={styles.colNumber}>#</div>
-                        <div className={styles.colTitle}>Title</div>
-                        <div className={styles.colGenre}>Genre</div>
+                        <div className={styles.colTitle}>{t('playlists.title')}</div>
+                        <div className={styles.colGenre}>{t('playlists.genre')}</div>
                         <div className={styles.colDuration}><Clock size={16} /></div>
                     </div>
 
@@ -237,9 +239,9 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
                         {tracks.length === 0 ? (
                             <div className={styles.emptyState}>
                                 <Music size={48} opacity={0.2} />
-                                <p>No tracks orchestrated in this node yet.</p>
+                                <p>{t('playlists.empty')}</p>
                                 <Link href="/explore" className="btn-outline" style={{ marginTop: '1rem' }}>
-                                    Explore Music
+                                    {t('playlists.explore')}
                                 </Link>
                             </div>
                         ) : (
@@ -284,7 +286,7 @@ export default function PlaylistDetailPage({ params }: PlaylistPageProps) {
                                             {activeTrackMenu === track.id && isOwner && (
                                                 <div className={styles.trackMenu} onClick={(e) => e.stopPropagation()}>
                                                     <button className={styles.menuItemDelete} onClick={() => removeTrack(track.id)}>
-                                                        <Trash2 size={14} /> Remove Track
+                                                        <Trash2 size={14} /> {t('playlists.removeTrack')}
                                                     </button>
                                                 </div>
                                             )}

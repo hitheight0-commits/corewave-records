@@ -5,8 +5,10 @@ import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import styles from './Auth.module.css';
+import { useTranslation } from 'react-i18next';
 
 export default function Login() {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -27,7 +29,7 @@ export default function Login() {
         });
 
         if (result?.error) {
-            setError('Invalid email or password');
+            setError(t('auth.login.error'));
             setLoading(false);
         } else {
             router.push('/');
@@ -38,14 +40,14 @@ export default function Login() {
     return (
         <div className={styles.authPage}>
             <div className={styles.authCard}>
-                <h1 className={styles.title}>Welcome Back</h1>
-                <p className={styles.subtitle}>Login to your COREWAVE account.</p>
+                <h1 className={styles.title}>{t('auth.login.title')}</h1>
+                <p className={styles.subtitle}>{t('auth.login.subtitle')}</p>
 
                 {error && <p style={{ color: 'var(--destructive)', textAlign: 'center', marginBottom: '1rem', fontSize: '0.9rem' }}>{error}</p>}
 
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div className={styles.field}>
-                        <label>Email</label>
+                        <label>{t('auth.login.email')}</label>
                         <input
                             type="email"
                             placeholder="email@example.com"
@@ -55,7 +57,7 @@ export default function Login() {
                         />
                     </div>
                     <div className={styles.field}>
-                        <label>Password</label>
+                        <label>{t('auth.login.password')}</label>
                         <input
                             type="password"
                             placeholder="••••••••"
@@ -66,12 +68,12 @@ export default function Login() {
                     </div>
 
                     <button type="submit" className="btn-primary" disabled={loading}>
-                        {loading ? 'Logging in...' : 'Login'}
+                        {loading ? t('auth.login.loggingIn') : t('auth.login.btn')}
                     </button>
                 </form>
 
                 <p className={styles.foot}>
-                    Don't have an account? <Link href="/signup">Sign Up</Link>
+                    {t('auth.login.noAccount')} <Link href="/signup">{t('auth.login.signUp')}</Link>
                 </p>
             </div>
         </div>

@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './Upload.module.css';
 import { Upload, Music, Image as ImageIcon, CheckCircle, Loader2, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { upload } from '@vercel/blob/client';
 
 export default function UploadPage() {
+    const { t } = useTranslation();
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -49,7 +51,7 @@ export default function UploadPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!audioFile) {
-            alert("Please select an audio file.");
+            alert(t('upload.form.errors.selectAudio'));
             return;
         }
 
@@ -60,14 +62,14 @@ export default function UploadPage() {
             // We initiate the high-bandwidth uploads directly to the cloud store from the client.
             // This bypasses the 4.5MB serverless payload wall.
 
-            console.log("[STORAGE_ORCHESTRATION] Starting direct cloud transmission for media...");
+            // Starting cloud upload
 
             // 1. Audio Upload (Critical Path)
             const audioBlob = await upload(audioFile.name, audioFile, {
                 access: 'public',
                 handleUploadUrl: '/api/storage/token',
             });
-            console.log("[STORAGE_SYNC] Audio synchronized:", audioBlob.url);
+            // Audio uploaded
 
             // 2. Cover Art Upload (Optional Path)
             let coverUrl = "/default-cover.jpg";
@@ -77,12 +79,12 @@ export default function UploadPage() {
                     handleUploadUrl: '/api/storage/token',
                 });
                 coverUrl = coverBlob.url;
-                console.log("[STORAGE_SYNC] Cover art synchronized:", coverUrl);
+                // Cover art uploaded
             }
 
             // 3. Metadata Finalization (Control Path)
             // Once media is atomic in the cloud, we sync the operational metadata via the control API.
-            console.log("[CONTROL_SYNC] Finalizing track orchestration in core database...");
+            // Finalizing track creation
             const res = await fetch('/api/tracks/upload', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -99,14 +101,14 @@ export default function UploadPage() {
             const result = await res.json();
 
             if (!res.ok) {
-                throw new Error(result.error || 'Identity synchronization failed.');
+                throw new Error(result.error || t('upload.form.errors.syncFailed'));
             }
 
-            console.log("[ORCHESTRATION_COMPLETE] Track record finalized.");
+            // Track created successfully
             router.push('/upload/success');
         } catch (err: any) {
             console.error("[ORCHESTRATION_CRITICAL] Failure in media pipeline:", err);
-            alert(`Upload failed: ${err.message}`);
+            alert(t('upload.form.errors.uploadFailed', { message: err.message }));
         } finally {
             setLoading(false);
         }
@@ -116,14 +118,14 @@ export default function UploadPage() {
         <div className={styles.uploadPage}>
             <div className={`container ${styles.container}`}>
                 <div className={styles.header}>
-                    <h1>Share your sound</h1>
-                    <p>Distribute your music to the world through COREWAVE.</p>
+                    <h1>{t('upload.title')}</h1>
+                    <p>{t('upload.subtitle')}</p>
                 </div>
 
                 <div className={styles.stepper}>
-                    <div className={`${styles.step} ${step >= 1 ? styles.active : ''}`}>1. Audio</div>
-                    <div className={`${styles.step} ${step >= 2 ? styles.active : ''}`}>2. Metadata</div>
-                    <div className={`${styles.step} ${step >= 3 ? styles.active : ''}`}>3. Confirm</div>
+                    <div className={`${styles.step} ${step >= 1 ? styles.active : ''}`}>1. {t('upload.steps.audio')}</div>
+                    <div className={`${styles.step} ${step >= 2 ? styles.active : ''}`}>2. {t('upload.steps.metadata')}</div>
+                    <div className={`${styles.step} ${step >= 3 ? styles.active : ''}`}>3. {t('upload.steps.confirm')}</div>
                 </div>
 
                 <div className={`premium-card ${styles.card}`}>
@@ -141,13 +143,13 @@ export default function UploadPage() {
                                 onClick={() => audioInputRef.current?.click()}
                             >
                                 <Upload size={48} className={styles.uploadIcon} />
-                                <h3>Click to select your audio file</h3>
-                                <p>Supports MP3, WAV or FLAC</p>
+                                <h3>{t('upload.dropzone.selectFile')}</h3>
+                                <p>{t('upload.dropzone.supports')}</p>
                                 <button
                                     className="btn-primary"
                                     style={{ marginTop: '1.5rem' }}
                                 >
-                                    Select File
+                                    {t('upload.dropzone.btn')}
                                 </button>
                             </div>
                         </div>
@@ -172,48 +174,48 @@ export default function UploadPage() {
                                         {!coverPreview && (
                                             <div className={styles.imagePlaceholder}>
                                                 <ImageIcon size={32} />
-                                                <span>Upload Cover Art</span>
+                                                <span>{t('upload.form.cover')}</span>
                                             </div>
                                         )}
                                     </div>
                                     {coverPreview && (
                                         <button type="button" className={styles.removeImage} onClick={() => { setCoverFile(null); setCoverPreview(null) }}>
-                                            <X size={14} /> Remove
+                                            <X size={14} /> {t('upload.form.remove')}
                                         </button>
                                     )}
                                 </div>
 
                                 <div className={styles.inputs}>
                                     <div className={styles.field}>
-                                        <label>Track Title</label>
+                                        <label>{t('upload.form.title')}</label>
                                         <input
                                             type="text"
-                                            placeholder="e.g. Midnight Waves"
+                                            placeholder={t('upload.form.titlePlaceholder')}
                                             required
                                             value={formData.title}
                                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                         />
                                     </div>
                                     <div className={styles.field}>
-                                        <label>Genre</label>
+                                        <label>{t('upload.form.genre')}</label>
                                         <select
                                             value={formData.genre}
                                             onChange={(e) => setFormData({ ...formData, genre: e.target.value })}
                                         >
-                                            <option value="">Select Genre</option>
-                                            <option value="Electronic">Electronic</option>
-                                            <option value="Hip Hop">Hip Hop</option>
-                                            <option value="Lo-Fi">Lo-Fi</option>
-                                            <option value="Ambient">Ambient</option>
-                                            <option value="Techno">Techno</option>
-                                            <option value="Indie">Indie</option>
+                                            <option value="">{t('upload.form.selectGenre')}</option>
+                                            <option value="Electronic">{t('upload.genres.electronic')}</option>
+                                            <option value="Hip Hop">{t('upload.genres.hipHop')}</option>
+                                            <option value="Lo-Fi">{t('upload.genres.loFi')}</option>
+                                            <option value="Ambient">{t('upload.genres.ambient')}</option>
+                                            <option value="Techno">{t('upload.genres.techno')}</option>
+                                            <option value="Indie">{t('upload.genres.indie')}</option>
                                         </select>
                                     </div>
                                     <div className={styles.field}>
-                                        <label>Mood</label>
+                                        <label>{t('upload.form.mood')}</label>
                                         <input
                                             type="text"
-                                            placeholder="e.g. Chill, Energetic"
+                                            placeholder={t('upload.form.moodPlaceholder')}
                                             value={formData.mood}
                                             onChange={(e) => setFormData({ ...formData, mood: e.target.value })}
                                         />
@@ -225,23 +227,23 @@ export default function UploadPage() {
                                                 checked={formData.isAI}
                                                 onChange={(e) => setFormData({ ...formData, isAI: e.target.checked })}
                                             />
-                                            Mark as AI Generated
+                                            {t('upload.form.isAI')}
                                         </label>
-                                        <p className={styles.fieldNote}>Check this if the song was created with the help of AI tools.</p>
+                                        <p className={styles.fieldNote}>{t('upload.form.aiNote')}</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div className={styles.fileStatus}>
                                 <Music size={18} />
-                                <span>Selected: {audioFile?.name}</span>
-                                <button type="button" onClick={() => setStep(1)} className={styles.changeBtn}>Change</button>
+                                <span>{t('upload.form.selected', { name: audioFile?.name })}</span>
+                                <button type="button" onClick={() => setStep(1)} className={styles.changeBtn}>{t('upload.form.change')}</button>
                             </div>
 
                             <div className={styles.actions}>
-                                <button type="button" onClick={() => setStep(1)} className="btn-outline">Back</button>
+                                <button type="button" onClick={() => setStep(1)} className="btn-outline">{t('common.back')}</button>
                                 <button type="submit" className="btn-primary" disabled={loading}>
-                                    {loading ? <><Loader2 className={styles.spin} size={18} /> Uploading...</> : 'Publish Track'}
+                                    {loading ? <><Loader2 className={styles.spin} size={18} /> {t('upload.form.uploading')}</> : t('upload.form.publish')}
                                 </button>
                             </div>
                         </form>
@@ -250,15 +252,15 @@ export default function UploadPage() {
                     {step === 3 && (
                         <div className={styles.success}>
                             <CheckCircle size={64} color="var(--corewave-blue)" />
-                            <h2>Submission Received!</h2>
-                            <p>"{formData.title}" is now <strong>Under Review</strong>.</p>
-                            <p className={styles.reviewNote}>You will be notified once our admin team reviews your track.</p>
+                            <h2>{t('upload.success.title')}</h2>
+                            <p dangerouslySetInnerHTML={{ __html: t('upload.success.message', { title: formData.title }) }} />
+                            <p className={styles.reviewNote}>{t('upload.success.note')}</p>
                             <div className={styles.successActions}>
                                 <button
                                     className="btn-primary"
                                     onClick={() => router.push('/profile')}
                                 >
-                                    Go to Dashboard
+                                    {t('upload.success.dashboard')}
                                 </button>
                                 <button
                                     className="btn-outline"
@@ -270,7 +272,7 @@ export default function UploadPage() {
                                         setFormData({ title: '', genre: '', mood: '', description: '', isAI: false });
                                     }}
                                 >
-                                    Upload Another
+                                    {t('upload.success.another')}
                                 </button>
                             </div>
                         </div>

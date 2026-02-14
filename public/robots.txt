@@ -1,0 +1,18 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /admin
+
+# Allow search engines to crawl public pages
+Allow: /explore
+Allow: /artists
+Allow: /trending
+Allow: /new-releases
+Allow: /community
+Allow: /help
+
+# Sitemap
+Sitemap: https://corewave-records.vercel.app/sitemap.xml

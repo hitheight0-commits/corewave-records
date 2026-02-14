@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 
+import { checkAndVerifyArtist } from '@/lib/verification';
+
 export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
@@ -47,6 +49,9 @@ export async function POST(
             }
         });
 
+        // [EXPERTISE] Trigger Verification Protocol for the artist being followed
+        checkAndVerifyArtist(id).catch(err => console.error("Follow-triggered verification failed", err));
+
         return NextResponse.json({ success: true });
     } catch (error) {
         console.error('Follow error:', error);
@@ -73,6 +78,9 @@ export async function DELETE(
                 }
             }
         });
+
+        // [EXPERTISE] Re-evaluate verification status (may have dropped below threshold)
+        checkAndVerifyArtist(id).catch(err => console.error("Unfollow-triggered verification failed", err));
 
         return NextResponse.json({ success: true });
     } catch (error) {

@@ -1,0 +1,108 @@
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  will-change: background-position;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Track Card Skeleton */
+.trackCardSkeleton {
+  width: 100%;
+}
+
+.trackCardSkeleton .cover {
+  margin-bottom: 1rem;
+  aspect-ratio: 1;
+}
+
+.trackCardSkeleton .info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Artist Card Skeleton */
+.artistCardSkeleton {
+  width: 100%;
+  padding: 2.5rem;
+  background: rgba(20, 20, 25, 0.95);
+  border: 1px solid var(--border);
+}
+
+.artistCardSkeleton .avatar {
+  margin: 0 auto 2rem;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.artistCardSkeleton .info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.artistCardSkeleton .buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+/* Trending Item Skeleton */
+.trendingItemSkeleton {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(20, 20, 25, 0.95);
+  border: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+.trendingItemSkeleton .rank {
+  flex-shrink: 0;
+}
+
+.trendingItemSkeleton .cover {
+  flex-shrink: 0;
+}
+
+.trendingItemSkeleton .info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.trendingItemSkeleton .trend {
+  margin-left: auto;
+}
+
+/* Grid Layouts */
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.listGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}

@@ -1,0 +1,417 @@
+{
+    "common": {
+        "back": "Retour",
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "loading": "Chargement...",
+        "error": "Erreur",
+        "success": "Succès",
+        "allRightsReserved": "Tous droits réservés."
+    },
+    "nav": {
+        "home": "Accueil",
+        "explore": "Explorer",
+        "artists": "Artistes",
+        "upload": "Téléverser un titre",
+        "search": "Rechercher...",
+        "trending": "Tendances",
+        "newReleases": "Nouvelles Sorties",
+        "distribution": "Distribution",
+        "analytics": "Analyses d'artiste",
+        "corewavePro": "CoreWave Pro",
+        "helpCenter": "Centre d'aide",
+        "community": "Communauté",
+        "terms": "Conditions d'utilisation",
+        "privacy": "Politique de confidentialité"
+    },
+    "search": {
+        "placeholder": "Découvrez des artistes, titres ou genres...",
+        "loading": "Recherche sur le réseau...",
+        "filters": {
+            "all": "Tous les Nœuds",
+            "tracks": "Titres",
+            "artists": "Artistes"
+        },
+        "empty": {
+            "title": "Commencez votre découverte",
+            "suggestions": {
+                "electronic": "Évolution Électronique",
+                "oblivera": "Oblivera",
+                "chill": "Lo-Fi Chill"
+            }
+        },
+        "noResults": "Aucun résultat trouvé pour \"{{query}}\"",
+        "shortcuts": {
+            "navigate": "/ flèches pour naviguer",
+            "select": "Entrée pour sélectionner",
+            "close": "Esc pour fermer"
+        },
+        "badges": {
+            "artist": "Artiste",
+            "help": "Aide",
+            "verifiedArtist": "Artiste Vérifié",
+            "platformGuide": "Guide de Plateforme"
+        }
+    },
+    "player": {
+        "addToPlaylist": "Ajouter à la playlist",
+        "expand": "Agrandir le lecteur",
+        "authRequired": "Authentification requise pour gérer les playlists. Veuillez vous connecter ou vous inscrire.",
+        "authRequiredHeart": "Authentification requise pour aimer les titres. Veuillez vous connecter ou vous inscrire."
+    },
+    "home": {
+        "hero": {
+            "title": "Le futur du\nson est ici.",
+            "description": "Rejoignez le cercle d'élite des artistes qui repoussent les limites de l'innovation sonore. Distribuez, grandissez et dominez avec COREWAVE.",
+            "badge": "Distribution de Nouvelle Génération",
+            "new": "Nouveau",
+            "startListening": "Commencer l'écoute",
+            "viewShowcase": "Voir la vitrine",
+            "joinEvolution": "Rejoindre l'évolution",
+            "detail1": "Audio Haute Fidélité",
+            "detail2": "Portée Mondiale",
+            "detail3": "Analyses d'Artiste"
+        },
+        "sections": {
+            "basedOnActivity": "Basé sur l'activité",
+            "trendingEvolution": "Évolution des tendances",
+            "coreFeatures": "Fonctionnalités clés",
+            "craftedForNextGen": "Conçu pour la <span className=\"text-gradient\">Nouvelle Génération</span>",
+            "craftedForNextGenDesc": "Tout ce dont vous avez besoin pour distribuer, gérer et développer votre carrière musicale à l'échelle mondiale."
+        },
+        "features": {
+            "artistFirst": "L'artiste d'abord",
+            "artistFirstDesc": "Prenez le contrôle total de votre musique. Téléchargez, gérez et suivez vos performances avec des analyses avancées conçues pour une réelle croissance.",
+            "pureSound": "Son Pur",
+            "pureSoundDesc": "Découvrez le streaming haute fidélité sans encombrement. Notre plateforme est bâtie sur la pureté audio et une lecture fluide.",
+            "globalReach": "Portée Mondiale",
+            "globalReachDesc": "Connectez-vous avec des auditeurs du monde entier. Une plateforme conçue pour la découverte globale, la distribution et la connectivité sociale."
+        }
+    },
+    "explore": {
+        "title": "Explorer le son",
+        "subtitle": "Découvrez la prochaine vague d'artistes mondiaux et de textures sonores.",
+        "trending": "Tendances actuelles",
+        "browseGenres": "Parcourir les genres",
+        "clearFilter": "Effacer le filtre",
+        "backToAll": "Retour à tout",
+        "noTracks": "Aucun titre trouvé dans cette catégorie. Restez à l'écoute pour les nouveautés !",
+        "genreTracks": "Titres {{genre}}",
+        "menu": {
+            "like": "J'aime",
+            "liked": "Aimé",
+            "addToPlaylist": "Ajouter à la playlist",
+            "fullScreen": "Plein écran"
+        }
+    },
+    "trending": {
+        "title": "Tendances actuelles",
+        "subtitle": "Les sons les plus évolués de l'écosystème en ce moment.",
+        "badge": "Tendances en direct",
+        "menu": {
+            "share": "Partager",
+            "viewArtist": "Voir l'artiste"
+        }
+    },
+    "newReleases": {
+        "title": "Nouvelles sorties",
+        "subtitle": "Sons frais tout juste publiés dans l'écosystème.",
+        "badge": "Récent",
+        "noReleases": "Aucune nouvelle sortie trouvée aujourd'hui."
+    },
+    "artists": {
+        "title": "Artistes",
+        "subtitle": "Rencontrez les créateurs de l'écosystème COREWAVE.",
+        "follow": "Suivre",
+        "following": "Abonné",
+        "followers": "{{count}} Abonnés",
+        "profile": "Voir le profil",
+        "noArtists": "Aucun artiste trouvé dans l'écosystème pour le moment.",
+        "followSuccess": "Vous suivez maintenant {{name}}",
+        "unfollowSuccess": "Désabonné de {{name}}",
+        "followError": "Échec de la mise à jour du statut d'abonnement",
+        "loginToFollow": "Veuillez vous connecter pour suivre des artistes",
+        "genericError": "Une erreur est survenue. Veuillez réessayer.",
+        "verified": "Artiste vérifié",
+        "tracksCount": "{{count}} Titres",
+        "joined": "A rejoint en {{year}}",
+        "popularTracks": "Titres populaires",
+        "playAll": "Tout lire",
+        "playsCount": "{{count}} écoutes",
+        "about": "À propos de l'artiste",
+        "noBio": "Cet artiste n'a pas encore ajouté de biographie. Il est trop occupé à créer de la musique incroyable qui repousse les limites du son.",
+        "similarTo": "Similaire à {{name}}",
+        "discoveryEngine": "Le moteur de découverte analyse les schémas sonores..."
+    },
+    "playlists": {
+        "syncing": "Synchronisation des données du nœud...",
+        "notFound": "404 : Nœud manquant",
+        "notFoundSubtitle": "Le nœud d'orchestration demandé n'a pas pu être localisé.",
+        "returnToProfile": "Retour au profil",
+        "backToProfile": "Retour au profil",
+        "tag": "NŒUD DE PLAYLIST",
+        "sync": "Sync",
+        "tracksSynchronized": "{{count}} titres synchronisés",
+        "playNode": "Lire le nœud",
+        "modifyNode": "Modifier le nœud",
+        "title": "Titre",
+        "genre": "Genre",
+        "removeTrack": "Retirer le titre",
+        "empty": "Aucun titre orchestré dans ce nœud pour le moment.",
+        "explore": "Explorer la musique",
+        "metaUpdate": "Métadonnées du nœud mises à jour.",
+        "trackRemoved": "Titre retiré du nœud.",
+        "imageSuccess": "Identité visuelle mise à jour avec succès.",
+        "changeIdentity": "Changer l'identité"
+    },
+    "profile": {
+        "title": "Profil",
+        "editProfile": "Modifier le profil",
+        "noBio": "Pas encore de biographie.",
+        "tracks": "Titres",
+        "followers": "Abonnés",
+        "following": "Abonnements",
+        "playlists": "Playlists",
+        "favorites": "Favoris",
+        "verificationProtocol": "Protocole de vérification",
+        "verificationBadge": "Remplissez les critères pour obtenir le Badge Bleu",
+        "criteriaVisual": "Identité visuelle définie",
+        "criteriaBio": "Biographie professionnelle",
+        "criteriaTracks": "Sorties approuvées",
+        "criteriaFollowers": "Portée communautaire",
+        "criteriaPlays": "Densité d'écoute",
+        "editModalTitle": "Modifier le profil",
+        "changePhoto": "Changer la photo de profil",
+        "displayName": "Nom d'affichage",
+        "shortBio": "Biographie courte",
+        "saveChanges": "Enregistrer les modifications",
+        "saving": "Enregistrement...",
+        "modifyTrack": "Modifier le titre",
+        "trackTitle": "Titre du morceau",
+        "genre": "Genre",
+        "mood": "Ambiance",
+        "updateMetadata": "Mettre à jour les métadonnées",
+        "syncing": "Synchronisation...",
+        "tabs": {
+            "uploads": "Ma musique",
+            "playlists": "Playlists",
+            "favorites": "Favoris",
+            "following": "Abonnements"
+        },
+        "sectionHeaders": {
+            "uploads": "Vos publications",
+            "collections": "Vos collections",
+            "favorites": "Vos favoris",
+            "followedArtists": "Artistes que vous suivez"
+        },
+        "btnUploadNew": "Publier un titre",
+        "empty": {
+            "noTracks": "Aucun titre pour le moment",
+            "noTracksSub": "Commencez votre carrière en publiant votre premier titre.",
+            "uploadNow": "Publier maintenant",
+            "noPlaylists": "Aucune playlist détectée",
+            "noPlaylistsSub": "Créez votre premier nœud d'orchestration dans le lecteur de musique.",
+            "noFavorites": "Aucun favori pour le moment",
+            "noFavoritesSub": "Aimez des titres depuis le lecteur pour les voir ici.",
+            "exploreMusic": "Explorer la musique",
+            "noFollowing": "Vous ne suivez personne pour le moment",
+            "noFollowingSub": "Découvrez des artistes incroyables et suivez-les pour rester à jour.",
+            "findArtists": "Trouver des artistes"
+        },
+        "trackMenu": {
+            "modify": "Modifier les métadonnées",
+            "remove": "Retirer le titre"
+        },
+        "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce titre ? Cette action est irréversible.",
+        "syncSuccess": "Profil synchronisé avec succès.",
+        "favRemoved": "Titre retiré des favoris.",
+        "metaSyncSuccess": "Métadonnées du titre mises à jour.",
+        "metaSyncError": "Échec de la synchronisation des métadonnées du titre.",
+        "deleteSuccess": "Titre orchestré pour suppression.",
+        "nodesSynchronized": "{{count}} nœuds dynamiques",
+        "tracksSynchronizedCount": "{{count}} titres synchronisés",
+        "nodeTag": "NŒUD • COREWAVE",
+        "likedTracksCount": "{{count}} titres aimés",
+        "followingCount": "{{count}} artistes",
+        "viewProfile": "Voir le profil",
+        "loginRequired": "Veuillez vous connecter pour voir votre profil."
+    },
+    "auth": {
+        "login": {
+            "title": "Bon retour",
+            "subtitle": "Connectez-vous à votre compte COREWAVE.",
+            "email": "E-mail",
+            "password": "Mot de passe",
+            "btn": "Connexion",
+            "loggingIn": "Connexion en cours...",
+            "error": "E-mail ou mot de passe invalide",
+            "noAccount": "Vous n'avez pas de compte ?",
+            "signUp": "S'inscrire"
+        },
+        "signup": {
+            "title": "Rejoindre COREWAVE",
+            "subtitle": "Commencez votre voyage musical aujourd'hui.",
+            "listener": "Auditeur",
+            "artist": "Artiste",
+            "name": "Nom",
+            "namePlaceholder": "Votre Nom",
+            "email": "E-mail",
+            "password": "Mot de passe",
+            "btn": "S'inscrire",
+            "creating": "Création du compte...",
+            "already": "Vous avez déjà un compte ?",
+            "login": "Connexion"
+        }
+    },
+    "upload": {
+        "title": "Partagez votre son",
+        "subtitle": "Distribuez votre musique dans le monde entier via COREWAVE.",
+        "steps": {
+            "audio": "Audio",
+            "metadata": "Métadonnées",
+            "confirm": "Confirmation"
+        },
+        "dropzone": {
+            "selectFile": "Cliquez pour sélectionner votre fichier audio",
+            "supports": "Prend en charge MP3, WAV ou FLAC",
+            "btn": "Sélectionner le fichier"
+        },
+        "form": {
+            "cover": "Téléverser la pochette",
+            "remove": "Supprimer",
+            "title": "Titre du morceau",
+            "titlePlaceholder": "ex. Midnight Waves",
+            "genre": "Genre",
+            "selectGenre": "Sélectionner le genre",
+            "mood": "Ambiance",
+            "moodPlaceholder": "ex. Calme, Énergique",
+            "isAI": "Marquer comme généré par IA",
+            "aiNote": "Cochez cette case si la chanson a été créée avec l'aide d'outils d'IA.",
+            "selected": "Sélectionné : {{name}}",
+            "change": "Modifier",
+            "publish": "Publier le morceau",
+            "uploading": "Téléversement...",
+            "errors": {
+                "selectAudio": "Veuillez sélectionner un fichier audio.",
+                "uploadFailed": "Échec du téléversement : {{message}}",
+                "syncFailed": "Échec de la synchronisation de l'identité."
+            }
+        },
+        "success": {
+            "title": "Soumission reçue !",
+            "message": "\"{{title}}\" est maintenant <strong>En cours d'examen</strong>.",
+            "note": "Vous serez informé une fois que notre équipe d'administration aura examiné votre titre.",
+            "dashboard": "Aller au tableau de bord",
+            "another": "En téléverser un autre"
+        },
+        "genres": {
+            "electronic": "Électronique",
+            "hipHop": "Hip Hop",
+            "ambient": "Ambient",
+            "loFi": "Lo-Fi",
+            "techno": "Techno",
+            "indie": "Indé"
+        }
+    },
+    "settings": {
+        "title": "Centre de contrôle",
+        "subtitle": "Orchestrez votre identité, votre sécurité et vos préférences mondiales.",
+        "tabs": {
+            "account": "Compte",
+            "security": "Sécurité",
+            "notifications": "Notifications",
+            "subscription": "Abonnement",
+            "language": "Langue"
+        },
+        "sidebar": {
+            "role": "Artiste",
+            "syncStatus": "Statut de synchro globale",
+            "orchestrated": "Orchestré",
+            "signOut": "Fermer la session"
+        },
+        "account": {
+            "identity": "Informations d'identité",
+            "identityDesc": "Gérez la façon dont vous apparaissez dans l'écosystème CoreWave.",
+            "displayName": "Nom d'affichage",
+            "email": "Adresse e-mail",
+            "bio": "Bio professionnelle",
+            "bioPlaceholder": "Bio de l'artiste...",
+            "save": "Enregistrer les modifications",
+            "syncing": "Synchronisation...",
+            "privacy": "Confidentialité et Découverte",
+            "privacyDesc": "Contrôlez votre état de visibilité et les algorithmes de découverte.",
+            "activityStatus": "Statut d'activité",
+            "activityStatusDesc": "Diffusez vos sessions d'écoute en temps réel.",
+            "dangerZone": "Zone de danger",
+            "dangerZoneDesc": "Actions permanentes qui ne peuvent pas être annulées.",
+            "deleteAccount": "Supprimer le compte",
+            "deleteAccountDesc": "Supprimez définitivement votre profil et toutes les données associées de CoreWave.",
+            "deleteBtn": "Supprimer mon identité"
+        },
+        "security": {
+            "auth": "Authentification",
+            "authDesc": "Sécurisez votre nœud dans le réseau avec des identifiants à haute entropie.",
+            "currentPassword": "Mot de passe actuel",
+            "newPassword": "Nouveau mot de passe",
+            "newPasswordPlaceholder": "Minimum 12 caractères",
+            "updatePassword": "Mettre à jour le mot de passe",
+            "accSecurity": "Sécurité du compte",
+            "twoFactor": "Authentification à deux facteurs",
+            "twoFactorDesc": "Ajoutez une couche matérielle ou logicielle secondaire."
+        },
+        "notifications": {
+            "delivery": "Préférences de livraison",
+            "deliveryDesc": "Configurez la manière dont vous recevez les mises à jour et les alertes de la plateforme.",
+            "emailUpdates": "Mises à jour par e-mail",
+            "emailUpdatesDesc": "Recevez des notifications sur les mentions et les ajouts aux playlists.",
+            "pushNotifications": "Notifications Push",
+            "pushNotificationsDesc": "Alertes en temps réel sur navigateur et mobile."
+        },
+        "subscription": {
+            "membership": "Abonnement Pro",
+            "basicNode": "Vous êtes actuellement sur le nœud <strong>Basic</strong>.",
+            "upgrade": "Passer à Pro"
+        },
+        "language": {
+            "select": "Sélectionner la langue de la planète",
+            "en": "English (Global)",
+            "fr": "Français",
+            "de": "Deutsch",
+            "es": "Español"
+        },
+        "toasts": {
+            "syncSuccess": "Identité synchronisée avec les serveurs mondiaux.",
+            "syncError": "Échec de la synchronisation.",
+            "orchestrationError": "Une erreur d'orchestration s'est produite.",
+            "visualIdentity": "Identité visuelle mise à jour avec succès.",
+            "purgeSuccess": "Identité purgée du réseau. Redirection...",
+            "purgeError": "Échec de la purge de l'identité.",
+            "purgeErrorGeneric": "Une erreur s'est produite lors de la suppression.",
+            "securityInitiated": "Protocole de sécurité initié.",
+            "featureUpdated": "{{name}} mis à jour en direct."
+        },
+        "prompts": {
+            "deleteWarning": "AVERTISSEMENT CRITIQUE : Cette action est permanente et supprimera toute votre musique, vos playlists et vos données de profil. Procédez avec une extrême prudence. Tapez 'DELETE' dans la boîte de confirmation pour continuer ?",
+            "deleteConfirm": "Tapez 'DELETE' pour confirmer la destruction du compte :",
+            "deleteAborted": "Suppression annulée. Vos données est en sécurité."
+        }
+    },
+    "user": {
+        "profile": "Profil",
+        "settings": "Paramètres",
+        "logout": "Déconnexion",
+        "login": "Connexion",
+        "signup": "S'inscrire"
+    },
+    "footer": {
+        "brandDesc": "Donner du pouvoir à la prochaine génération de son. Téléchargez, distribuez et faites évoluer votre carrière musicale sur la plateforme la plus centrée sur l'artiste au monde.",
+        "platform": "Plateforme",
+        "forArtists": "Pour les artistes",
+        "resources": "Ressources",
+        "contactSupport": "Contacter le support"
+    },
+    "seo": {
+        "homeTitle": "COREWAVE RECORDS | Distribution Musicale de Nouvelle Génération",
+        "homeDesc": "Donner du pouvoir aux artistes indépendants du monde entier. Téléchargez, distribuez et diffusez de la musique sur la plateforme de nouvelle génération conçue pour les artistes."
+    }
+}

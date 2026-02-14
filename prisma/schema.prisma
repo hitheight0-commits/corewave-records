@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -28,6 +28,7 @@ model User {
   following     Follows[] @relation("follower")
   favorites     Favorite[]
   recordedPlays TrackPlay[]
+  metrics       ArtistMetric[]
 }
 
 model Track {
@@ -50,6 +51,7 @@ model Track {
   favorites     Favorite[]
   playHistory   TrackPlay[]
   anonymousPlays AnonymousTrackPlay[]
+  events        PlayEvent[]
 }
 
 model Playlist {
@@ -114,4 +116,34 @@ model AnonymousTrackPlay {
   createdAt DateTime @default(now())
 
   @@unique([ipAddress, trackId])
+}
+
+model PlayEvent {
+  id        String   @id @default(cuid())
+  trackId   String
+  userId    String?  
+  geo       String?  
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  track     Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+
+  @@index([trackId, createdAt])
+  @@index([createdAt])
+}
+
+model ArtistMetric {
+  id          String   @id @default(cuid())
+  artistId    String
+  metricType  String   
+  period      String   
+  value       Float
+  date        DateTime 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  artist      User     @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@unique([artistId, metricType, period, date])
+  @@index([artistId, date])
 }

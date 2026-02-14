@@ -19,7 +19,7 @@ export async function uploadFile(
 
     if (isProduction && blobToken) {
         // [EXPERTISE] Production Pipeline: Global Content Delivery
-        console.log(`[STORAGE_ORCHESTRATION] Uploading to global blob store: ${filename}`);
+        // Uploading to blob storage
         const { url } = await put(`${path}/${filename}`, file, {
             access: 'public',
             addRandomSuffix: true,
@@ -30,7 +30,7 @@ export async function uploadFile(
         throw new Error("STORAGE_MISCONFIGURATION: BLOB_READ_WRITE_TOKEN is missing in production environment.");
     } else {
         // [EXPERTISE] Development Pipeline: Local Iteration
-        console.log(`[STORAGE_DEVELOPMENT] Writing to local filesystem: ${filename}`);
+        // Writing to local filesystem
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 

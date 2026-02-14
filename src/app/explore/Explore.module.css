@@ -309,4 +309,56 @@
     .header h1 {
         font-size: 2.5rem;
     }
+
+    .grid {
+        grid-template-columns: 1fr !important;
+        max-width: 450px;
+        margin: 0 auto;
+    }
+
+    .artistCard {
+        padding: 2rem !important;
+    }
+
+    .buttonGrid {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem !important;
+        margin-top: 2rem !important;
+    }
+
+    .buttonGrid a,
+    .buttonGrid button {
+        padding: 1rem 0 !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .artistCard {
+        padding: 1.25rem !important;
+    }
+
+    .buttonGrid {
+        gap: 0.5rem !important;
+    }
+
+    .buttonGrid a,
+    .buttonGrid button {
+        font-size: 0.7rem !important;
+    }
+}
+
+.artistCard {
+    padding: 2.5rem;
+}
+
+.buttonGrid {
+    display: grid;
+    gap: 0.75rem;
+    width: 100%;
+    margin-top: 2rem;
 }

@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import styles from '../explore/Explore.module.css';
 import { User, CheckCircle2, Loader2, Music, Users } from 'lucide-react';
 import { useToastStore } from '@/store/useToastStore';
+import { GridSkeleton } from '@/components/ui/Skeleton';
 
 interface Artist {
     id: string;
@@ -19,6 +21,7 @@ interface Artist {
 }
 
 export default function ArtistsPage() {
+    const { t } = useTranslation();
     const { data: session } = useSession();
     const { addToast } = useToastStore();
     const [artists, setArtists] = useState<Artist[]>([]);
@@ -52,7 +55,7 @@ export default function ArtistsPage() {
 
     const toggleFollow = async (artistId: string, artistName: string) => {
         if (!session) {
-            addToast("Please login to follow artists", "error");
+            addToast(t('artists.loginToFollow'), "error");
             return;
         }
         if (loadingFollowId) return;
@@ -68,10 +71,10 @@ export default function ArtistsPage() {
                 const newFollowingIds = new Set(followingIds);
                 if (isFollowing) {
                     newFollowingIds.delete(artistId);
-                    addToast(`Unfollowed ${artistName}`);
+                    addToast(t('artists.unfollowSuccess', { name: artistName }));
                 } else {
                     newFollowingIds.add(artistId);
-                    addToast(`Followed ${artistName}`);
+                    addToast(t('artists.followSuccess', { name: artistName }));
                 }
                 setFollowingIds(newFollowingIds);
 
@@ -82,11 +85,11 @@ export default function ArtistsPage() {
                         : a
                 ));
             } else {
-                addToast("Failed to update follow status", "error");
+                addToast(t('artists.followError'), "error");
             }
         } catch (err) {
             console.error("Follow error:", err);
-            addToast("An error occurred", "error");
+            addToast(t('artists.genericError'), "error");
         } finally {
             setLoadingFollowId(null);
         }
@@ -96,18 +99,16 @@ export default function ArtistsPage() {
         <main className={styles.explorePage} style={{ paddingTop: '10rem' }}>
             <div className={`container ${styles.container}`}>
                 <header className={styles.header}>
-                    <h1 style={{ fontSize: '3rem', fontWeight: '800' }}>Artists</h1>
-                    <p style={{ color: 'var(--muted-foreground)' }}>Meet the creators of the COREWAVE ecosystem.</p>
+                    <h1 style={{ fontSize: '3rem', fontWeight: '800' }}>{t('artists.title')}</h1>
+                    <p style={{ color: 'var(--muted-foreground)' }}>{t('artists.subtitle')}</p>
                 </header>
 
                 {loading ? (
-                    <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}>
-                        <Loader2 className="spinner" size={40} />
-                    </div>
+                    <GridSkeleton count={10} type="artist" />
                 ) : artists.length > 0 ? (
                     <div className={styles.grid}>
                         {artists.map((artist) => (
-                            <div key={artist.id} className="premium-card" style={{ padding: '2.5rem' }}>
+                            <div key={artist.id} className={`premium-card ${styles.artistCard}`}>
                                 <Link href={`/artists/${artist.id}`} className={styles.coverWrapper} style={{ borderRadius: '50%', marginBottom: '2rem', display: 'block', background: 'var(--grad-primary)', aspectRatio: '1/1', overflow: 'hidden' }}>
                                     {artist.image ? (
                                         <img src={artist.image} alt={artist.name || 'Artist'} className={styles.cover} style={{ borderRadius: '50%' }} />
@@ -124,13 +125,9 @@ export default function ArtistsPage() {
                                             <CheckCircle2 size={16} color="var(--corewave-blue)" fill="var(--corewave-blue)" stroke="white" />
                                         )}
                                     </div>
-                                    <p style={{ color: 'var(--muted-foreground)', marginBottom: '1.5rem' }}>{artist._count.followedBy} Followers</p>
-                                    <div style={{
-                                        display: 'grid',
-                                        gridTemplateColumns: session?.user?.id !== artist.id ? '1fr 1fr' : '1fr',
-                                        gap: '0.75rem',
-                                        width: '100%',
-                                        marginTop: '2rem'
+                                    <p style={{ color: 'var(--muted-foreground)', marginBottom: '1.5rem' }}>{t('artists.followers', { count: artist._count.followedBy })}</p>
+                                    <div className={styles.buttonGrid} style={{
+                                        gridTemplateColumns: session?.user?.id !== artist.id ? '1fr 1fr' : '1fr'
                                     }}>
                                         {session?.user?.id !== artist.id && (
                                             <button
@@ -142,7 +139,7 @@ export default function ArtistsPage() {
                                                 {loadingFollowId === artist.id ? (
                                                     <Loader2 size={14} className="spinner" />
                                                 ) : (
-                                                    followingIds.has(artist.id) ? "FOLLOWING" : "FOLLOW"
+                                                    followingIds.has(artist.id) ? t('artists.following') : t('artists.follow')
                                                 )}
                                             </button>
                                         )}
@@ -151,7 +148,7 @@ export default function ArtistsPage() {
                                             className="btn-outline"
                                             style={{ width: '100%', padding: '0.8rem 0', fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.05em' }}
                                         >
-                                            PROFILE
+                                            {t('artists.profile')}
                                         </Link>
                                     </div>
                                 </div>
@@ -161,7 +158,7 @@ export default function ArtistsPage() {
                 ) : (
                     <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--muted-foreground)' }}>
                         <Music size={48} style={{ marginBottom: '1rem', opacity: 0.5 }} />
-                        <p>No artists found in the ecosystem yet.</p>
+                        <p>{t('artists.noArtists')}</p>
                     </div>
                 )}
             </div>
