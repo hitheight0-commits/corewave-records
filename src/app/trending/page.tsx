@@ -1,3 +1,5 @@
+"use client";
+
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,7 +8,6 @@ export const metadata: Metadata = {
     keywords: ['trending music', 'top charts', 'hot tracks', 'music charts', 'popular music', 'viral tracks'],
 };
 
-"use client";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
