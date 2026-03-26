@@ -3,101 +3,69 @@
 import styles from './Hero.module.css';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import Magnetic from '../common/Magnetic';
-
 import { useSession } from 'next-auth/react';
 
 const Hero = () => {
     const { data: session, status } = useSession();
     return (
         <section className={styles.hero}>
-            <div className="mesh-bg"></div>
+            <div className={styles.backgroundEffects}>
+                <div className={styles.lightRays}></div>
+                <div className={styles.crowdSilhouette}></div>
+            </div>
 
             <div className={`container ${styles.content}`}>
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className={styles.badge}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className={styles.eyebrow}
                 >
-                    Next Generation Distribution
+                    ESTABLISHED 2024
                 </motion.div>
 
                 <motion.h1
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                     className={styles.title}
                 >
-                    The Future of <br />
-                    <span>Sound is Here.</span>
+                    The Future <br />
+                    of Sound <br />
+                    <span className={styles.titleHighlight}>is Here.</span>
                 </motion.h1>
 
                 <motion.p
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                    className={`${styles.subtitle} catchy-subtext`}
+                    transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    className={styles.subtitle}
                 >
-                    Join the elite circle of artists pushing the boundaries of sonic innovation. <br />
-                    Distribute, grow, and dominate with COREWAVE.
+                    Precision engineering meets creative chaos. Join the<br />
+                    world's most advanced ecosystem for independent creators<br />
+                    and sonic pioneers.
                 </motion.p>
 
                 <motion.div
                     className={styles.actions}
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.6 }}
+                    transition={{ duration: 1, delay: 0.3 }}
                 >
-                    <Magnetic>
-                        {status === 'authenticated' ? (
-                            <Link href="/explore" className="btn-primary">
-                                Start Listening
-                            </Link>
-                        ) : (
-                            <Link href="/signup?role=artist" className="btn-primary">
-                                Join the Evolution
-                            </Link>
-                        )}
-                    </Magnetic>
-                    {!session && (
-                        <Magnetic>
-                            <Link href="/explore" className="btn-outline">
-                                Start Listening
-                            </Link>
-                        </Magnetic>
+                    {status === 'authenticated' ? (
+                        <Link href="/explore" className={styles.btnPrimary}>
+                            GO TO STUDIO
+                        </Link>
+                    ) : (
+                        <Link href="/signup?role=artist" className={styles.btnPrimary}>
+                            SIGN UP
+                        </Link>
                     )}
-                </motion.div>
-
-                <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.8 }}
-                    className={styles.stats}
-                >
-                    {[
-                        { val: "500K+", label: "Artists" },
-                        { val: "10M+", label: "Tracks" },
-                        { val: "100+", label: "Countries" }
-                    ].map((stat, i) => (
-                        <div key={i} className={styles.statItem}>
-                            <span>{stat.val}</span>
-                            <p>{stat.label}</p>
-                        </div>
-                    ))}
+                    <Link href="/explore" className={styles.btnSecondary}>
+                        Explore the Void
+                    </Link>
                 </motion.div>
             </div>
-
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.5 }}
-                transition={{ duration: 1, delay: 1.5 }}
-                className={styles.scrollIndicator}
-            >
-                <div className={styles.mouse}>
-                    <div className={styles.wheel}></div>
-                </div>
-            </motion.div>
         </section>
     );
 };
