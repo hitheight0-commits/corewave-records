@@ -30,7 +30,7 @@ const Hero = () => {
                     className={styles.title}
                 >
                     The Future of <br />
-                    <span className="text-gradient">Sound is Here.</span>
+                    <span>Sound is Here.</span>
                 </motion.h1>
 
                 <motion.p
