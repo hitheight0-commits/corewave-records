@@ -328,31 +328,33 @@ export default function NeuralNetworkHero({
         <section ref={sectionRef} className="relative h-screen w-full overflow-hidden">
             <ShaderBackground />
 
-            <div className="relative mx-auto flex max-w-7xl flex-col items-start gap-6 px-6 pb-24 pt-36 sm:gap-8 sm:pt-44 md:px-10 lg:px-16">
-                <div ref={badgeRef} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm">
-                    <span className="text-[10px] font-light uppercase tracking-[0.08em] text-white/70">{badgeLabel}</span>
-                    <span className="h-1 w-1 rounded-full bg-white/40" />
-                    <span className="text-xs font-light tracking-tight text-white/80">{badgeText}</span>
+            <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-6 px-6 pb-24 pt-36 sm:gap-8 sm:pt-44 md:px-10 lg:px-16 text-center">
+                <div ref={badgeRef} className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 px-4 py-1.5 backdrop-blur-sm">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-indigo-300">{badgeLabel}</span>
+                    <span className="h-1 w-1 rounded-full bg-indigo-400/60" />
+                    <span className="text-xs font-medium tracking-tight text-white/80">{badgeText}</span>
                 </div>
 
-                <h1 ref={headerRef} className="max-w-2xl text-left text-5xl font-extralight leading-[1.1] tracking-tight text-white sm:text-6xl md:text-7xl">
+                <h1 ref={headerRef} className="max-w-4xl text-center text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
                     {title.split('\n').map((line, i) => (
-                        <span key={i} className="block line-animate">{line}</span>
+                        i === title.split('\n').length - 1
+                            ? <span key={i} className="block line-animate" style={{ background: 'linear-gradient(135deg, #818cf8 0%, #a78bfa 35%, #e879f9 70%, #fb7185 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', filter: 'drop-shadow(0 0 40px rgba(167,139,250,0.5))' }}>{line}</span>
+                            : <span key={i} className="block line-animate">{line}</span>
                     ))}
                 </h1>
 
-                <p ref={paraRef} className="max-w-xl text-left text-base font-light leading-[1.7] tracking-wide text-white/70 sm:text-lg">
+                <p ref={paraRef} className="max-w-2xl text-center text-base font-light leading-[1.8] tracking-wide text-white/60 sm:text-lg">
                     {description}
                 </p>
 
-                <div ref={ctaRef} className="flex flex-wrap items-center gap-3 pt-2">
+                <div ref={ctaRef} className="flex flex-wrap items-center justify-center gap-4 pt-2">
                     {ctaButtons.map((button, index) => (
                         <a
                             key={index}
                             href={button.href}
-                            className={`rounded-2xl border border-white/10 px-5 py-3 text-sm font-light tracking-tight transition-colors focus:outline-none focus:ring-2 focus:ring-white/30 duration-300 ${button.primary
-                                ? "bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
-                                : "text-white/80 hover:bg-white/5"
+                            className={`rounded-xl px-7 py-3.5 text-sm font-semibold tracking-wide transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-400/50 ${button.primary
+                                ? "bg-gradient-to-r from-indigo-500 to-violet-500 text-white shadow-[0_0_30px_rgba(99,102,241,0.4)] hover:shadow-[0_0_45px_rgba(99,102,241,0.6)] hover:-translate-y-0.5 border border-indigo-400/20"
+                                : "bg-white/5 text-white/80 border border-white/10 backdrop-blur-sm hover:bg-white/10 hover:text-white hover:-translate-y-0.5"
                                 }`}
                         >
                             {button.text}
@@ -360,7 +362,7 @@ export default function NeuralNetworkHero({
                     ))}
                 </div>
 
-                <ul className="mt-8 flex flex-wrap gap-6 text-xs font-extralight tracking-tight text-white/60">
+                <ul className="mt-6 flex flex-wrap justify-center gap-6 text-xs font-light tracking-tight text-white/50">
                     {microDetails.map((detail, index) => {
                         const refMap = [microItem1Ref, microItem2Ref, microItem3Ref];
                         return (
