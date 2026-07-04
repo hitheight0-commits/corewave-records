@@ -325,49 +325,96 @@ export default function NeuralNetworkHero({
     );
 
     return (
-        <section ref={sectionRef} className="relative h-screen w-full overflow-hidden">
+        <section ref={sectionRef} style={{ position: 'relative', height: '100vh', width: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             <ShaderBackground />
 
-            <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-6 px-6 pb-24 pt-36 sm:gap-8 sm:pt-44 md:px-10 lg:px-16 text-center">
-                <div ref={badgeRef} className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 px-4 py-1.5 backdrop-blur-sm">
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-indigo-300">{badgeLabel}</span>
-                    <span className="h-1 w-1 rounded-full bg-indigo-400/60" />
-                    <span className="text-xs font-medium tracking-tight text-white/80">{badgeText}</span>
+            <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: '800px', margin: '0 auto', padding: '0 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.75rem', textAlign: 'center', paddingTop: '5rem' }}>
+                <div ref={badgeRef} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', borderRadius: '9999px', border: '1px solid rgba(129,140,248,0.3)', background: 'rgba(99,102,241,0.1)', padding: '0.4rem 1.1rem', backdropFilter: 'blur(8px)' }}>
+                    <span style={{ fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#a5b4fc' }}>{badgeLabel}</span>
+                    <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(129,140,248,0.6)', display: 'inline-block' }} />
+                    <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>{badgeText}</span>
                 </div>
 
-                <h1 ref={headerRef} className="max-w-4xl text-center text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
+                <h1
+                    ref={headerRef}
+                    style={{
+                        textAlign: 'center',
+                        width: '100%',
+                        fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
+                        fontWeight: 800,
+                        lineHeight: 1.08,
+                        letterSpacing: '-0.03em',
+                        color: '#ffffff',
+                        margin: 0,
+                    }}
+                >
                     {title.split('\n').map((line, i) => (
                         i === title.split('\n').length - 1
-                            ? <span key={i} className="block line-animate" style={{ background: 'linear-gradient(135deg, #818cf8 0%, #a78bfa 35%, #e879f9 70%, #fb7185 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', filter: 'drop-shadow(0 0 40px rgba(167,139,250,0.5))' }}>{line}</span>
-                            : <span key={i} className="block line-animate">{line}</span>
+                            ? <span key={i} className="block line-animate" style={{ display: 'block', background: 'linear-gradient(135deg, #818cf8 0%, #a78bfa 40%, #e879f9 75%, #fb7185 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', filter: 'drop-shadow(0 0 50px rgba(167,139,250,0.6))' }}>{line}</span>
+                            : <span key={i} className="block line-animate" style={{ display: 'block' }}>{line}</span>
                     ))}
                 </h1>
 
-                <p ref={paraRef} className="max-w-2xl text-center text-base font-light leading-[1.8] tracking-wide text-white/60 sm:text-lg">
+                <p
+                    ref={paraRef}
+                    style={{
+                        textAlign: 'center',
+                        maxWidth: '520px',
+                        fontSize: '1.05rem',
+                        fontWeight: 300,
+                        lineHeight: 1.8,
+                        letterSpacing: '0.01em',
+                        color: 'rgba(255,255,255,0.55)',
+                        margin: 0,
+                    }}
+                >
                     {description}
                 </p>
 
-                <div ref={ctaRef} className="flex flex-wrap items-center justify-center gap-4 pt-2">
+                <div ref={ctaRef} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '1rem', paddingTop: '0.5rem' }}>
                     {ctaButtons.map((button, index) => (
                         <a
                             key={index}
                             href={button.href}
-                            className={`rounded-xl px-7 py-3.5 text-sm font-semibold tracking-wide transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-400/50 ${button.primary
-                                ? "bg-gradient-to-r from-indigo-500 to-violet-500 text-white shadow-[0_0_30px_rgba(99,102,241,0.4)] hover:shadow-[0_0_45px_rgba(99,102,241,0.6)] hover:-translate-y-0.5 border border-indigo-400/20"
-                                : "bg-white/5 text-white/80 border border-white/10 backdrop-blur-sm hover:bg-white/10 hover:text-white hover:-translate-y-0.5"
-                                }`}
+                            style={button.primary ? {
+                                background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                                color: '#ffffff',
+                                padding: '0.85rem 2rem',
+                                borderRadius: '10px',
+                                fontSize: '0.875rem',
+                                fontWeight: 700,
+                                letterSpacing: '0.06em',
+                                textTransform: 'uppercase',
+                                border: '1px solid rgba(129,140,248,0.3)',
+                                boxShadow: '0 0 30px rgba(99,102,241,0.4)',
+                                transition: 'all 0.25s ease',
+                                textDecoration: 'none',
+                                display: 'inline-block',
+                            } : {
+                                background: 'rgba(255,255,255,0.05)',
+                                color: 'rgba(255,255,255,0.8)',
+                                padding: '0.85rem 2rem',
+                                borderRadius: '10px',
+                                fontSize: '0.875rem',
+                                fontWeight: 500,
+                                border: '1px solid rgba(255,255,255,0.12)',
+                                backdropFilter: 'blur(8px)',
+                                transition: 'all 0.25s ease',
+                                textDecoration: 'none',
+                                display: 'inline-block',
+                            }}
                         >
                             {button.text}
                         </a>
                     ))}
                 </div>
 
-                <ul className="mt-6 flex flex-wrap justify-center gap-6 text-xs font-light tracking-tight text-white/50">
+                <ul style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem', fontSize: '0.7rem', fontWeight: 300, letterSpacing: '0.05em', color: 'rgba(255,255,255,0.4)', listStyle: 'none', padding: 0, margin: 0 }}>
                     {microDetails.map((detail, index) => {
                         const refMap = [microItem1Ref, microItem2Ref, microItem3Ref];
                         return (
-                            <li key={index} ref={refMap[index] as any} className="flex items-center gap-2">
-                                <span className="h-1 w-1 rounded-full bg-white/40" /> {detail}
+                            <li key={index} ref={refMap[index] as any} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(255,255,255,0.3)', display: 'inline-block' }} /> {detail}
                             </li>
                         );
                     })}
