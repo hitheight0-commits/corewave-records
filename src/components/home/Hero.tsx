@@ -11,27 +11,25 @@ const Hero = () => {
         <section className={styles.hero}>
             <div className={styles.backgroundEffects}>
                 <div className={styles.lightRays}></div>
-                <div className={styles.crowdSilhouette}></div>
             </div>
 
             <div className={`container ${styles.content}`}>
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                     className={styles.eyebrow}
                 >
-                    ESTABLISHED 2024
+                    ✦ ESTABLISHED 2024
                 </motion.div>
 
                 <motion.h1
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 36 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                     className={styles.title}
                 >
-                    The Future <br />
-                    of Sound <br />
+                    The Future of Sound
                     <span className={styles.titleHighlight}>is Here.</span>
                 </motion.h1>
 
@@ -41,8 +39,8 @@ const Hero = () => {
                     transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                     className={styles.subtitle}
                 >
-                    Precision engineering meets creative chaos. Join the<br />
-                    world's most advanced ecosystem for independent creators<br />
+                    Precision engineering meets creative chaos. Join the
+                    world&apos;s most advanced ecosystem for independent creators
                     and sonic pioneers.
                 </motion.p>
 
@@ -50,7 +48,7 @@ const Hero = () => {
                     className={styles.actions}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.3 }}
+                    transition={{ duration: 1, delay: 0.35 }}
                 >
                     {status === 'authenticated' ? (
                         <Link href="/explore" className={styles.btnPrimary}>
@@ -58,13 +56,18 @@ const Hero = () => {
                         </Link>
                     ) : (
                         <Link href="/signup?role=artist" className={styles.btnPrimary}>
-                            SIGN UP
+                            JOIN THE REVOLUTION
                         </Link>
                     )}
                     <Link href="/explore" className={styles.btnSecondary}>
                         Explore the Void
                     </Link>
                 </motion.div>
+            </div>
+
+            {/* Scroll indicator */}
+            <div className={styles.scrollHint}>
+                <div className={styles.scrollLine}></div>
             </div>
         </section>
     );
